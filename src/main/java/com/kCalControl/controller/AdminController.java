@@ -4,6 +4,7 @@ import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.UserRepository;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
+@RolesAllowed("ADMIN")
 public class AdminController {
 
     @Autowired

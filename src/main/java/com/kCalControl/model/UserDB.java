@@ -37,6 +37,8 @@ public class UserDB {
     @Embedded
     private Assets assets;
 
+
+
     public UserDB() {
     }
 
