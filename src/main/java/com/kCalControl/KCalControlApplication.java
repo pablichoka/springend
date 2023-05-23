@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ToolApplication {
+public class KCalControlApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ToolApplication.class, args);
+		SpringApplication.run(KCalControlApplication.class, args);
 	}
 
 }
