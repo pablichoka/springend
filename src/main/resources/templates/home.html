@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{../css/home.css}" type="text/css">
+    <title>Home Page</title>
+</head>
+
+<body>
+<header>
+    <h1>Welcome <span th:text="${username}"></span></h1>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/newUser/signUpForm">Add user</a></li>
+
+
+        </ul>
+    </nav>
+</header>
+
+<section>
+    <h2>About Me</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor ex id elit feugiat convallis. Fusce eu
+        aliquet
+        lorem. Etiam ut lectus a arcu consectetur pulvinar vel et nunc.</p>
+</section>
+
+<section>
+    <h2>My Services</h2>
+    <ul>
+        <li>Web Design</li>
+        <li>Graphic Design</li>
+        <li>Content Writing</li>
+    </ul>
+</section>
+
+<footer>
+    <p>&copy; 2023 My Website. All rights reserved.</p>
+</footer>
+</body>
+
+</html>
