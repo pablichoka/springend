@@ -11,11 +11,13 @@ import java.util.Objects;
 public class UserRole {
 
     @Id
-    @Column(name = "user")
+    @ManyToOne
+    @JoinColumn(name = "id")
     private UserDB userDB;
 
     @Id
-    @Column(name = "role_name")
+    @ManyToOne
+    @JoinColumn(name = "role_name")
     private Role role;
 
     public UserDB getUserDB() {

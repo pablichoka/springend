@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Role {
 
     @Id
-    @Column(name = "role_name")
+    @Column(name = "role_name", length = 20)
     private String role;
 
     public String getRole() {

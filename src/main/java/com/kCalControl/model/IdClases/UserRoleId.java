@@ -2,12 +2,11 @@ package com.kCalControl.model.IdClases;
 
 import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.model.UserRole;
-import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class UserRoleId {
+public class UserRoleId implements Serializable {
 
     private UserDB userDB;
     private Role role;
