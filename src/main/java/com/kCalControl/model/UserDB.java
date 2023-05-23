@@ -37,6 +37,18 @@ public class UserDB {
     @Embedded
     private Assets assets;
 
+    public UserDB() {
+    }
+
+    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobile = mobile;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserDB getCreationPerson() {
         return getAssets().getCreationPerson();
     }

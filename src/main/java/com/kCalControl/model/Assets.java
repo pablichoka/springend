@@ -66,9 +66,9 @@ public class Assets {
     @Override
     public String toString() {
         return "Assets{" +
-                "creationPerson=" + creationPerson.getId() +
+                "creationPerson=" + creationPerson +
                 ", creationDate=" + creationDate +
-                ", modificationPerson=" + modificationPerson.getId() +
+                ", modificationPerson=" + modificationPerson +
                 ", modificationDate=" + modificationDate +
                 '}';
     }

@@ -5,8 +5,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.security.Principal;
 
 @Controller
 public class MVCController {
@@ -17,7 +20,9 @@ public class MVCController {
     }
 
     @GetMapping("/home")
-    private String home(){
+    private String home(Model model, Principal principal){
+        String username = principal.getName();
+        model.addAttribute("username", username);
         return "home";
     }
 
