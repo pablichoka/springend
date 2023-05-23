@@ -11,4 +11,9 @@ public class MVCController {
         return "index";
     }
 
+    @GetMapping("/home")
+    private String home(){
+        return "home";
+    }
+
 }

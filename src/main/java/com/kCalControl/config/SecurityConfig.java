@@ -24,14 +24,14 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests()
-            .requestMatchers("/").permitAll()
+            .requestMatchers("/", "/css/*").permitAll();
 //            .requestMatchers().hasRole("ADMIN")
-            .anyRequest().authenticated()
-            .and()
-        .formLogin()
+//            .anyRequest().authenticated()
+//            .and()
+//        .formLogin()
 //            .loginPage("/actions/login")
-            .defaultSuccessUrl("/")
-            .permitAll();
+//            .defaultSuccessUrl("/")
+//            .permitAll();
 
         return http.build();
     }

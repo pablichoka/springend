@@ -6,13 +6,16 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", catalog = "kcal_control")
 public class UserDB {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "name")
+    private String name;
     @Column(name = "f_name", length = 20)
     private String firstName;
 
@@ -33,6 +36,22 @@ public class UserDB {
 
     @Embedded
     private Assets assets;
+
+    public UserDB getCreationPerson() {
+        return getAssets().getCreationPerson();
+    }
+
+    public LocalDateTime getCreationDate() {
+        return getAssets().getCreationDate();
+    }
+
+    public UserDB getModificationPerson() {
+        return getAssets().getModificationPerson();
+    }
+
+    public LocalDateTime getModificationDate() {
+        return getAssets().getModificationDate();
+    }
 
     public Integer getId() {
         return id;
