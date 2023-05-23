@@ -36,7 +36,7 @@ public class UserSession implements UserDetailsService {
         Optional<UserRole> userRole = userRoleRepository.findByUserDB(userDB);
 
 
-        UserDetails user = User.builder().username(userDB.getFirstName()).password(userDB.getPassword()).roles(userRole.get().getRole().getRole())
+        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userRole.get().getRoleName())
                 .build();
         logger.debug("User authenticated: {}", user);
         return user;
