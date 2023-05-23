@@ -1,5 +1,7 @@
 package com.kCalControl.config;
 
+import com.kCalControl.controller.UserSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,15 +25,21 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception{
 
         http
-            .authorizeHttpRequests()
-            .requestMatchers("/", "/css/*").permitAll();
-//            .requestMatchers().hasRole("ADMIN")
-//            .anyRequest().authenticated()
-//            .and()
-//        .formLogin()
-//            .loginPage("/actions/login")
-//            .defaultSuccessUrl("/")
-//            .permitAll();
+                .authorizeHttpRequests()
+                .requestMatchers("/", "/css/*", "js/*").permitAll()
+                .requestMatchers("/**").authenticated()
+                .requestMatchers("/addUser").hasRole("ADMIN")
+                .and()
+            .formLogin()
+    //            .loginPage("/actions/login")
+                .defaultSuccessUrl("/home")
+                .permitAll()
+                .and()
+            .logout()
+                .logoutUrl("logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
 
         return http.build();
     }

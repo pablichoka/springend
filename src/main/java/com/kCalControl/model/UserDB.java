@@ -14,8 +14,8 @@ public class UserDB {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "username")
+    private String username;
     @Column(name = "f_name", length = 20)
     private String firstName;
 
@@ -59,6 +59,14 @@ public class UserDB {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
