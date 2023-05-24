@@ -36,7 +36,7 @@ public class AdminController {
     private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, Principal principal){
 
         String encPass = passwordEncoder.encode(userDTO.getPassword());
-        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getF_name(),userDTO.getL_name(),userDTO.getMobile(), userDTO.getEmail(), encPass);
+        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getFirstName(),userDTO.getLastName(),userDTO.getMobile(), userDTO.getEmail(), encPass);
         userDB.setPasswordDate(LocalDateTime.now());
 
         Optional<UserDB> optionalUserDB = userRepository.findByFirstName(principal.getName());

@@ -1,5 +1,6 @@
 package com.kCalControl.model;
 
+import com.kCalControl.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -34,10 +35,29 @@ public class UserDB {
     @Column(name = "password_date")
     private LocalDateTime passwordDate;
 
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "weight")
+    private Double weight;
+
     @Embedded
     private Assets assets;
 
+    public UserDTO UserDB2UserDTO() {
 
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setUsername(this.getUsername());
+        userDTO.setFirstName(this.getFirstName());
+        userDTO.setLastName(this.getLastName());
+        userDTO.setEmail(this.getEmail());
+        userDTO.setMobile(this.getMobile());
+        userDTO.setAge(this.getAge());
+        userDTO.setWeight(this.getWeight());
+
+        return userDTO;
+    }
 
     public UserDB() {
     }
@@ -139,6 +159,22 @@ public class UserDB {
         this.assets = assets;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -155,12 +191,15 @@ public class UserDB {
     public String toString() {
         return "UserDB{" +
                 "id=" + id +
+                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", passwordDate=" + passwordDate +
+                ", age=" + age +
+                ", weight=" + weight +
                 ", assets=" + assets +
                 '}';
     }

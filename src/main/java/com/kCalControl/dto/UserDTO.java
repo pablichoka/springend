@@ -5,8 +5,8 @@ import java.util.Objects;
 public class UserDTO {
 
     private String username;
-    private String f_name;
-    private String l_name;
+    private String firstName;
+    private String lastName;
     private String mobile;
     private String email;
     private String password;
@@ -21,20 +21,20 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getF_name() {
-        return f_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setF_name(String f_name) {
-        this.f_name = f_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getL_name() {
-        return l_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setL_name(String l_name) {
-        this.l_name = l_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMobile() {
@@ -82,20 +82,20 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(username, userDTO.username) && Objects.equals(f_name, userDTO.f_name) && Objects.equals(l_name, userDTO.l_name) && Objects.equals(mobile, userDTO.mobile) && Objects.equals(email, userDTO.email) && Objects.equals(password, userDTO.password) && Objects.equals(age, userDTO.age) && Objects.equals(weight, userDTO.weight);
+        return Objects.equals(username, userDTO.username) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(mobile, userDTO.mobile) && Objects.equals(email, userDTO.email) && Objects.equals(password, userDTO.password) && Objects.equals(age, userDTO.age) && Objects.equals(weight, userDTO.weight);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, f_name, l_name, mobile, email, password, age, weight);
+        return Objects.hash(username, firstName, lastName, mobile, email, password, age, weight);
     }
 
     @Override
     public String toString() {
         return "UserDTO{" +
                 "username='" + username + '\'' +
-                ", f_name='" + f_name + '\'' +
-                ", l_name='" + l_name + '\'' +
+                ", f_name='" + firstName + '\'' +
+                ", l_name='" + lastName + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
