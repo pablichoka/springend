@@ -25,7 +25,7 @@ public class UserController {
         List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
         model.addAttribute("users", userDTOList);
 
-        return "actions/listUsers";
+        return "actions/listUser";
     }
 
 }
