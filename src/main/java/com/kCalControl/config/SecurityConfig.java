@@ -26,9 +26,9 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/css/*", "js/*").permitAll()
+                .requestMatchers("/addUser", "/newUser/signUpForm").hasRole("ADMIN")
                 .requestMatchers("/**").authenticated()
-                .requestMatchers("/addUser").hasRole("ADMIN")
+                .requestMatchers("/", "/css/*", "js/*").permitAll()
                 .and()
             .formLogin()
     //            .loginPage("/actions/login")
