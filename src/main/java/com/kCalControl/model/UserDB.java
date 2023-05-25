@@ -48,6 +48,7 @@ public class UserDB {
 
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setId(this.getId());
         userDTO.setUsername(this.getUsername());
         userDTO.setFirstName(this.getFirstName());
         userDTO.setLastName(this.getLastName());

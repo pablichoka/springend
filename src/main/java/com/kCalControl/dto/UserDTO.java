@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class UserDTO {
 
+    private Integer id;
     private String username;
     private String firstName;
     private String lastName;
@@ -12,6 +13,14 @@ public class UserDTO {
     private String password;
     private Integer age;
     private Double weight;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -80,22 +89,22 @@ public class UserDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(username, userDTO.username) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(mobile, userDTO.mobile) && Objects.equals(email, userDTO.email) && Objects.equals(password, userDTO.password) && Objects.equals(age, userDTO.age) && Objects.equals(weight, userDTO.weight);
+        if (!(o instanceof UserDTO userDTO)) return false;
+        return Objects.equals(id, userDTO.id) && Objects.equals(username, userDTO.username) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(mobile, userDTO.mobile) && Objects.equals(email, userDTO.email) && Objects.equals(password, userDTO.password) && Objects.equals(age, userDTO.age) && Objects.equals(weight, userDTO.weight);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, firstName, lastName, mobile, email, password, age, weight);
+        return Objects.hash(id, username, firstName, lastName, mobile, email, password, age, weight);
     }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "username='" + username + '\'' +
-                ", f_name='" + firstName + '\'' +
-                ", l_name='" + lastName + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
