@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Update info</title>
+  <!-- Incluir los archivos CSS de Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Update your data</h1>
+  <form th:object="${user}" method="put" action="/saveUserData">
+    <div class="form-group">
+      <label for="f_name">Nombre:</label>
+      <input type="text" class="form-control" id="f_name" th:field="*{f_name}" placeholder="${user2edit.firstName}">
+    </div>
+    <div class="form-group">
+      <label for="l_name">Apellidos:</label>
+      <input type="text" class="form-control" id="l_name" th:field="*{l_name}" placeholder="${user2edit.lastName}">
+    </div>
+    <div class="form-group">
+      <label for="username">Nombre de usuario:</label>
+      <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="${user2edit.username}">
+    </div>
+    <div class="form-group">
+      <label for="email">Correo Electrónico:</label>
+      <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="${user2edit.email}">
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña:</label>
+      <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="${user2edit.password}">
+    </div>
+    <div class="form-group">
+      <label for="mobile">Móvil:</label>
+      <input type="text" class="form-control" id="mobile" th:field="*{mobile}" placeholder="${user2edit.mobile}">
+    </div>
+    <div class="form-group">
+      <label for="age">Edad:</label>
+      <input type="text" class="form-control" id="age" th:field="*{age}" placeholder="${user2edit.age}">
+    </div>
+    <div class="form-group">
+      <label for="weight">Móvil:</label>
+      <input type="text" class="form-control" id="weight" th:field="*{weight}" placeholder="${user2edit.weight}">
+    </div>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <button type="submit" class="btn btn-primary">Registrar</button>
+  </form>
+</div>
+
+<!-- Incluir los archivos JavaScript de Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
