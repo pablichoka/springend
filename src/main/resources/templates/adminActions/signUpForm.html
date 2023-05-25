@@ -8,7 +8,7 @@
 <body>
 <div class="container">
   <h1>Formulario de Registro de Usuario</h1>
-  <form th:object="${user}" method="post" action="/addUser">
+  <form th:object="${user}" method="post" action="/adminActions/addUser">
     <div class="form-group">
       <label for="f_name">Nombre:</label>
       <input type="text" class="form-control" id="f_name" th:field="*{f_name}" placeholder="Ingrese su nombre">

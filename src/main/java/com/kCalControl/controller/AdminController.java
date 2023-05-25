@@ -26,13 +26,13 @@ public class AdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/newUser/signUpForm")
+    @GetMapping("/adminActions/signUpForm")
     private String newUser(Model model){
         model.addAttribute("user", new UserDTO());
-        return "actions/signUpForm";
+        return "adminActions/signUpForm";
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/adminActions/addUser")
     private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, Principal principal){
 
         String encPass = passwordEncoder.encode(userDTO.getPassword());
