@@ -26,10 +26,10 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/css/*", "js/*").permitAll()
-                .requestMatchers("/userActions/*").hasAnyRole("ADMIN","USER")
-                .requestMatchers("/adminActions/*").hasRole("ADMIN")
-                .requestMatchers("/*").authenticated()
+                .requestMatchers("/", "/css/**", "js/**").permitAll()
+//                .requestMatchers("/userActions/**").hasAnyRole("ADMIN","USER")
+//                .requestMatchers("/adminActions/**").hasRole("ADMIN")
+                .requestMatchers("/**").permitAll()
                 .and()
             .formLogin()
     //            .loginPage("/actions/login")

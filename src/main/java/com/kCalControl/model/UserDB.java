@@ -15,7 +15,7 @@ public class UserDB {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "username")
+    @Column(name = "name")
     private String username;
     @Column(name = "f_name", length = 20)
     private String firstName;

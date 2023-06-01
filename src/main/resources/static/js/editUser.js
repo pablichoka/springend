@@ -1,18 +1,15 @@
-function editUser(button){
+function fillTextFields(){
 
-    const rowId = button.getAttribute('data-row');
+    // let email = document.getElementById('email');
+    // let mobile = document.getElementById('mobile');
+    // let age = document.getElementById('age');
+    // let weight = document.getElementById('weight');
+    // let pass = document.getElementById('password');
+    let id = document.getElementById('id');
 
-    const row = document.getElementById('row-' + rowId);
-    const form = document.createElement('form');
-
-    let age = document.createElement('input');
-    age.type='text';
-    age.name='age';
-
-    form.appendChild(age);
-
-    form.style.display='flex';
-
-    row.parentNode.insertBefore(form, row.nextSibling);
-
+    // email.value = email.placeholder;
+    // mobile.value = mobile.placeholder;
+    // age.value = age.placeholder;
+    // weight.value = weight.placeholder;
+    id.value = id.placeholder;
 }

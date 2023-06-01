@@ -21,8 +21,12 @@ public class MVCController {
 
     @GetMapping("/home")
     private String home(Model model, Principal principal){
-        String username = principal.getName();
-        model.addAttribute("username", username);
+        try {
+            String username = principal.getName();
+            model.addAttribute("username", username);
+        }catch (Exception ex){
+            ex.getMessage();
+        }
         return "home";
     }
 

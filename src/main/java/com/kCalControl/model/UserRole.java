@@ -2,6 +2,7 @@ package com.kCalControl.model;
 
 import com.kCalControl.model.IdClases.UserRoleId;
 import jakarta.persistence.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -10,54 +11,43 @@ import java.util.Objects;
 @IdClass(UserRoleId.class)
 public class UserRole {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private UserDB userDB;
+    @EmbeddedId
+    private UserRoleId id;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "role_name")
-    private Role role;
+    public UserRoleId getId() {
+        return id;
+    }
 
+    public void setId(UserRoleId id) {
+        this.id = id;
+    }
+
+    @Transient
     public UserDB getUserDB() {
-        return userDB;
+        return getId().getUserDB();
     }
 
-    public void setUserDB(UserDB userDB) {
-        this.userDB = userDB;
-    }
-
+    @Transient
     public Role getRole() {
-        return role;
-    }
-
-    public String getRoleName(){
-        return role.getRole();
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+        return getId().getRole();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserRole userRole = (UserRole) o;
-        return Objects.equals(userDB, userRole.userDB) && Objects.equals(role, userRole.role);
+        if (!(o instanceof UserRole userRole)) return false;
+        return Objects.equals(id, userRole.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userDB, role);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
         return "UserRole{" +
-                "userDB=" + userDB +
-                ", role=" + role +
+                "id=" + id +
                 '}';
     }
 }

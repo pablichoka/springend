@@ -3,7 +3,7 @@
 <head>
   <title>Formulario de Registro de Usuario</title>
   <!-- Incluir los archivos CSS de Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
 </head>
 <body>
 <div class="container">
@@ -11,11 +11,11 @@
   <form th:object="${user}" method="post" action="/adminActions/addUser">
     <div class="form-group">
       <label for="f_name">Nombre:</label>
-      <input type="text" class="form-control" id="f_name" th:field="*{f_name}" placeholder="Ingrese su nombre">
+      <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Ingrese su nombre">
     </div>
     <div class="form-group">
       <label for="l_name">Apellidos:</label>
-      <input type="text" class="form-control" id="l_name" th:field="*{l_name}" placeholder="Ingrese sus apellidos">
+      <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Ingrese sus apellidos">
     </div>
     <div class="form-group">
       <label for="username">Nombre de usuario:</label>
@@ -38,7 +38,7 @@
       <input type="text" class="form-control" id="age" th:field="*{age}" placeholder="Ingrese su edad">
     </div>
     <div class="form-group">
-      <label for="weight">Móvil:</label>
+      <label for="weight">Peso:</label>
       <input type="text" class="form-control" id="weight" th:field="*{weight}" placeholder="Ingrese su peso (hasta dos decimales)">
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />

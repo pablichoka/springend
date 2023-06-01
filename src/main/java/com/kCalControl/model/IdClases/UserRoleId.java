@@ -8,9 +8,15 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class UserRoleId implements Serializable {
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
     private UserDB userDB;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_name")
     private Role role;
 
     public UserDB getUserDB() {
