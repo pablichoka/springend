@@ -4,6 +4,8 @@ import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequestMapping("/userActions")
 public class UserController {
 
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -58,14 +61,16 @@ public class UserController {
         UserDB userDB = userRepository.findById(userDTO.getId()).get();
         String encPass = bCryptPasswordEncoder.encode(userDTO.getPassword());
 
-        userDB.setEmail(userDTO.getEmail() != null ? userDTO.getEmail() : userDB.getEmail());
-        userDB.setMobile(userDTO.getMobile() != null ? userDTO.getMobile() : userDB.getMobile());
+        userDB.setEmail(userDTO.getEmail() != "" ? userDTO.getEmail() : userDB.getEmail());
+        userDB.setMobile(userDTO.getMobile() != "" ? userDTO.getMobile() : userDB.getMobile());
         userDB.setAge(userDTO.getAge() != null ? userDTO.getAge() : userDB.getAge());
         userDB.setWeight(userDTO.getWeight() != null ? userDTO.getWeight() : userDB.getWeight());
-        userDB.setPassword(userDTO.getPassword() != null ? encPass : userDB.getPassword());
+        userDB.setPassword(userDTO.getPassword() != "" ? encPass : userDB.getPassword());
+
+        logger.debug("El usuario a actualizar es: " + userDB.toString());
 
         userRepository.save(userDB);
-        listUser(model);
+//        listUser(model);
         return "/userActions/listUser";
     }
 

@@ -8,11 +8,19 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_role")
-@IdClass(UserRoleId.class)
 public class UserRole {
 
     @EmbeddedId
     private UserRoleId id;
+
+    public UserRole() {
+        super();
+    }
+
+    public UserRole(UserRoleId id) {
+        super();
+        this.id = id;
+    }
 
     public UserRoleId getId() {
         return id;
@@ -28,8 +36,8 @@ public class UserRole {
     }
 
     @Transient
-    public Role getRole() {
-        return getId().getRole();
+    public String getRole() {
+        return getId().getRole().getRole();
     }
 
     @Override

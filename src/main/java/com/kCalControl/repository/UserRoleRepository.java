@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface UserRoleRepository extends CrudRepository<UserRole, UserRoleId> {
-    Optional<UserRole> findByUserDB(UserDB userDB);
+    Optional<UserRole> findById_UserDB_Id(Integer userDBId);
 }

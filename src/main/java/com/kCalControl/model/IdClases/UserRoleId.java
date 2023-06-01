@@ -19,6 +19,14 @@ public class UserRoleId implements Serializable {
     @JoinColumn(name = "role_name")
     private Role role;
 
+    public UserRoleId() {
+    }
+
+    public UserRoleId(UserDB userDB, Role role) {
+        this.userDB = userDB;
+        this.role = role;
+    }
+
     public UserDB getUserDB() {
         return userDB;
     }

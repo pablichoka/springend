@@ -63,13 +63,15 @@ public class UserDB {
     public UserDB() {
     }
 
-    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password) {
+    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password, Integer age, Double weight) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobile = mobile;
         this.email = email;
         this.password = password;
+        this.age = age;
+        this.weight = weight;
     }
 
     public UserDB getCreationPerson() {
