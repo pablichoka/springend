@@ -13,14 +13,14 @@ public class Role {
 
     @Id
     @Column(name = "role_name", length = 20)
-    private String role;
+    private String name;
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -28,18 +28,18 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role1 = (Role) o;
-        return Objects.equals(role, role1.role);
+        return Objects.equals(name, role1.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(role);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
         return "Role{" +
-                "role='" + role + '\'' +
+                "role='" + name + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,6 @@ package com.kCalControl.model;
 
 import com.kCalControl.model.IdClases.UserRoleId;
 import jakarta.persistence.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -14,11 +13,9 @@ public class UserRole {
     private UserRoleId id;
 
     public UserRole() {
-        super();
     }
 
     public UserRole(UserRoleId id) {
-        super();
         this.id = id;
     }
 
@@ -37,7 +34,7 @@ public class UserRole {
 
     @Transient
     public String getRole() {
-        return getId().getRole().getRole();
+        return getId().getRole().getName();
     }
 
     @Override
