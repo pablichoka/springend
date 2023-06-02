@@ -72,8 +72,7 @@ public class UserController {
         userDB.setModificationDate(LocalDateTime.now());
 
         userRepository.save(userDB);
-//        listUser(model);
-        return "/userActions/listUser";
+        return "redirect:/userActions/listUser";
     }
 
 }
