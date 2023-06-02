@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -56,18 +58,18 @@ public class UserController {
     }
 
     @PostMapping("/updateUserData")
-    public String updateUserData(@ModelAttribute("user") UserDTO userDTO, Model model){
+    public String updateUserData(@ModelAttribute("user") UserDTO userDTO, @RequestParam("id") Integer id, Model model, Principal principal){
 
-        UserDB userDB = userRepository.findById(userDTO.getId()).get();
-        String encPass = bCryptPasswordEncoder.encode(userDTO.getPassword());
+        UserDB userDB = userRepository.findById(id).get();
+        //Empty fields from the form are: String -> ""; Int, Double,...-> null
+        if(userDTO.getPassword() != ""){ userDB.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword())); }
+        if(userDTO.getEmail() != ""){ userDB.setEmail(userDTO.getEmail()); }
+        if(userDTO.getMobile() != ""){ userDB.setMobile(userDTO.getMobile()); }
+        if(userDTO.getAge() != null){ userDB.setAge(userDTO.getAge()); }
+        if(userDTO.getWeight() != null){ userDB.setWeight(userDTO.getWeight()); }
 
-        userDB.setEmail(userDTO.getEmail() != "" ? userDTO.getEmail() : userDB.getEmail());
-        userDB.setMobile(userDTO.getMobile() != "" ? userDTO.getMobile() : userDB.getMobile());
-        userDB.setAge(userDTO.getAge() != null ? userDTO.getAge() : userDB.getAge());
-        userDB.setWeight(userDTO.getWeight() != null ? userDTO.getWeight() : userDB.getWeight());
-        userDB.setPassword(userDTO.getPassword() != "" ? encPass : userDB.getPassword());
-
-        logger.debug("El usuario a actualizar es: " + userDB.toString());
+        userDB.setModificationPerson(userRepository.findByUsername(principal.getName()).get());
+        userDB.setModificationDate(LocalDateTime.now());
 
         userRepository.save(userDB);
 //        listUser(model);

@@ -90,6 +90,14 @@ public class UserDB {
         return getAssets().getModificationDate();
     }
 
+    public void setModificationPerson(UserDB modificationPerson) {
+        getAssets().setModificationPerson(modificationPerson);
+    }
+
+    public void setModificationDate(LocalDateTime modificationDate) {
+        getAssets().setModificationDate(modificationDate);
+    }
+
     public Integer getId() {
         return id;
     }
