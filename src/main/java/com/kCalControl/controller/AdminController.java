@@ -2,53 +2,70 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
+import com.kCalControl.model.IdClases.UserRoleId;
 import com.kCalControl.model.UserDB;
+import com.kCalControl.model.UserRole;
+import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserRoleRepository;
+import jakarta.annotation.security.RolesAllowed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Controller
+@RolesAllowed("ADMIN")
+@RequestMapping("/adminActions")
 public class AdminController {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
-    @GetMapping("/newUser/signUpForm")
+    private final static Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+    @GetMapping("/signUpForm")
     private String newUser(Model model){
         model.addAttribute("user", new UserDTO());
-        return "actions/signUpForm";
+        return "adminActions/signUpForm";
     }
 
     @PostMapping("/addUser")
-    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, Principal principal){
+    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal){
 
         String encPass = passwordEncoder.encode(userDTO.getPassword());
-        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getF_name(),userDTO.getL_name(),userDTO.getMobile(), userDTO.getEmail(), encPass);
+        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getFirstName(),userDTO.getLastName(),userDTO.getMobile(), userDTO.getEmail(), encPass, userDTO.getAge(), userDTO.getWeight());
         userDB.setPasswordDate(LocalDateTime.now());
 
-        Optional<UserDB> optionalUserDB = userRepository.findByFirstName(principal.getName());
+        UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
 
         Assets assets = new Assets();
 
         assets.setCreationDate(LocalDateTime.now());
         assets.setModificationDate(LocalDateTime.now());
-        assets.setCreationPerson(optionalUserDB.get());
-        assets.setModificationPerson(optionalUserDB.get());
+        assets.setCreationPerson(creationUserDB);
+        assets.setModificationPerson(creationUserDB);
 
         userDB.setAssets(assets);
 
+        UserRoleId userRoleId = new UserRoleId(userDB,roleRepository.findById(role).get());
+        UserRole userRole = new UserRole(userRoleId);
+
         userRepository.save(userDB);
+        userRoleRepository.save(userRole);
+
 
         return "home";
     }

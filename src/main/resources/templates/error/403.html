@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+</head>
+<body>
+<h1>Error 403: Acceso denegado</h1>
+<p>Se denegó el acceso a esta página.</p>
+<p>Error: <span th:text="${error}"></span></p>
+<button onclick="goBack()">Go back</button>
+
+<script>
+        function goBack() {
+            window.history.back();
+        }
+
+</script>
+</body>
+</html>

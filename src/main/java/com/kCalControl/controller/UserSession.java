@@ -1,11 +1,12 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.model.UserDB;
+import com.kCalControl.model.UserRole;
 import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,8 @@ public class UserSession implements UserDetailsService {
     private final static Logger logger = LoggerFactory.getLogger(UserSession.class);
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -28,7 +31,10 @@ public class UserSession implements UserDetailsService {
         }
         UserDB userDB = userOptional.get();
 
-        UserDetails user = User.builder().username(userDB.getFirstName()).password(userDB.getPassword()).roles("ADMIN")
+        Optional<UserRole> userRole = userRoleRepository.findById_UserDB_Id(userDB.getId());
+
+
+        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userRole.get().getRole())
                 .build();
         logger.debug("User authenticated: {}", user);
         return user;
