@@ -7,5 +7,13 @@
 <body>
 <h1>Error del servidor</h1>
 <p>Se produjo un error en el servidor.</p>
+<p>Error: <span th:text="${error}"></span></p>
+<button onclick="goBack()">Go back</button>
+
+<script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>

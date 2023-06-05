@@ -7,5 +7,14 @@
 <body>
 <h1>Error de redirección</h1>
 <p>Se produjo un error de redirección.</p>
+<p>Error: <span th:text="${error}"></span></p>
+<button onclick="goBack()">Go back</button>
+
+<script>
+        function goBack() {
+            window.history.back();
+        }
+
+</script>
 </body>
 </html>
