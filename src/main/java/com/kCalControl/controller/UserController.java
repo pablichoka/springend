@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUserData")
-    public String updateUserData(@ModelAttribute("user") UserDTO userDTO, @RequestParam("id") Integer id, Model model, Principal principal){
+    public String updateUserData(@ModelAttribute("user") UserDTO userDTO, @RequestParam("id") Integer id, Principal principal){
 
         UserDB userDB = userRepository.findById(id).get();
         //Empty fields from the form are: String -> ""; Int, Double,...-> null

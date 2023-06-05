@@ -8,12 +8,12 @@ import java.util.Objects;
 @Embeddable
 public class Assets {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creation_person")
     private UserDB creationPerson;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "modification_person")
     private UserDB modificationPerson;
     @Column(name = "modification_date")
