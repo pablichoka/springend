@@ -53,7 +53,7 @@ public class AdminController {
         List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
         model.addAttribute("users", userDTOList);
 
-        return "userActions/listUser";
+        return "adminActions/listUser";
     }
 
     @PostMapping("/addUser")
@@ -91,7 +91,7 @@ public class AdminController {
             Optional<UserRole> optionalUserRole = userRoleRepository.findById_UserDB_Id(optionalUserDB.get().getId());
             userRoleRepository.delete(optionalUserRole.get());
             userRepository.delete(optionalUserDB.get());
-            return "redirect:/userActions/listUser";
+            return "redirect:/adminActions/listUser";
         }else{
             model.addAttribute("error", "This user does not exist.");
             return "error/404";
