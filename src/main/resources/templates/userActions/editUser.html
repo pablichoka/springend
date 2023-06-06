@@ -11,18 +11,6 @@
   <h1>Update your data</h1>
   <p>Insert only the data you want to modify, unfilled fields will not change</p>
   <form th:object="${user}" method="post" action="/userActions/updateUserData">
-<!--     <div class="form-group"> -->
-<!--       <label for="firstName">Nombre:</label> -->
-<!--       <input th:value="${user2edit.firstName}" type="text" class="form-control" id="firstName" th:field="*{firstName}"> -->
-<!--     </div> -->
-<!--     <div class="form-group"> -->
-<!--       <label for="lastName">Apellidos:</label> -->
-<!--       <input type="text" class="form-control" id="lastName" th:field="*{lastName}" th:placeholder="${user2edit.lastName}"> -->
-<!--     </div> -->
-<!--     <div class="form-group"> -->
-<!--       <label for="username">Nombre de usuario:</label> -->
-<!--       <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="${user2edit.username}"> -->
-<!--     </div> -->
     <input type="hidden" id="id" th:placeholder="${id}" th:field="*{id}">
     <div class="form-group">
       <label for="email">Correo Electrónico:</label>
@@ -46,8 +34,15 @@
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <button type="submit" class="btn btn-primary">Update data</button>
+    <button onclick="goBack()">Go back</button>
   </form>
 </div>
+
+<script>
+        function goBack() {
+            window.history.back();
+        }
+</script>
 
 <!-- Incluir los archivos JavaScript de Bootstrap -->
 <script th:src="@{../../js/editUser.js}"></script>
