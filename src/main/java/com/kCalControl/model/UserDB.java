@@ -26,7 +26,7 @@ public class UserDB {
     @Column(name = "mobile", length = 12)
     private String mobile;
 
-    @Column(name = "email", length = 80)
+    @Column(name = "email", length = 80, unique = true)
     private String email;
 
     @Column(name = "password")

@@ -38,3 +38,23 @@ footer {
   padding: 10px;
   text-align: center;
 }
+
+h1{
+  padding-bottom: 30px;
+}
+
+#profile{
+  float: right;
+  padding-inline-end: 15px;
+  border: 2px;
+  border-radius: 10px;
+  border-color: white;
+  padding: 15px;
+  color: white;
+}
+
+#profile:hover{
+  border: 5px;
+  transition: background-color 0.4s ease;
+  background-color: gray;
+}

@@ -1,15 +1,35 @@
-function fillTextFields(){
+let show = 0;
 
-    // let email = document.getElementById('email');
-    // let mobile = document.getElementById('mobile');
-    // let age = document.getElementById('age');
-    // let weight = document.getElementById('weight');
-    // let pass = document.getElementById('password');
-    let id = document.getElementById('id');
-
-    // email.value = email.placeholder;
-    // mobile.value = mobile.placeholder;
-    // age.value = age.placeholder;
-    // weight.value = weight.placeholder;
-    id.value = id.placeholder;
+function showAdminTools(){
+    if(show == 0){
+        let delUser = document.getElementById("delTool");
+            delUser.style.display = "block";
+            delUser.style.position = "relative";
+            let posicion = -300;
+        let intervalo = setInterval(frame, 5);
+        function frame() {
+            if (posicion == 0) {
+                clearInterval(intervalo);
+            } else {
+                posicion++;
+                delUser.style.left = posicion + 'px';
+            }
+        }
+        show = 1;
+    }else{
+        let delUser = document.getElementById("delTool");
+            delUser.style.position = "relative";
+            let posicion = 0;
+        let intervalo = setInterval(frame, 5);
+        function frame() {
+            if (posicion == -400) {
+                clearInterval(intervalo);
+            } else {
+                posicion--;
+                delUser.style.left = posicion + 'px';
+            }
+        }
+        show = 0;
+        
+    }
 }
