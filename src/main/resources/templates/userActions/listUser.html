@@ -18,10 +18,12 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <span id="brand" class="navbar-brand">Users</span>
-<!--        <span ><button class="btn btn-primary" onclick="showAdminTools()" id="toggleAdmin">Toogle admin actions</button></span>-->
+       <span ><button class="btn btn-primary" onclick="showAdminTools()" id="toggleAdmin">Admin actions</button></span>
         <div class="navbar-nav" id="navbarText">
             <span class="nav-item">
-                <a id="return" href="/home">Go home</a>
+                <a id="return" href="/home">
+                <button class="btn btn-primary">Go home</button>
+                </a>
             </span>
         </div>
     </nav>
@@ -44,17 +46,18 @@
                 <td th:text="${user.mobile}"></td>
                 <td th:text="${user.age}"></td>
                 <td th:text="${user.weight}"></td>
-                <td><a th:href="@{/userActions/editUser/{id}(id=${user.id})}">Edit</td>
-<!--                 <button th:data-row="${user.id}" onclick="editUser(this)">Edit</button> -->
+                <td class="editUser"><a th:href="@{/userActions/editUser/{id}(id=${user.id})}">
+                    <button class="btn btn-secondary">Edit</button>
+                </a></td>
             </tr>
         </tbody>
     </table>
-<!--        <form id="delTool" method="post" action="/users/deleteUser">-->
-<!--            User to delete: <input onclick="clearText(text2Del)" type="text" name="username" value="Enter username..." id="text2Del">-->
-<!--            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
-<!--            <input type="submit" value="Delete">-->
-<!--        </form>-->
-<!--     <script th:src="@{../js/editUser.js}"></script> -->
+       <form id="delTool" method="post" action="/adminActions/deleteUser">
+           User to delete: <input type="text" name="email" placeholder="Enter email..." id="text2Del">
+           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+           <input type="submit" class="btn btn-secondary" value="Delete">
+       </form>
+    <script th:src="@{../js/editUser.js}"></script>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </body>
 </html>

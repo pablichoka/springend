@@ -4,3 +4,31 @@ a{
     color: black;
     text-decoration: none;
 }
+
+#delTool{
+    margin-left: 10px;
+    margin-top: 10px;
+    left: -300px;
+    display: none;
+}
+
+.editUser{    
+    color: lightgrey;
+    border: 1px;
+    border-left: 0px;
+    border-style: solid;
+    border-right: 0px;
+}
+
+#brand{
+    margin-left: 20px;
+}
+
+#toggleAdmin:hover{
+    border: 10px;
+    border-color: white;
+}
+
+td{
+    padding-top: 12px;
+}

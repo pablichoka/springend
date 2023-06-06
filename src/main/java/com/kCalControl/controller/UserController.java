@@ -32,18 +32,6 @@ public class UserController {
     @Autowired
     UserRoleRepository userRoleRepository;
 
-    @GetMapping("/listUser")
-    private String listUser(Model model) {
-
-        UserDTO userDTO = new UserDTO();
-
-        List<UserDB> userDBList = (List<UserDB>) userRepository.findAll();
-        List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
-        model.addAttribute("users", userDTOList);
-
-        return "userActions/listUser";
-    }
-
     @GetMapping("/editUser/{id}")
     public String editUser(@PathVariable("id") Integer id, Model model, Principal principal) {
 

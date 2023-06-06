@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RolesAllowed("ADMIN")
@@ -40,6 +42,18 @@ public class AdminController {
     private String newUser(Model model){
         model.addAttribute("user", new UserDTO());
         return "adminActions/signUpForm";
+    }
+
+    @GetMapping("/listUser")
+    private String listUser(Model model) {
+
+        UserDTO userDTO = new UserDTO();
+
+        List<UserDB> userDBList = (List<UserDB>) userRepository.findAll();
+        List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
+        model.addAttribute("users", userDTOList);
+
+        return "userActions/listUser";
     }
 
     @PostMapping("/addUser")
@@ -66,8 +80,21 @@ public class AdminController {
         userRepository.save(userDB);
         userRoleRepository.save(userRole);
 
-
         return "home";
     }
 
+    @PostMapping("/deleteUser")
+    private String deleteUser(@RequestParam("email") String email, Model model){
+
+        Optional<UserDB> optionalUserDB = userRepository.findByEmail(email);
+        if(optionalUserDB.isPresent()){
+            Optional<UserRole> optionalUserRole = userRoleRepository.findById_UserDB_Id(optionalUserDB.get().getId());
+            userRoleRepository.delete(optionalUserRole.get());
+            userRepository.delete(optionalUserDB.get());
+            return "redirect:/userActions/listUser";
+        }else{
+            model.addAttribute("error", "This user does not exist.");
+            return "error/404";
+        }
+    }
 }
