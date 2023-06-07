@@ -25,7 +25,7 @@ import java.util.Optional;
 @Controller
 @RolesAllowed("ADMIN")
 @RequestMapping("/adminActions")
-public class AdminController {
+public class CRUDController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -36,7 +36,7 @@ public class AdminController {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
-    private final static Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private final static Logger logger = LoggerFactory.getLogger(CRUDController.class);
 
     @GetMapping("/signUpForm")
     private String newUser(Model model){

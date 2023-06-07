@@ -17,7 +17,7 @@ import java.util.Optional;
 
 
 @Controller
-public class MVCController {
+public class ViewsController {
 
     @Autowired
     UserRepository userRepository;
