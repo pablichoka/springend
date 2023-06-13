@@ -2,6 +2,7 @@ package com.kCalControl.model;
 
 import com.kCalControl.dto.UserDTO;
 import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
