@@ -1,56 +1,21 @@
 package com.kCalControl.model;
 
 import com.kCalControl.model.IdClases.UserRoleId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Objects;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Document(collection = "user_role")
 public class UserRole {
 
     @Id
     private UserRoleId id;
 
-    public UserRole() {
-    }
-
-    public UserRole(UserRoleId id) {
-        this.id = id;
-    }
-
-    public UserRoleId getId() {
-        return id;
-    }
-
-    public void setId(UserRoleId id) {
-        this.id = id;
-    }
-
-    public UserDB getUserDB() {
-        return getId().getUserDB();
-    }
-
-    public String getRole() {
-        return getId().getRole().getName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserRole userRole)) return false;
-        return Objects.equals(id, userRole.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "UserRole{" +
-                "id=" + id +
-                '}';
-    }
 }
