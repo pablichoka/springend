@@ -1,48 +1,27 @@
 package com.kCalControl.model;
 
 import com.kCalControl.dto.UserDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-@Table(name = "users")
+@Document(collection = "users")
 public class UserDB {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
     private String username;
-    @Column(name = "f_name", length = 20)
     private String firstName;
-
-    @Column(name = "l_name", length = 40)
     private String lastName;
-
-    @Column(name = "mobile", length = 12)
     private String mobile;
-
-    @Column(name = "email", length = 80, unique = true)
     private String email;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "password_date")
     private LocalDateTime passwordDate;
-
-    @Column(name = "age")
     private Integer age;
-
-    @Column(name = "weight")
     private Double weight;
-
-    @Embedded
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {

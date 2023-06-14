@@ -1,15 +1,16 @@
 package com.kCalControl.model;
 
 import com.kCalControl.model.IdClases.UserRoleId;
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "user_role")
+@Document(collection = "user_role")
 public class UserRole {
 
-    @EmbeddedId
+    @Id
     private UserRoleId id;
 
     public UserRole() {

@@ -1,18 +1,14 @@
 package com.kCalControl.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "roles")
+@Document(collection = "roles")
 public class Role {
 
     @Id
-    @Column(name = "role_name", length = 20)
     private String name;
 
     public String getName() {

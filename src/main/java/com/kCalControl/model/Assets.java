@@ -1,22 +1,13 @@
 package com.kCalControl.model;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Embeddable
 public class Assets {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "creation_person")
     private UserDB creationPerson;
-    @Column(name = "creation_date")
     private LocalDateTime creationDate;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "modification_person")
     private UserDB modificationPerson;
-    @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
     public UserDB getCreationPerson() {

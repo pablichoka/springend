@@ -2,21 +2,19 @@ package com.kCalControl.model.IdClases;
 
 import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.model.UserRole;
-import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
+@Document(collection = "user_role")
 public class UserRoleId implements Serializable {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @Field("user")
     private UserDB userDB;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_name")
+    @Field("role")
     private Role role;
 
     public UserRoleId() {
