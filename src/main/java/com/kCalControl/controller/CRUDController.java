@@ -83,18 +83,18 @@ public class CRUDController {
         return "home";
     }
 
-    @PostMapping("/deleteUser")
-    private String deleteUser(@RequestParam("email") String email, Model model){
-
-        Optional<UserDB> optionalUserDB = userRepository.findByEmail(email);
-        if(optionalUserDB.isPresent()){
-            Optional<UserRole> optionalUserRole = userRoleRepository.findById_UserDB_Id(optionalUserDB.get().getId());
-            userRoleRepository.delete(optionalUserRole.get());
-            userRepository.delete(optionalUserDB.get());
-            return "redirect:/adminActions/listUser";
-        }else{
-            model.addAttribute("error", "This user does not exist.");
-            return "error/404";
-        }
-    }
+//    @PostMapping("/deleteUser")
+//    private String deleteUser(@RequestParam("email") String email, Model model){
+//
+//        Optional<UserDB> optionalUserDB = userRepository.findByEmail(email);
+//        if(optionalUserDB.isPresent()){
+//            Optional<UserRole> optionalUserRole = userRoleRepository.findById_UserDB_Id(optionalUserDB.get().getId());
+//            userRoleRepository.delete(optionalUserRole.get());
+//            userRepository.delete(optionalUserDB.get());
+//            return "redirect:/adminActions/listUser";
+//        }else{
+//            model.addAttribute("error", "This user does not exist.");
+//            return "error/404";
+//        }
+//    }
 }

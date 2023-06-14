@@ -1,8 +1,10 @@
 package com.kCalControl.model;
 
 import com.kCalControl.dto.UserDTO;
-import jakarta.persistence.Id;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,7 +13,7 @@ import java.util.Objects;
 public class UserDB {
 
     @Id
-    private Integer id;
+    private ObjectId id;
 
     private String username;
     private String firstName;
@@ -22,6 +24,7 @@ public class UserDB {
     private LocalDateTime passwordDate;
     private Integer age;
     private Double weight;
+    @Field("assets")
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {
@@ -78,11 +81,11 @@ public class UserDB {
         getAssets().setModificationDate(modificationDate);
     }
 
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

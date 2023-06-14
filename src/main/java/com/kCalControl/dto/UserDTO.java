@@ -1,10 +1,12 @@
 package com.kCalControl.dto;
 
+import org.bson.types.ObjectId;
+
 import java.util.Objects;
 
 public class UserDTO {
 
-    private Integer id;
+    private ObjectId id;
     private String username;
     private String firstName;
     private String lastName;
@@ -14,11 +16,11 @@ public class UserDTO {
     private Integer age;
     private Double weight;
 
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

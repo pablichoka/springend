@@ -1,8 +1,7 @@
 package com.kCalControl.model;
 
 import com.kCalControl.model.IdClases.UserRoleId;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -28,12 +27,10 @@ public class UserRole {
         this.id = id;
     }
 
-    @Transient
     public UserDB getUserDB() {
         return getId().getUserDB();
     }
 
-    @Transient
     public String getRole() {
         return getId().getRole().getName();
     }
