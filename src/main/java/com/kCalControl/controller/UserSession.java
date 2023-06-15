@@ -31,10 +31,10 @@ public class UserSession implements UserDetailsService {
         }
         UserDB userDB = userOptional.get();
 
-//        Optional<UserRole> userRole = userRoleRepository.findById_UserDB_Id(userDB.getId());
+        Optional<UserRole> userRole = userRoleRepository.findByUserDB(userDB);
 
 
-        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles("ADMIN")
+        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userRole.get().getRole().getId())
                 .build();
         logger.debug("User authenticated: {}", user);
         return user;

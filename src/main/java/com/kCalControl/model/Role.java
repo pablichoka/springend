@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Objects;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +15,6 @@ import java.util.Objects;
 public class Role {
 
     @Id
-    private String name;
+    private String id;
 
 }

@@ -2,12 +2,10 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
-import com.kCalControl.model.IdClases.UserRoleId;
+import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.model.UserRole;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
-import com.kCalControl.repository.UserRoleRepository;
 import jakarta.annotation.security.RolesAllowed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +17,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RolesAllowed("ADMIN")
 @RequestMapping("/adminActions")
 public class CRUDController {
+
+    private final static List<String> ROLE_ADMIN = new ArrayList<>("ADMIN", "USER");
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,8 +33,6 @@ public class CRUDController {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private UserRoleRepository userRoleRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(CRUDController.class);
 
@@ -60,8 +58,11 @@ public class CRUDController {
     private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal){
 
         String encPass = passwordEncoder.encode(userDTO.getPassword());
-        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getFirstName(),userDTO.getLastName(),userDTO.getMobile(), userDTO.getEmail(), encPass, userDTO.getAge(), userDTO.getWeight());
+        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getFirstName(),userDTO.getLastName(),userDTO.getMobile(), userDTO.getEmail(), encPass);
         userDB.setPasswordDate(LocalDateTime.now());
+
+        userDB.setWeight(userDTO.getWeight());
+        userDB.setAge(userDTO.getAge());
 
         UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
 
@@ -74,11 +75,12 @@ public class CRUDController {
 
         userDB.setAssets(assets);
 
-        UserRoleId userRoleId = new UserRoleId(userDB,roleRepository.findById(role).get());
-        UserRole userRole = new UserRole(userRoleId);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
+
+        userDB.setRoles(roles);
 
         userRepository.save(userDB);
-        userRoleRepository.save(userRole);
 
         return "home";
     }

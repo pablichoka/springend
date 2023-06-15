@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,6 +33,10 @@ public class UserDB {
     private LocalDateTime passwordDate;
     private Integer age;
     private Double weight;
+
+    @DBRef
+    private List<Role> roles;
+
     @Field("assets")
     private Assets assets;
 
@@ -44,21 +50,20 @@ public class UserDB {
         userDTO.setLastName(this.getLastName());
         userDTO.setEmail(this.getEmail());
         userDTO.setMobile(this.getMobile());
+        userDTO.setRoles(this.getRoles());
         userDTO.setAge(this.getAge());
         userDTO.setWeight(this.getWeight());
 
         return userDTO;
     }
 
-    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password, Integer age, Double weight) {
+    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobile = mobile;
         this.email = email;
         this.password = password;
-        this.age = age;
-        this.weight = weight;
     }
 
 }
