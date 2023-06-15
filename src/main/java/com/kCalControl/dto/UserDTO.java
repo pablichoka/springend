@@ -26,6 +26,6 @@ public class UserDTO {
     private Integer age;
     private Double weight;
     private Assets assets;
-    private List<Role> roles;
+    private Role role;
 
 }

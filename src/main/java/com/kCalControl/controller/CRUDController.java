@@ -2,7 +2,6 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
-import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
@@ -17,15 +16,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RolesAllowed("ADMIN")
 @RequestMapping("/adminActions")
 public class CRUDController {
-
-    private final static List<String> ROLE_ADMIN = new ArrayList<>("ADMIN", "USER");
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -74,11 +70,8 @@ public class CRUDController {
         assets.setModificationPerson(creationUserDB);
 
         userDB.setAssets(assets);
+        userDB.setRole(roleRepository.findById(role).get());
 
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-
-        userDB.setRoles(roles);
 
         userRepository.save(userDB);
 
