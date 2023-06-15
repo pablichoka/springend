@@ -41,6 +41,11 @@ public class ViewsController {
         return "home";
     }
 
+    @GetMapping("/sidebar")
+    public String loadSidebar(){
+        return "/sidebar";
+    }
+
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication != null) {
