@@ -21,6 +21,7 @@ public class UserSession implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        logger.debug("El nombre conejo es: {}", name);
         Optional<UserDB> userOptional = userRepository.findByUsername(name);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("");

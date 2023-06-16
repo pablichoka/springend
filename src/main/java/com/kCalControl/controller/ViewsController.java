@@ -1,10 +1,8 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.model.UserDB;
-import com.kCalControl.model.UserRole;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
-import com.kCalControl.repository.UserRoleRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +26,8 @@ public class ViewsController {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    UserRoleRepository userRoleRepository;
-
     @GetMapping("/")
     private String index() {
-        UserRole userRole = new UserRole(userRepository.findByUsername("fulano").get(), roleRepository.findById("ADMIN").get());
-        userRoleRepository.save(userRole);
         return "index";
     }
 
