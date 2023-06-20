@@ -21,21 +21,28 @@ import java.time.LocalDateTime;
     private ObjectId id;
     @Field("userDB.username")
     private String username;
+    @Field("userDB.firstName")
     private String firstName;
+    @Field("userDB.lastName")
     private String lastName;
+    @Field("userDB.mobile")
     private String mobile;
+    @Field("userDB.email")
     private String email;
     @Field("userDB.password")
     private String password;
+    @Field("userDB.passwordDate")
     private LocalDateTime passwordDate;
+    @Field("userDB.age")
     private Integer age;
+    @Field("userDB.weight")
     private Double weight;
 
     @DBRef
     @Field("userDB.role")
     private Role role;
 
-    @Field("userDB.assets")
+    @Field("assets")
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {
