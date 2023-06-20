@@ -5,6 +5,8 @@ import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,12 +20,14 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Controller
-@RolesAllowed({"ADMIN", "USER"})
+@RolesAllowed({"USER","ADMIN"})
 @RequestMapping("/userActions")
 public class UserActionsController {
 
     @Autowired
     UserRepository userRepository;
+
+    private final static Logger logger = LoggerFactory.getLogger(UserActionsController.class);
 
     @GetMapping("/editUser/{id}")
     private String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
@@ -33,9 +37,10 @@ public class UserActionsController {
             throw new UsernameNotFoundException("Cannot retrieve data from this user");
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug("El id lokolo es: " + id);
+        logger.debug("El id lokole es: " + userRepository.findByUsername(principal.getName()).get().getId());
 
-        if (userRepository.findByUsername(authentication.getName()).get().getId() != id) {
+        if (!userRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
 //            if (!authentication.getAuthorities().contains("ROLE_ADMIN")) {
                 model.addAttribute("error", "You do not have permission to edit this user.");
                 return "error/403";
@@ -48,7 +53,7 @@ public class UserActionsController {
 
         model.addAttribute("user2edit", userDTO);
         model.addAttribute("user", userDT0mold);
-        return "userActions/editUser";
+        return "userAdminActions/editUser";
     }
 
 //    @PostMapping("/updateUserData")

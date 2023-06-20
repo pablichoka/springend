@@ -1,8 +1,10 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,13 @@ public class ViewsController {
         }
 
         return "home";
+    }
+
+    @RolesAllowed("ADMIN")
+    @GetMapping("/forms/signUpForm")
+    private String newUser(Model model){
+        model.addAttribute("user", new UserDTO());
+        return "forms/signUpForm";
     }
 
     @PostMapping("/logout")

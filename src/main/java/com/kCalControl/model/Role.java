@@ -19,6 +19,6 @@ public class Role {
 
     @Id
     private ObjectId id;
-    @Field("role_name")
+    @Field("roleName")
     private String roleName;
 }

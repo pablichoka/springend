@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @RolesAllowed("ADMIN")
 @RequestMapping("/adminActions")
-public class CRUDController {
+public class AdminActionsController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,13 +30,7 @@ public class CRUDController {
     @Autowired
     private RoleRepository roleRepository;
 
-    private final static Logger logger = LoggerFactory.getLogger(CRUDController.class);
-
-    @GetMapping("/signUpForm")
-    private String newUser(Model model){
-        model.addAttribute("user", new UserDTO());
-        return "adminActions/signUpForm";
-    }
+    private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
     @GetMapping("/listUser")
     private String listUser(Model model) {
@@ -70,7 +64,7 @@ public class CRUDController {
         assets.setModificationPerson(creationUserDB);
 
         userDB.setAssets(assets);
-        userDB.setRole(roleRepository.findById(role).get());
+        userDB.setRole(roleRepository.findByRoleName(role).get());
 
 
         userRepository.save(userDB);
