@@ -24,12 +24,12 @@ public class UserSession implements UserDetailsService {
         logger.debug("El nombre conejo es: {}", name);
         Optional<UserDB> userOptional = userRepository.findByUsername(name);
         if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("");
+            throw new UsernameNotFoundException("User does not exist");
         }
         UserDB userDB = userOptional.get();
 
 
-        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userDB.getRole().getId())
+        UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userDB.getRole().getRoleName())
                 .build();
         logger.debug("User authenticated: {}", user);
         return user;

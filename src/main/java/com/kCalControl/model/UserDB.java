@@ -1,10 +1,7 @@
 package com.kCalControl.model;
 
 import com.kCalControl.dto.UserDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -18,25 +15,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Document(collection = "users")
-public class UserDB {
+ public class UserDB {
 
     @Id
     private ObjectId id;
-
+    @Field("userDB.username")
     private String username;
     private String firstName;
     private String lastName;
     private String mobile;
     private String email;
+    @Field("userDB.password")
     private String password;
     private LocalDateTime passwordDate;
     private Integer age;
     private Double weight;
 
     @DBRef
+    @Field("userDB.role")
     private Role role;
 
-    @Field("assets")
+    @Field("userDB.assets")
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {
