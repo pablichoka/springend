@@ -42,7 +42,8 @@ import java.time.LocalDateTime;
     @Field("userDB.role")
     private Role role;
 
-    @Field("assets")
+    @DBRef
+    @Field("userDB.assets")
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {
@@ -58,6 +59,7 @@ import java.time.LocalDateTime;
         userDTO.setRole(this.getRole());
         userDTO.setAge(this.getAge());
         userDTO.setWeight(this.getWeight());
+        userDTO.setAssets(this.getAssets());
 
         return userDTO;
     }
@@ -71,4 +73,43 @@ import java.time.LocalDateTime;
         this.password = password;
     }
 
+    public String getRoleName() {
+        return getRole().getRoleName();
+    }
+
+    public void setRoleName(String roleName) {
+        getRole().setRoleName(roleName);
+    }
+
+    public ObjectId getCreationPerson() {
+        return getAssets().getCreationPerson();
+    }
+
+    public LocalDateTime getCreationDate() {
+        return getAssets().getCreationDate();
+    }
+
+    public ObjectId getModificationPerson() {
+        return getAssets().getModificationPerson();
+    }
+
+    public LocalDateTime getModificationDate() {
+        return getAssets().getModificationDate();
+    }
+
+    public void setCreationPerson(ObjectId creationPerson) {
+        getAssets().setCreationPerson(creationPerson);
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        getAssets().setCreationDate(creationDate);
+    }
+
+    public void setModificationPerson(ObjectId modificationPerson) {
+        getAssets().setModificationPerson(modificationPerson);
+    }
+
+    public void setModificationDate(LocalDateTime modificationDate) {
+        getAssets().setModificationDate(modificationDate);
+    }
 }

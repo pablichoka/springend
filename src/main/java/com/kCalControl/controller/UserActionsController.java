@@ -34,18 +34,16 @@ public class UserActionsController {
 
         Optional<UserDB> userDBOptional = userRepository.findById(id);
         if (!userDBOptional.isPresent()) {
-            throw new UsernameNotFoundException("Cannot retrieve data from this user");
+            model.addAttribute("error", "User not found.");
+            return "error/404";
         }
 
-        logger.debug("El id lokolo es: " + id);
-        logger.debug("El id lokole es: " + userRepository.findByUsername(principal.getName()).get().getId());
-
         if (!userRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
-//            if (!authentication.getAuthorities().contains("ROLE_ADMIN")) {
+            if(!userRepository.findByUsername(principal.getName()).get().getRoleName().equals("ADMIN")) {
                 model.addAttribute("error", "You do not have permission to edit this user.");
                 return "error/403";
             }
-//        }
+        }
 
         UserDB userDB = userDBOptional.get();
         UserDTO userDTO = userDB.UserDB2UserDTO();
@@ -56,14 +54,18 @@ public class UserActionsController {
         return "userAdminActions/editUser";
     }
 
-//    @PostMapping("/updateUserData")
-//    private String updateUserData(@RequestParam("user") UserDTO userDTO){
-//        Optional<UserDB> userDBOptional = userRepository.findById(userDTO.getId());
-//        if(!userDBOptional.isPresent()){
-//            throw new UsernameNotFoundException("Cannot update data for this user.");
-//        }
-//        UserDB userDB = userDBOptional.get();
-//        userDB
-//    }
+    @GetMapping("/myProfile")
+    private String myProfile(Model model, Principal principal){
+        Optional<UserDB> userDBOptional = userRepository.findByUsername(principal.getName());
+        if(!userDBOptional.isPresent()){
+            model.addAttribute("error", "User not found.");
+            return "error/404";
+        }
+
+        UserDTO userDTO = userDBOptional.get().UserDB2UserDTO();
+        model.addAttribute("user", userDTO);
+
+        return "userActions/myProfile";
+    }
 
 }

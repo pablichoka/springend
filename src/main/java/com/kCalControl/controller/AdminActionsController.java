@@ -3,6 +3,7 @@ package com.kCalControl.controller;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
+import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
@@ -29,6 +30,9 @@ public class AdminActionsController {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private AssetsRepository assetsRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
@@ -57,19 +61,21 @@ public class AdminActionsController {
         UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
 
         Assets assets = new Assets();
+        LocalDateTime localDateTime = LocalDateTime.now();
 
-        assets.setCreationDate(LocalDateTime.now());
-        assets.setModificationDate(LocalDateTime.now());
-        assets.setCreationPerson(creationUserDB);
-        assets.setModificationPerson(creationUserDB);
+        assets.setCreationDate(localDateTime);
+        assets.setModificationDate(localDateTime);
+        assets.setCreationPerson(creationUserDB.getId());
+        assets.setModificationPerson(creationUserDB.getId());
 
-        userDB.setAssets(assets);
+        assetsRepository.save(assets);
+
+        userDB.setAssets(assetsRepository.findByCreationDate(localDateTime).get());
         userDB.setRole(roleRepository.findByRoleName(role).get());
-
 
         userRepository.save(userDB);
 
-        return "home";
+        return "redirect:/home";
     }
 
 //    @PostMapping("/deleteUser")
