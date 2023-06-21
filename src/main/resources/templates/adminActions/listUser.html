@@ -36,6 +36,10 @@
                 <th scope="col">Mobile</th>
                 <th scope="col">Age</th>
                 <th scope="col">Weight</th>
+                <th scope="col">Creation person</th>
+                <th scope="col">Creation date</th>
+                <th scope="col">Modification person</th>
+                <th scope="col">Modification date</th>
             </tr>
         </thead>
         <tbody>
@@ -46,9 +50,20 @@
                 <td th:text="${user.mobile}"></td>
                 <td th:text="${user.age}"></td>
                 <td th:text="${user.weight}"></td>
-                <td class="editUser"><a th:href="@{/userActions/editUser/{id}(id=${user.id})}">
-                    <button class="btn btn-secondary">Edit</button>
-                </a></td>
+                <td th:text="${user.assets.creationPerson}"></td>
+                <td th:text="${#temporals.format(user.assets.creationDate, 'dd/MM/yyyy')}"></td>
+                <td th:text="${user.assets.modificationPerson}"></td>
+                <td th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
+                <td class="action">
+                    <a th:href="@{/userActions/editUser/{id}(id=${user.id})}">
+                        <button class="btn btn-secondary">Edit</button>
+                    </a>
+                </td>
+                <td class = "action">
+                    <a th:href="@{/adminActions/deleteUser/{id}(id=${user.id})}")>
+                        <button class="btn btn-secondary">Delete</button>
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
