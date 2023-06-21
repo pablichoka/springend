@@ -3,14 +3,12 @@ package com.kCalControl.controller;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +28,6 @@ public class UserActionsController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    AssetsRepository assetsRepository;
-
 
     private final static Logger logger = LoggerFactory.getLogger(UserActionsController.class);
 
@@ -108,7 +102,8 @@ public class UserActionsController {
         assets.setModificationDate(LocalDateTime.now());
         assets.setModificationPerson(modUserDB.getId());
 
-        assetsRepository.save(assets);
+        userDB.setAssets(assets);
+
         userRepository.save(userDB);
 
         return "redirect:/userActions/myProfile";

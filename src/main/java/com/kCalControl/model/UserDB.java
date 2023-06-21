@@ -42,7 +42,6 @@ import java.time.LocalDateTime;
     @Field("userDB.role")
     private Role role;
 
-    @DBRef
     @Field("userDB.assets")
     private Assets assets;
 

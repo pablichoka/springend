@@ -15,11 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "assets")
 public class Assets {
-
-    @Id
-    private ObjectId id;
 
     private ObjectId creationPerson;
     private LocalDateTime creationDate;

@@ -3,7 +3,6 @@ package com.kCalControl.controller;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
@@ -32,9 +31,6 @@ public class AdminActionsController {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private AssetsRepository assetsRepository;
 
     private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
@@ -70,9 +66,7 @@ public class AdminActionsController {
         assets.setCreationPerson(creationUserDB.getId());
         assets.setModificationPerson(creationUserDB.getId());
 
-        assetsRepository.save(assets);
-
-        userDB.setAssets(assetsRepository.findByCreationDate(localDateTime).get());
+        userDB.setAssets(assets);
         userDB.setRole(roleRepository.findByRoleName(role).get());
 
         userRepository.save(userDB);
@@ -88,8 +82,6 @@ public class AdminActionsController {
             model.addAttribute("error", "User not found.");
             return "error/404";
         }
-        UserDB user2del = optionalUserDB.get();
-        assetsRepository.delete(user2del.getAssets());
         userRepository.deleteById(id);
         return "redirect:/adminActions/listUser";
     }
