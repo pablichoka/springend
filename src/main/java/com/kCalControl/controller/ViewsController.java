@@ -1,6 +1,9 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.config.Checker;
+import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.UserDB;
+import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.util.Optional;
 
 
 @Controller
@@ -21,6 +23,10 @@ public class ViewsController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    Checker checker;
 
     @GetMapping("/")
     private String index() {
@@ -32,18 +38,25 @@ public class ViewsController {
         String username = principal.getName();
         model.addAttribute("username", username);
 
-        Optional<UserDB> optionalUserDB = userRepository.findByUsername(principal.getName());
-        if(optionalUserDB.isPresent()){
-            String fullname = optionalUserDB.get().getFirstName() + " "+ optionalUserDB.get().getLastName();
-            model.addAttribute("fullname", fullname);
+        if(checker.checkUserExistsByPrincipal(principal,model)){
+            UserDB userDB = userRepository.findByUsername(principal.getName()).get();
+            String fullName = userDB.getFirstName() + " "+ userDB.getLastName();
+            model.addAttribute("fullName", fullName);
+        }else{
+            return "error/404";
         }
-
         return "home";
     }
 
-    @GetMapping("/sidebar")
-    public String loadSidebar(){
-        return "/sidebar";
+
+    @GetMapping("/adminActions/signUpForm")
+    private String newUser(Principal principal, Model model){
+
+        if(!checker.checkRoleAdminByPrincipal(principal, model)){
+            return "error/403";
+        }
+        model.addAttribute("user", new UserDTO());
+        return "adminActions/signUpForm";
     }
 
     @PostMapping("/logout")
