@@ -1,8 +1,10 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.config.Checker;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
+import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
@@ -31,6 +33,10 @@ public class AdminActionsController {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AssetsRepository assetsRepository;
+    @Autowired
+    private Checker checker;
 
     private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
@@ -55,6 +61,8 @@ public class AdminActionsController {
 
         userDB.setWeight(userDTO.getWeight());
         userDB.setAge(userDTO.getAge());
+        userDB.setHeight(userDTO.getHeight());
+        userDB.setGender(userDTO.getGender());
 
         UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
 
@@ -63,23 +71,23 @@ public class AdminActionsController {
 
         assets.setCreationDate(localDateTime);
         assets.setModificationDate(localDateTime);
-        assets.setCreationPerson(creationUserDB.getId());
-        assets.setModificationPerson(creationUserDB.getId());
+        assets.setCreationPerson(creationUserDB);
+        assets.setModificationPerson(creationUserDB);
 
         userDB.setAssets(assets);
         userDB.setRole(roleRepository.findByRoleName(role).get());
 
+        assetsRepository.save(assets);
         userRepository.save(userDB);
 
         return "redirect:/home";
     }
 
     @GetMapping("/deleteUser/{id}")
-    private String deleteUser(@PathVariable("id") ObjectId id, Model model) {
+    private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
 
         Optional<UserDB> optionalUserDB = userRepository.findById(id);
-        if (!optionalUserDB.isPresent()) {
-            model.addAttribute("error", "User not found.");
+        if (checker.checkUserExistsByPrincipal(principal,model)) {
             return "error/404";
         }
         userRepository.deleteById(id);

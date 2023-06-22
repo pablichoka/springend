@@ -1,8 +1,11 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.config.Checker;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.UserDB;
+import com.kCalControl.repository.AssetsRepository;
+import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import jakarta.annotation.security.RolesAllowed;
 import org.bson.types.ObjectId;
@@ -25,9 +28,14 @@ public class UserActionsController {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    AssetsRepository assetsRepository;
+    @Autowired
+    Checker checker;
 
     private final static Logger logger = LoggerFactory.getLogger(UserActionsController.class);
 
@@ -35,16 +43,16 @@ public class UserActionsController {
     private String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
 
         Optional<UserDB> userDBOptional = userRepository.findById(id);
-        if (!userDBOptional.isPresent()) {
-            model.addAttribute("error", "User not found.");
+
+        if (!checker.checkUserExistsByPrincipal(principal, model)) {
             return "error/404";
         }
 
-        if (!userRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
-            if (!userRepository.findByUsername(principal.getName()).get().getRoleName().equals("ADMIN")) {
-                model.addAttribute("error", "You do not have permission to edit this user.");
+        if (!checker.checkSameUser(principal, id, model)) {
+            if (!checker.checkRoleAdminByPrincipal(principal, model)) {
                 return "error/403";
             }
+
         }
 
         UserDB userDB = userDBOptional.get();
@@ -53,7 +61,7 @@ public class UserActionsController {
 
         model.addAttribute("user2edit", userDTO);
         model.addAttribute("user", userDT0empty);
-        return "userAdminActions/editUser";
+        return "userActions/editUser";
     }
 
     @GetMapping("/myProfile")
@@ -74,10 +82,11 @@ public class UserActionsController {
     private String updateUserData(@ModelAttribute("user") UserDTO userDTO, @PathVariable("id") ObjectId id, Model model, Principal principal) {
         Optional<UserDB> userDBOptional = userRepository.findById(id);
         Optional<UserDB> userDBOptional1 = userRepository.findByUsername(principal.getName());
-        if (!userDBOptional.isPresent() || !userDBOptional1.isPresent()) {
-            model.addAttribute("error", "User not found.");
+
+        if(!checker.checkUserExistsByPrincipal(principal, model) || !checker.checkUserExistsById(id,model)){
             return "error/404";
         }
+
         UserDB modUserDB = userDBOptional1.get();
         UserDB userDB = userDBOptional.get();
         if (!userDTO.getEmail().isBlank()) {
@@ -96,17 +105,28 @@ public class UserActionsController {
         if (userDTO.getWeight() != null) {
             userDB.setWeight(userDTO.getWeight());
         }
+        if (userDTO.getHeight() != null) {
+            userDB.setHeight(userDTO.getHeight());
+        }
+        if (!userDTO.getGender().isBlank()) {
+            userDB.setGender(userDTO.getGender());
+        }
 
         Assets assets = userDB.getAssets();
 
         assets.setModificationDate(LocalDateTime.now());
-        assets.setModificationPerson(modUserDB.getId());
+        assets.setModificationPerson(modUserDB);
 
         userDB.setAssets(assets);
 
+        assetsRepository.save(assets);
         userRepository.save(userDB);
 
-        return "redirect:/userActions/myProfile";
+        if (checker.checkRoleAdminById(modUserDB.getId(), model)) {
+            return "redirect:/adminActions/listUser";
+        } else {
+            return "redirect:/userActions/myProfile";
+        }
     }
 
 }

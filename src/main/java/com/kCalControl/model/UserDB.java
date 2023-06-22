@@ -37,11 +37,16 @@ import java.time.LocalDateTime;
     private Integer age;
     @Field("userDB.weight")
     private Double weight;
+    @Field("userDB.height")
+    private Integer height;
+    @Field("userDB.gender")
+    private String gender;
 
     @DBRef
     @Field("userDB.role")
     private Role role;
 
+    @DBRef
     @Field("userDB.assets")
     private Assets assets;
 
@@ -58,6 +63,8 @@ import java.time.LocalDateTime;
         userDTO.setRole(this.getRole());
         userDTO.setAge(this.getAge());
         userDTO.setWeight(this.getWeight());
+        userDTO.setHeight(this.getHeight());
+        userDTO.setGender(this.getGender());
         userDTO.setAssets(this.getAssets());
 
         return userDTO;
@@ -80,7 +87,7 @@ import java.time.LocalDateTime;
         getRole().setRoleName(roleName);
     }
 
-    public ObjectId getCreationPerson() {
+    public UserDB getCreationPerson() {
         return getAssets().getCreationPerson();
     }
 
@@ -88,7 +95,7 @@ import java.time.LocalDateTime;
         return getAssets().getCreationDate();
     }
 
-    public ObjectId getModificationPerson() {
+    public UserDB getModificationPerson() {
         return getAssets().getModificationPerson();
     }
 
@@ -96,7 +103,7 @@ import java.time.LocalDateTime;
         return getAssets().getModificationDate();
     }
 
-    public void setCreationPerson(ObjectId creationPerson) {
+    public void setCreationPerson(UserDB creationPerson) {
         getAssets().setCreationPerson(creationPerson);
     }
 
@@ -104,7 +111,7 @@ import java.time.LocalDateTime;
         getAssets().setCreationDate(creationDate);
     }
 
-    public void setModificationPerson(ObjectId modificationPerson) {
+    public void setModificationPerson(UserDB modificationPerson) {
         getAssets().setModificationPerson(modificationPerson);
     }
 

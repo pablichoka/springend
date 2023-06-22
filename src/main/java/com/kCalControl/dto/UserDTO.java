@@ -27,5 +27,7 @@ public class UserDTO {
     private Double weight;
     private Assets assets;
     private Role role;
+    private Integer height;
+    private String gender;
 
 }

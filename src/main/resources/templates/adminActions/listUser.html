@@ -35,6 +35,9 @@
                 <th scope="col">Mobile</th>
                 <th scope="col">Age</th>
                 <th scope="col">Weight</th>
+                <th scope="col">Height</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Role</th>
                 <th scope="col">Creation person</th>
                 <th scope="col">Creation date</th>
                 <th scope="col">Modification person</th>
@@ -49,9 +52,12 @@
                 <td th:text="${user.mobile}"></td>
                 <td th:text="${user.age}"></td>
                 <td th:text="${user.weight}"></td>
-                <td th:text="${user.assets.creationPerson}"></td>
+                <td th:text="${user.height}"></td>
+                <td th:text="${user.gender}"></td>
+                <td th:text="${user.role.roleName}"></td>
+                <td th:text="${user.assets.creationPerson.username}"></td>
                 <td th:text="${#temporals.format(user.assets.creationDate, 'dd/MM/yyyy')}"></td>
-                <td th:text="${user.assets.modificationPerson}"></td>
+                <td th:text="${user.assets.modificationPerson.username}"></td>
                 <td th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
                 <td class="action">
                     <a th:href="@{/userActions/editUser/{id}(id=${user.id})}">

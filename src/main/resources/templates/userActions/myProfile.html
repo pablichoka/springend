@@ -27,13 +27,15 @@
                             <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" th:value=${user.mobile} readonly></div>
                             <div class="col-md-12"><label class="labels">Age</label><input type="text" class="form-control" th:value=${user.age} readonly></div>
                             <div class="col-md-12"><label class="labels">Weight</label><input type="text" class="form-control" th:value=${user.weight} readonly></div>
+                            <div class="col-md-12"><label class="labels">Height</label><input type="text" class="form-control" th:value=${user.height} readonly></div>
+                            <div class="col-md-12"><label class="labels">Gender</label><input type="text" class="form-control" th:value=${user.gender} readonly></div>
                             <div class="col-md-12"><label class="labels">Last modification date</label><input type="text" class="form-control" th:value="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}" readonly></div>
                         </div>
                         <div class="mt-5 text-center">
                             <a th:href="@{/userActions/editUser/{id}(id=${user.id})}"><button class="btn btn-primary profile-button" type="button">Edit profile</button></a>
                         </div>
                         <br>
-                        <button class="btn btn-secondary" onclick="goBack()">Go back</button>
+                        <a href="/home"><button class="btn btn-secondary" onclick="goBack()">Go back</button></a>
                     </div>
                 </div>
             </div>
@@ -41,11 +43,6 @@
         </div>
         </div>
     </body>
-<script>
-        function goBack() {
-            window.history.back();
-        }
-</script>
     <script href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </html>
