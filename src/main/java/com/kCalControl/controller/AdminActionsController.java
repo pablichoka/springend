@@ -1,14 +1,14 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.config.Checker;
 import com.kCalControl.dto.UserDTO;
 import com.kCalControl.model.Assets;
-import com.kCalControl.model.IdClases.UserRoleId;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.model.UserRole;
+import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
-import com.kCalControl.repository.UserRoleRepository;
 import jakarta.annotation.security.RolesAllowed;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @Controller
 @RolesAllowed("ADMIN")
 @RequestMapping("/adminActions")
-public class CRUDController {
+public class AdminActionsController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,15 +34,11 @@ public class CRUDController {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private UserRoleRepository userRoleRepository;
+    private AssetsRepository assetsRepository;
+    @Autowired
+    private Checker checker;
 
-    private final static Logger logger = LoggerFactory.getLogger(CRUDController.class);
-
-    @GetMapping("/signUpForm")
-    private String newUser(Model model){
-        model.addAttribute("user", new UserDTO());
-        return "adminActions/signUpForm";
-    }
+    private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
     @GetMapping("/listUser")
     private String listUser(Model model) {
@@ -57,44 +53,44 @@ public class CRUDController {
     }
 
     @PostMapping("/addUser")
-    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal){
+    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal) {
 
         String encPass = passwordEncoder.encode(userDTO.getPassword());
-        UserDB userDB = new UserDB(userDTO.getUsername(),userDTO.getFirstName(),userDTO.getLastName(),userDTO.getMobile(), userDTO.getEmail(), encPass, userDTO.getAge(), userDTO.getWeight());
+        UserDB userDB = new UserDB(userDTO.getUsername(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMobile(), userDTO.getEmail(), encPass);
         userDB.setPasswordDate(LocalDateTime.now());
+
+        userDB.setWeight(userDTO.getWeight());
+        userDB.setAge(userDTO.getAge());
+        userDB.setHeight(userDTO.getHeight());
+        userDB.setGender(userDTO.getGender());
 
         UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
 
         Assets assets = new Assets();
+        LocalDateTime localDateTime = LocalDateTime.now();
 
-        assets.setCreationDate(LocalDateTime.now());
-        assets.setModificationDate(LocalDateTime.now());
+        assets.setCreationDate(localDateTime);
+        assets.setModificationDate(localDateTime);
         assets.setCreationPerson(creationUserDB);
         assets.setModificationPerson(creationUserDB);
 
         userDB.setAssets(assets);
+        userDB.setRole(roleRepository.findByRoleName(role).get());
 
-        UserRoleId userRoleId = new UserRoleId(userDB,roleRepository.findById(role).get());
-        UserRole userRole = new UserRole(userRoleId);
-
+        assetsRepository.save(assets);
         userRepository.save(userDB);
-        userRoleRepository.save(userRole);
 
-        return "home";
+        return "redirect:/home";
     }
 
-    @PostMapping("/deleteUser")
-    private String deleteUser(@RequestParam("email") String email, Model model){
+    @GetMapping("/deleteUser/{id}")
+    private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
 
-        Optional<UserDB> optionalUserDB = userRepository.findByEmail(email);
-        if(optionalUserDB.isPresent()){
-            Optional<UserRole> optionalUserRole = userRoleRepository.findById_UserDB_Id(optionalUserDB.get().getId());
-            userRoleRepository.delete(optionalUserRole.get());
-            userRepository.delete(optionalUserDB.get());
-            return "redirect:/adminActions/listUser";
-        }else{
-            model.addAttribute("error", "This user does not exist.");
+        Optional<UserDB> optionalUserDB = userRepository.findById(id);
+        if (checker.checkUserExistsByPrincipal(principal,model)) {
             return "error/404";
         }
+        userRepository.deleteById(id);
+        return "redirect:/adminActions/listUser";
     }
 }

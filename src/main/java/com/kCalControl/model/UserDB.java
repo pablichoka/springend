@@ -1,47 +1,53 @@
 package com.kCalControl.model;
 
 import com.kCalControl.dto.UserDTO;
-import jakarta.persistence.*;
+import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Entity
-@Table(name = "users")
-public class UserDB {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Document(collection = "users")
+ public class UserDB {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "name")
+    private ObjectId id;
+    @Field("userDB.username")
     private String username;
-    @Column(name = "f_name", length = 20)
+    @Field("userDB.firstName")
     private String firstName;
-
-    @Column(name = "l_name", length = 40)
+    @Field("userDB.lastName")
     private String lastName;
-
-    @Column(name = "mobile", length = 12)
+    @Field("userDB.mobile")
     private String mobile;
-
-    @Column(name = "email", length = 80, unique = true)
+    @Field("userDB.email")
     private String email;
-
-    @Column(name = "password")
+    @Field("userDB.password")
     private String password;
-
-    @Column(name = "password_date")
+    @Field("userDB.passwordDate")
     private LocalDateTime passwordDate;
-
-    @Column(name = "age")
+    @Field("userDB.age")
     private Integer age;
-
-    @Column(name = "weight")
+    @Field("userDB.weight")
     private Double weight;
+    @Field("userDB.height")
+    private Integer height;
+    @Field("userDB.gender")
+    private String gender;
 
-    @Embedded
+    @DBRef
+    @Field("userDB.role")
+    private Role role;
+
+    @DBRef
+    @Field("userDB.assets")
     private Assets assets;
 
     public UserDTO UserDB2UserDTO() {
@@ -54,24 +60,31 @@ public class UserDB {
         userDTO.setLastName(this.getLastName());
         userDTO.setEmail(this.getEmail());
         userDTO.setMobile(this.getMobile());
+        userDTO.setRole(this.getRole());
         userDTO.setAge(this.getAge());
         userDTO.setWeight(this.getWeight());
+        userDTO.setHeight(this.getHeight());
+        userDTO.setGender(this.getGender());
+        userDTO.setAssets(this.getAssets());
 
         return userDTO;
     }
 
-    public UserDB() {
-    }
-
-    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password, Integer age, Double weight) {
+    public UserDB(String username, String firstName, String lastName, String mobile, String email, String password) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobile = mobile;
         this.email = email;
         this.password = password;
-        this.age = age;
-        this.weight = weight;
+    }
+
+    public String getRoleName() {
+        return getRole().getRoleName();
+    }
+
+    public void setRoleName(String roleName) {
+        getRole().setRoleName(roleName);
     }
 
     public UserDB getCreationPerson() {
@@ -90,128 +103,19 @@ public class UserDB {
         return getAssets().getModificationDate();
     }
 
+    public void setCreationPerson(UserDB creationPerson) {
+        getAssets().setCreationPerson(creationPerson);
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        getAssets().setCreationDate(creationDate);
+    }
+
     public void setModificationPerson(UserDB modificationPerson) {
         getAssets().setModificationPerson(modificationPerson);
     }
 
     public void setModificationDate(LocalDateTime modificationDate) {
         getAssets().setModificationDate(modificationDate);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getPasswordDate() {
-        return passwordDate;
-    }
-
-    public void setPasswordDate(LocalDateTime passwordDate) {
-        this.passwordDate = passwordDate;
-    }
-
-    public Assets getAssets() {
-        return assets;
-    }
-
-    public void setAssets(Assets assets) {
-        this.assets = assets;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDB userDB)) return false;
-        return Objects.equals(id, userDB.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "UserDB{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", passwordDate=" + passwordDate +
-                ", age=" + age +
-                ", weight=" + weight +
-                ", assets=" + assets +
-                '}';
     }
 }
