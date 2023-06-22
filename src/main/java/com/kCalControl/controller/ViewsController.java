@@ -48,14 +48,14 @@ public class ViewsController {
         return "home";
     }
 
-    @GetMapping("/forms/signUpForm")
+    @GetMapping("/adminActions/signUpForm")
     private String newUser(Principal principal, Model model){
 
         if(!checker.checkRoleAdminByPrincipal(principal, model)){
             return "error/403";
         }
         model.addAttribute("user", new UserDTO());
-        return "forms/signUpForm";
+        return "adminActions/signUpForm";
     }
 
     @PostMapping("/logout")
