@@ -48,6 +48,7 @@ public class ViewsController {
         return "home";
     }
 
+
     @GetMapping("/adminActions/signUpForm")
     private String newUser(Principal principal, Model model){
 

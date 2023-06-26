@@ -86,8 +86,7 @@ public class AdminActionsController {
     @GetMapping("/deleteUser/{id}")
     private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
 
-        Optional<UserDB> optionalUserDB = userRepository.findById(id);
-        if (checker.checkUserExistsByPrincipal(principal,model)) {
+        if (!checker.checkUserExistsById(id,model)) {
             return "error/404";
         }
         userRepository.deleteById(id);
