@@ -93,4 +93,6 @@ public class AdminActionsController {
         userRepository.deleteById(id);
         return "redirect:/adminActions/listUser";
     }
+
 }
+

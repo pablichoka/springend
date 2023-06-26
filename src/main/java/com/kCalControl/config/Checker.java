@@ -20,7 +20,6 @@ public class Checker {
             return true;
         }
     }
-
     public boolean checkRoleAdminById(ObjectId id, Model model){
         if (!userRepository.findById(id).get().getRoleName().equals("ADMIN")) {
             model.addAttribute("error", "You do not have permission to edit this user.");
@@ -29,7 +28,6 @@ public class Checker {
             return true;
         }
     }
-
     public boolean checkUserExistsByPrincipal(Principal principal, Model model){
         if (!userRepository.findByUsername(principal.getName()).isPresent()) {
             model.addAttribute("error", "User not found.");
@@ -38,7 +36,6 @@ public class Checker {
             return true;
         }
     }
-
     public boolean checkUserExistsById(ObjectId id, Model model){
         if (!userRepository.findById(id).isPresent()) {
             model.addAttribute("error", "User not found.");
@@ -47,7 +44,6 @@ public class Checker {
             return true;
         }
     }
-
     public boolean checkSameUser(Principal principal, ObjectId id, Model model){
         if (!userRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
             model.addAttribute("error", "You do not have permission to edit this user.");
@@ -57,6 +53,4 @@ public class Checker {
             return true;
         }
     }
-
-
 }
