@@ -89,6 +89,7 @@ public class AdminActionsController {
         if (!checker.checkUserExistsById(id,model)) {
             return "error/404";
         }
+        assetsRepository.deleteById(userRepository.findById(id).get().getAssets().getId());
         userRepository.deleteById(id);
         return "redirect:/adminActions/listUser";
     }
