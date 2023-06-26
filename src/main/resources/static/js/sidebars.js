@@ -7,26 +7,30 @@
   })
 })()
 
-$(document).ready(function() {
-  // Cuando se hace clic en un enlace del sidebar, se carga el container correspondiente
-  $('#sidebar a').click(function(event) {
-      event.preventDefault(); // Evita el comportamiento predeterminado del enlace
 
-      var url = $(this).attr('href'); // Obtiene la URL del enlace
+  // Obtener todos los enlaces de la barra lateral
+  var sidebarLinks = document.getElementsByClassName('sidebar-link');
 
-      // Realiza la solicitud AJAX para obtener el container del archivo HTML
-      $.ajax({
-          url: url,
-          dataType: 'html',
-          success: function(data) {
-              $('#container').html(data); // Carga el container en el div #container
-          },
-          error: function() {
-              alert('Error al cargar el container');
-          }
-      });
-  });
-});
+  // Agregar un evento de clic a cada enlace
+  for (var i = 0; i < sidebarLinks.length; i++) {
+    sidebarLinks[i].addEventListener('click', function(event) {
+      event.preventDefault(); // Evitar la acción predeterminada del enlace
+
+      var url = this.getAttribute('href'); // Obtener la URL del enlace
+
+      // Realizar una solicitud AJAX para obtener el contenido de la URL
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // Reemplazar el contenido del contenedor con la respuesta obtenida
+          document.getElementById('container').innerHTML = xhr.responseText;
+        }
+      };
+      xhr.open('GET', url, true);
+      xhr.send();
+    });
+  }
+
 
 window.addEventListener('DOMContentLoaded', event => {
 
