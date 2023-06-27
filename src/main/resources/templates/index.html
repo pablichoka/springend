@@ -41,21 +41,59 @@
         <div>
             <h3 class="float-md-start mb-0">kCal Control</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                <a class="nav-link" href="#">Features</a>
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link active" data-target="home" aria-current="page" href="#">Home</a>
+                <a class="nav-link" data-target="features" href="#">Features</a>
+                <a class="nav-link" data-target="contact" href="#">Contact</a>
             </nav>
         </div>
     </header>
 
     <main class="px-3">
-        <h1>A tool for those who do not want to think what to eat to get in shape.</h1>
-        <p class="lead">kCal Control is an application which calculates the amount of kCal that you need to gain weight,
-            maintain it or lose it providing a daily menu so that the user do not have to think what to eat. Always with your favourites ingredients and in a healthy way!.</p>
-        <p class="lead">
-            <a href="/home" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Home</a>
-            <a href="/userActions/signUp" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Sign Up</a>
-        </p>
+        <div id="container">
+        </div>
+         <div id="home" class="section active">
+            <h1>A tool for those who do not want to think what to eat to get in shape.</h1>
+            <p class="lead">kCal Control is an application which calculates the amount of kCal that you need to gain weight,
+                maintain it or lose it providing a daily menu so that the user do not have to think what to eat. Always with your favourites ingredients and in a healthy way!.</p>
+            <p class="lead">
+                <a href="/home" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Log In</a>
+                <a href="/userActions/signUp" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Sign Up</a>
+            </p>
+         </div>
+         <div id="features" class="section">
+             <h1>
+                Evaluating
+             </h1>
+             <p class="lead">
+                First of all, you can measure the amount of kCal per day that your body needs depending
+                 on your weight objectives and the number of days that you do exercise (estimate 1 hour per day)
+             </p>
+             <h1>
+                 Selecting
+             </h1>
+             <p class="lead">
+                 When the app knows your needs, then is the moment to start planning your dishes. You can select your preferences
+                 if they are non-negotiable. After that, you can click the button and you will get your magic daily menu.
+             </p>
+             <h1>
+                 Reviewing
+             </h1>
+             <p class="lead">
+                 Finally, you can note your results on the app to keep a tracking of them, the percentage of fats, carbs and proteins that you have
+                 eaten and getting a recommendation from the algorithm to improve your diet if you have particular dishes or if it is necessary.
+             </p>
+         </div>
+        <div id="contact" class="section">
+            <h1>
+                Contact information
+            </h1>
+            <p class="lead">
+                Here you can find data contact -- pending to add --
+            </p>
+            <p class="lead">
+                <button class="btn">Eoqs</button>
+            </p>
+        </div>
     </main>
 
     <footer class="mt-auto text-white-50">
@@ -63,4 +101,5 @@
     </footer>
 </div>
 </body>
+<script src="../js/index.js"></script>
 </html>

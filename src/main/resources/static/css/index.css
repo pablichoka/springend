@@ -71,3 +71,16 @@ body::before {
   color: #fff;
   border-bottom-color: #fff;
 }
+
+.section {
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+  transition: opacity 0.5s ease;
+}
+
+.section.active {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+}
