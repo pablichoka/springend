@@ -42,6 +42,7 @@ public class ViewsController {
             UserDB userDB = userRepository.findByUsername(principal.getName()).get();
             String fullName = userDB.getFirstName() + " "+ userDB.getLastName();
             model.addAttribute("fullName", fullName);
+            model.addAttribute("user", userDB.UserDB2UserDTO());
         }else{
             return "error/404";
         }
@@ -49,14 +50,14 @@ public class ViewsController {
     }
 
 
-    @GetMapping("/adminActions/signUpForm")
+    @GetMapping("/adminActions/addNewUser")
     private String newUser(Principal principal, Model model){
 
         if(!checker.checkRoleAdminByPrincipal(principal, model)){
             return "error/403";
         }
         model.addAttribute("user", new UserDTO());
-        return "adminActions/signUpForm";
+        return "adminActions/addNewUser";
     }
 
     @PostMapping("/logout")

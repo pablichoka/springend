@@ -23,33 +23,54 @@
       <span class="fs-4">kCal Control</span>
     </a>
     <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="/home" class="nav-link btn-toggle sidebar-link" aria-current="page">
-          Home
-        </a>
-      </li>
-      <li>
-        <a href="/adminActions/listUser" class="nav-link btn-toggle sidebar-link">
-          List of users
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link btn-toggle sidebar-link">
-          Orders
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link btn-toggle sidebar-link">
-          Products
-        </a>
-      </li>
-      <li>
-        <a href="adminActions/signUpForm" class="nav-link btn-toggle sidebar-link">
-          Add user
-        </a>
-      </li>
-    </ul>
+    <div th:if="${user.role.roleName eq 'ADMIN'}">
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="/home" class="nav-link btn-toggle sidebar-link" aria-current="page">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/adminActions/listUser" class="nav-link btn-toggle sidebar-link">
+            List of users
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link btn-toggle sidebar-link">
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link btn-toggle sidebar-link">
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="adminActions/addNewUser" class="nav-link btn-toggle sidebar-link">
+            Add user
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div th:unless="${user.role.roleName eq 'ADMIN'}">
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="/home" class="nav-link btn-toggle sidebar-link" aria-current="page">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link btn-toggle sidebar-link">
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link btn-toggle sidebar-link">
+            Products
+          </a>
+        </li>
+      </ul>
+    </div>
     <hr>
     <div class="dropdown">
       <a href="" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
