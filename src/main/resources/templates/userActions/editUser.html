@@ -11,10 +11,10 @@
 <div class="container">
   <h1>Update your data</h1>
   <p>Insert only the data you want to modify, unfilled fields will not change</p>
-  <form th:object="${user}" method="post" th:action="@{/userActions/updateUserData/{id}(id=${user2edit.id})}">
+  <form th:object="${user}" method="post" th:action="@{/userActions/updateUserData/{id}(id=${user.id})}">
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" class="form-control" id="email" th:field="*{email}" th:placeholder="${user2edit.email}">
+      <input type="email" class="form-control" id="email" th:field="*{email}" th:placeholder="${user.email}">
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -22,19 +22,19 @@
     </div>
     <div class="form-group">
       <label for="mobile">Mobile:</label>
-      <input type="text" class="form-control" id="mobile" th:field="*{mobile}" th:placeholder="${user2edit.mobile}">
+      <input type="text" class="form-control" id="mobile" th:field="*{mobile}" th:placeholder="${user.mobile}">
     </div>
     <div class="form-group">
       <label for="age">Age:</label>
-      <input type="text" class="form-control" id="age" th:field="*{age}" th:placeholder="${user2edit.age}">
+      <input type="text" class="form-control" id="age" th:field="*{age}" th:placeholder="${user.age}">
     </div>
     <div class="form-group">
       <label for="weight">Weight:</label>
-      <input type="text" class="form-control" id="weight" th:field="*{weight}" th:placeholder="${user2edit.weight}">
+      <input type="text" class="form-control" id="weight" th:field="*{weight}" th:placeholder="${user.weight}">
     </div>
     <div class="form-group">
       <label for="height">Height:</label>
-      <input type="text" class="form-control" id="height" th:field="*{height}" th:placeholder="${user2edit.height}">
+      <input type="text" class="form-control" id="height" th:field="*{height}" th:placeholder="${user.height}">
     </div>
     <div class="form-group">
       <label for="gender">Gender:</label>

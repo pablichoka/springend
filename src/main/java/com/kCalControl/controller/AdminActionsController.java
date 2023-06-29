@@ -52,36 +52,36 @@ public class AdminActionsController {
         return "adminActions/listUser";
     }
 
-    @PostMapping("/addUser")
-    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal) {
-
-        String encPass = passwordEncoder.encode(userDTO.getPassword());
-        UserDB userDB = new UserDB(userDTO.getUsername(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMobile(), userDTO.getEmail(), encPass);
-        userDB.setPasswordDate(LocalDateTime.now());
-
-        userDB.setWeight(userDTO.getWeight());
-        userDB.setAge(userDTO.getAge());
-        userDB.setHeight(userDTO.getHeight());
-        userDB.setGender(userDTO.getGender());
-
-        UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
-
-        Assets assets = new Assets();
-        LocalDateTime localDateTime = LocalDateTime.now();
-
-        assets.setCreationDate(localDateTime);
-        assets.setModificationDate(localDateTime);
-        assets.setCreationPerson(creationUserDB);
-        assets.setModificationPerson(creationUserDB);
-
-        userDB.setAssets(assets);
-        userDB.setRole(roleRepository.findByRoleName(role).get());
-
-        assetsRepository.save(assets);
-        userRepository.save(userDB);
-
-        return "redirect:/home";
-    }
+//    @PostMapping("/addUser")
+//    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal) {
+//
+//        String encPass = passwordEncoder.encode(userDTO.getPassword());
+//        UserDB userDB = new UserDB(userDTO.getUsername(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getMobile(), userDTO.getEmail(), encPass);
+//        userDB.setPasswordDate(LocalDateTime.now());
+//
+//        userDB.setWeight(userDTO.getWeight());
+//        userDB.setAge(userDTO.getAge());
+//        userDB.setHeight(userDTO.getHeight());
+//        userDB.setGender(userDTO.getGender());
+//
+//        UserDB creationUserDB = userRepository.findByUsername(principal.getName()).get();
+//
+//        Assets assets = new Assets();
+//        LocalDateTime localDateTime = LocalDateTime.now();
+//
+//        assets.setCreationDate(localDateTime);
+//        assets.setModificationDate(localDateTime);
+//        assets.setCreationPerson(creationUserDB);
+//        assets.setModificationPerson(creationUserDB);
+//
+//        userDB.setAssets(assets);
+//        userDB.setRole(roleRepository.findByRoleName(role).get());
+//
+//        assetsRepository.save(assets);
+//        userRepository.save(userDB);
+//
+//        return "redirect:/home";
+//    }
 
     @GetMapping("/deleteUser/{id}")
     private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {

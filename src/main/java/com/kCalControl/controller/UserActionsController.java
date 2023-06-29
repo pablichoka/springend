@@ -39,45 +39,44 @@ public class UserActionsController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserActionsController.class);
 
-    @GetMapping("/editUser/{id}")
-    private String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
+//    @GetMapping("/editUser/{id}")
+//    private String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
+//
+//        Optional<UserDB> userDBOptional = userRepository.findById(id);
+//
+//        if (!checker.checkUserExistsByPrincipal(principal, model)) {
+//            return "error/404";
+//        }
+//
+//        if (!checker.checkSameUser(principal, id, model)) {
+//            if (!checker.checkRoleAdminByPrincipal(principal, model)) {
+//                return "error/403";
+//            }
+//        }
+//
+//        UserDB userDB = userDBOptional.get();
+//        UserDTO userDTO = userDB.UserDB2UserDTO();
+//        UserDTO userDT0empty = new UserDTO();
+//
+//        model.addAttribute("user2edit", userDTO);
+//        model.addAttribute("user", userDT0empty);
+//        return "userActions/editUser";
+//    }
 
-        Optional<UserDB> userDBOptional = userRepository.findById(id);
-
-        if (!checker.checkUserExistsByPrincipal(principal, model)) {
-            return "error/404";
-        }
-
-        if (!checker.checkSameUser(principal, id, model)) {
-            if (!checker.checkRoleAdminByPrincipal(principal, model)) {
-                return "error/403";
-            }
-
-        }
-
-        UserDB userDB = userDBOptional.get();
-        UserDTO userDTO = userDB.UserDB2UserDTO();
-        UserDTO userDT0empty = new UserDTO();
-
-        model.addAttribute("user2edit", userDTO);
-        model.addAttribute("user", userDT0empty);
-        return "userActions/editUser";
-    }
-
-    @GetMapping("/myProfile")
-    private String myProfile(Model model, Principal principal) {
-        Optional<UserDB> userDBOptional = userRepository.findByUsername(principal.getName());
-        if (!userDBOptional.isPresent()) {
-            model.addAttribute("error", "User not found.");
-            return "error/404";
-        }
-
-        UserDTO userDTO = userDBOptional.get().UserDB2UserDTO();
-        model.addAttribute("user", userDTO);
-
-        return "userActions/myProfile";
-    }
-
+//    @GetMapping("/myProfile")
+//    private String myProfile(Model model, Principal principal) {
+//        Optional<UserDB> userDBOptional = userRepository.findByUsername(principal.getName());
+//        if (!userDBOptional.isPresent()) {
+//            model.addAttribute("error", "User not found.");
+//            return "error/404";
+//        }
+//
+//        UserDTO userDTO = userDBOptional.get().UserDB2UserDTO();
+//        model.addAttribute("user", userDTO);
+//
+//        return "userActions/myProfile";
+//    }
+    //TODO pending to remove this method and recode it as it should
     @PostMapping("/updateUserData/{id}")
     private String updateUserData(@ModelAttribute("user") UserDTO userDTO, @PathVariable("id") ObjectId id, Model model, Principal principal) {
         Optional<UserDB> userDBOptional = userRepository.findById(id);

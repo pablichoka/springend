@@ -1,5 +1,6 @@
-package com.kCalControl.service.dto;
+package com.kCalControl.dto;
 
+import com.kCalControl.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +18,6 @@ public class NewUserDTO {
     private String mobile;
     private String email;
     private String password;
+    private Role role;
 
 }

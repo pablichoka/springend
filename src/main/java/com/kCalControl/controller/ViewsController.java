@@ -1,7 +1,7 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.config.Checker;
-import com.kCalControl.dto.UserDTO;
+import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
@@ -56,7 +56,11 @@ public class ViewsController {
         if(!checker.checkRoleAdminByPrincipal(principal, model)){
             return "error/403";
         }
-        model.addAttribute("user", new UserDTO());
+        if(!checker.checkUserExistsByPrincipal(principal, model)){
+            return "error/404";
+        }
+        model.addAttribute("id", userRepository.findByUsername(principal.getName()).get().getId());
+        model.addAttribute("user", new NewUserDTO());
         return "adminActions/addNewUser";
     }
 
