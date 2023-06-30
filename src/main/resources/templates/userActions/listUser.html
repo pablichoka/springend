@@ -60,8 +60,8 @@
                     </a>
                 </td>
                 <td class = "action">
-                    <a th:href="@{/adminActions/deleteUser/{id}(id=${user.id})}")>
-                        <button class="btn btn-secondary">Delete</button>
+                    <a th:href="@{/userActions/deleteUser/{id}(id=${user.id})}")>
+                        <button class="btn btn-secondary" onclick="reloadPage()" >Delete</button>
                     </a>
                 </td>
             </tr>
@@ -69,4 +69,5 @@
     </table>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </body>
+    <script src="../../js/listUser.js"></script>
 </html>

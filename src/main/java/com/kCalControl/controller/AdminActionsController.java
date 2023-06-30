@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RolesAllowed("ADMIN")
-@RequestMapping("/adminActions")
+//@RequestMapping("/adminActions")
 public class AdminActionsController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class AdminActionsController {
 
     private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
-    @GetMapping("/listUser")
+    @GetMapping("userActions/listUser")
     private String listUser(Model model) {
 
         UserDTO userDTO = new UserDTO();
@@ -49,7 +49,7 @@ public class AdminActionsController {
         List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
         model.addAttribute("users", userDTOList);
 
-        return "adminActions/listUser";
+        return "userActions/listUser";
     }
 
 //    @PostMapping("/addUser")

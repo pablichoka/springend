@@ -13,11 +13,15 @@ import java.security.Principal;
 public interface UserDBService {
     UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, @RequestParam("role") String role);
 
-    UserDB returnUser(ObjectId id);
+    UserDB returnUserById(ObjectId id);
+
+    UserDB returnLoggedUser(Principal principal);
 
     UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 
     UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal);
 
     UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal);
+
+    void deleteUser(ObjectId id);
 }

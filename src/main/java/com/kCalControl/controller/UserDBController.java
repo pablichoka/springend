@@ -23,4 +23,6 @@ public interface UserDBController {
     //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
     @GetMapping("userActions/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
+    @GetMapping("userActions/deleteUser/{id}")
+    void deleteUser(@PathVariable("id") ObjectId id);
 }

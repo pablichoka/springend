@@ -60,8 +60,15 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public UserDB returnUser(ObjectId id){
+    public UserDB returnUserById(ObjectId id){
         UserDB userDB = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
+        return userDB;
+    }
+
+    @Override
+    public UserDB returnLoggedUser(Principal principal){
+        UserDB userDB = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
         return userDB;
     }
@@ -113,6 +120,14 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setModificationDate(time);
 
         return userDB;
+    }
+
+    @Override
+    public void deleteUser(ObjectId id){
+        UserDB userDB = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to delete does not exist"));
+        assetsRepository.delete(userDB.getAssets());
+        userRepository.deleteById(id);
     }
 
 }

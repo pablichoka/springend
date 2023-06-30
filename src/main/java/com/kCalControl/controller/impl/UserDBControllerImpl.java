@@ -50,9 +50,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public String myProfile(Principal principal, Model model){
-        UserDB userDB = userRepository.findByUsername(principal.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
-        UserDB returnedUser = userDBService.returnUser(userDB.getId());
+        UserDB returnedUser = userDBService.returnLoggedUser(principal);
         model.addAttribute("user", returnedUser);
         return "/userActions/myProfile";
     }
@@ -64,11 +62,15 @@ public class UserDBControllerImpl implements UserDBController {
                 return "error/403";
             }
         }
-        UserDB returnedUser = userDBService.returnUser(id);
+        UserDB returnedUser = userDBService.returnUserById(id);
         model.addAttribute("user", returnedUser);
         model.addAttribute("userData", new UpdateUserDataDTO());
         model.addAttribute("personalData", new UpdatePersonalDataDTO());
         return "/userActions/editUser";
     }
 
+    @Override
+    public void deleteUser(ObjectId id){
+        userDBService.deleteUser(id);
+    }
 }
