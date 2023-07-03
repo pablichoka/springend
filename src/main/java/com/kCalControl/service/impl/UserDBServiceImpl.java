@@ -12,6 +12,8 @@ import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,6 +73,12 @@ public class UserDBServiceImpl implements UserDBService {
         UserDB userDB = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
         return userDB;
+    }
+
+    @Override
+    public Page<UserDB> getUsers(int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        return userRepository.findAll(pageRequest);
     }
 
     @Override

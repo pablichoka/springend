@@ -19,10 +19,13 @@ public interface UserDBController {
     String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
     @GetMapping("userActions/myProfile")
     String myProfile(Principal principal, Model model);
+    @GetMapping("userActions/listUser")
+    String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int pageSize, Model model);
 
     //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
     @GetMapping("userActions/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
     @GetMapping("userActions/deleteUser/{id}")
     void deleteUser(@PathVariable("id") ObjectId id);
+
 }

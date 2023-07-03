@@ -40,17 +40,17 @@ public class AdminActionsController {
 
     private final static Logger logger = LoggerFactory.getLogger(AdminActionsController.class);
 
-    @GetMapping("userActions/listUser")
-    private String listUser(Model model) {
-
-        UserDTO userDTO = new UserDTO();
-
-        List<UserDB> userDBList = (List<UserDB>) userRepository.findAll();
-        List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
-        model.addAttribute("users", userDTOList);
-
-        return "userActions/listUser";
-    }
+//    @GetMapping("userActions/listUser")
+//    private String listUser(Model model) {
+//
+//        UserDTO userDTO = new UserDTO();
+//
+//        List<UserDB> userDBList = (List<UserDB>) userRepository.findAll();
+//        List<UserDTO> userDTOList = userDBList.stream().map(u -> u.UserDB2UserDTO()).toList();
+//        model.addAttribute("users", userDTOList);
+//
+//        return "userActions/listUser";
+//    }
 
 //    @PostMapping("/addUser")
 //    private String addUserToDb(@ModelAttribute("user") UserDTO userDTO, @RequestParam("role") String role, Principal principal) {
@@ -83,16 +83,16 @@ public class AdminActionsController {
 //        return "redirect:/home";
 //    }
 
-    @GetMapping("/deleteUser/{id}")
-    private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
-
-        if (!checker.checkUserExistsById(id,model)) {
-            return "error/404";
-        }
-        assetsRepository.deleteById(userRepository.findById(id).get().getAssets().getId());
-        userRepository.deleteById(id);
-        return "redirect:/adminActions/listUser";
-    }
+//    @GetMapping("/deleteUser/{id}")
+//    private String deleteUser(@PathVariable("id") ObjectId id, Model model, Principal principal) {
+//
+//        if (!checker.checkUserExistsById(id,model)) {
+//            return "error/404";
+//        }
+//        assetsRepository.deleteById(userRepository.findById(id).get().getAssets().getId());
+//        userRepository.deleteById(id);
+//        return "redirect:/adminActions/listUser";
+//    }
 
 }
 

@@ -6,6 +6,7 @@ import com.kCalControl.model.UserDB;
 import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.UpdatePersonalDataDTO;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -16,6 +17,8 @@ public interface UserDBService {
     UserDB returnUserById(ObjectId id);
 
     UserDB returnLoggedUser(Principal principal);
+
+    Page<UserDB> getUsers(int page, int pageSize);
 
     UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 

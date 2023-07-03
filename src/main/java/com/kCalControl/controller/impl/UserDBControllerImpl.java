@@ -11,7 +11,7 @@ import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,4 +73,13 @@ public class UserDBControllerImpl implements UserDBController {
     public void deleteUser(ObjectId id){
         userDBService.deleteUser(id);
     }
+
+    @Override
+    public String getUsersList(int page, int pageSize, Model model){
+        Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
+        model.addAttribute("users", usersList.getContent());
+        model.addAttribute("last", usersList.isLast());
+        return "/userActions/listUser";
+    }
+
 }

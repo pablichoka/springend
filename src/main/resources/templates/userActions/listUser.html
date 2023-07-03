@@ -21,6 +21,7 @@
             </span>
         </div>
     </nav>
+    <div id="users" data-last="${last}">
     <table class="table">
         <thead id="header" class="thead-dark">
             <tr>
@@ -67,6 +68,9 @@
             </tr>
         </tbody>
     </table>
+    </div>
+    <button id="next-page-button" onclick="loadNextPage()">Next page</button>
+
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </body>
     <script src="../../js/listUser.js"></script>
