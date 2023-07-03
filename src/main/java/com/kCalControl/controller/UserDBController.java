@@ -20,7 +20,7 @@ public interface UserDBController {
     @GetMapping("userActions/myProfile")
     String myProfile(Principal principal, Model model);
     @GetMapping("userActions/listUser")
-    String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int pageSize, Model model);
+    String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int pageSize, Model model);
 
     //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
     @GetMapping("userActions/editUser/{id}")
