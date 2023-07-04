@@ -1,4 +1,4 @@
-package com.kCalControl.controller;
+package com.kCalControl.config;
 
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.UserRepository;
@@ -26,8 +26,6 @@ public class UserSession implements UserDetailsService {
             throw new UsernameNotFoundException("User does not exist");
         }
         UserDB userDB = userOptional.get();
-
-
         UserDetails user = User.builder().username(userDB.getUsername()).password(userDB.getPassword()).roles(userDB.getRole().getRoleName())
                 .build();
         logger.debug("User authenticated: {}", user);
