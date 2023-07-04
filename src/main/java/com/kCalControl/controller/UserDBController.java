@@ -26,6 +26,6 @@ public interface UserDBController {
     @GetMapping("userActions/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
     @GetMapping("userActions/deleteUser/{id}")
-    void deleteUser(@PathVariable("id") ObjectId id);
+    String deleteUser(@PathVariable("id") ObjectId id);
 
 }

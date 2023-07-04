@@ -7,9 +7,10 @@
   })
 })()
 
-
+function containerLoad(){
+  console.log("me estoy ejecutando");
   // Obtener todos los enlaces de la barra lateral
-  var sidebarLinks = document.getElementsByClassName('sidebar-link');
+  var sidebarLinks = document.getElementsByClassName('ajax-link');
 
   // Agregar un evento de clic a cada enlace
   for (var i = 0; i < sidebarLinks.length; i++) {
@@ -29,7 +30,24 @@
       xhr.send();
     });
   }
+}
 
+var targetDiv = document.getElementById('container');
+
+// Crea una instancia de MutationObserver y pasa una función de callback
+var observer = new MutationObserver(function(mutations) {
+  // Ejecuta la función que deseas cada vez que se produzca un cambio en el div
+  containerLoad();
+});
+
+// Configura las opciones del observador (en este caso, observamos cambios en el contenido)
+var observerOptions = {
+  childList: true,
+  subtree: true
+};
+
+// Empieza a observar el div con las opciones definidas
+observer.observe(targetDiv, observerOptions);
 
 window.addEventListener('DOMContentLoaded', event => {
 

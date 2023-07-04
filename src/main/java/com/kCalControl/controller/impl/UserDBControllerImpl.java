@@ -70,8 +70,9 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public void deleteUser(ObjectId id){
+    public String deleteUser(ObjectId id){
         userDBService.deleteUser(id);
+        return "redirect:/home";
     }
 
     @Override

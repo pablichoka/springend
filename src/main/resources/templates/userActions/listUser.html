@@ -7,7 +7,7 @@
     <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css" />
     <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic}" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body onload="containerLoad()">
     <nav class="navbar navbar-dark bg-dark justify-content-center">
         <span id="brand" class="navbar-brand">Users</span>
         <div class="navbar-nav" id="navbarText">
@@ -57,7 +57,7 @@
                 <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
                 <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
                 <td class="action">
-                    <a th:href="@{/userActions/editUser/{id}(id=${user.id})}">
+                    <a th:href="@{/userActions/editUser/{id}(id=${user.id})}" class="ajax-link">
                         <button class="btn btn-secondary">Edit</button>
                     </a>
                 </td>
@@ -72,4 +72,5 @@
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </body>
+<script src="../../js/sidebars.js"></script>
 </html>

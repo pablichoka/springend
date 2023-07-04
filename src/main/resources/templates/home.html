@@ -14,7 +14,7 @@
   <!-- Custom styles for this template -->
   <link href="../css/sidebars.css" rel="stylesheet">
 </head>
-<body>
+<body onload="containerLoad()">
 <main class="d-flex flex-nowrap">
   <h1 class="visually-hidden">Sidebars examples</h1>
 
@@ -26,27 +26,27 @@
     <div th:if="${user.role.roleName eq 'ADMIN'}">
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item" style="width: 150px;">
-          <a href="/home" class="nav-link btn-toggle sidebar-link" aria-current="page">
+          <a href="/home" class="nav-link btn-toggle ajax-link" aria-current="page">
             Home
           </a>
         </li>
         <li>
-          <a href="userActions/listUser" class="nav-link btn-toggle sidebar-link">
+          <a href="userActions/listUser" class="nav-link btn-toggle ajax-link">
             List of users
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link btn-toggle sidebar-link">
+          <a href="#" class="nav-link btn-toggle ajax-link">
             Orders
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link btn-toggle sidebar-link">
+          <a href="#" class="nav-link btn-toggle ajax-link">
             Products
           </a>
         </li>
         <li>
-          <a href="adminActions/addNewUser" class="nav-link btn-toggle sidebar-link">
+          <a href="adminActions/addNewUser" class="nav-link btn-toggle ajax-link">
             Add user
           </a>
         </li>
@@ -55,17 +55,17 @@
     <div th:unless="${user.role.roleName eq 'ADMIN'}">
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a href="/home" class="nav-link btn-toggle sidebar-link" aria-current="page">
+          <a href="/home" class="nav-link btn-toggle ajax-link" aria-current="page">
             Home
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link btn-toggle sidebar-link">
+          <a href="#" class="nav-link btn-toggle ajax-link">
             Orders
           </a>
         </li>
         <li>
-          <a href="#" class="nav-link btn-toggle sidebar-link">
+          <a href="#" class="nav-link btn-toggle ajax-link">
             Products
           </a>
         </li>
