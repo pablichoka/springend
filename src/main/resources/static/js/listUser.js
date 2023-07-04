@@ -6,7 +6,7 @@ function reloadPage() {
   var pageSize = 1; // Tamaño de la página
 
 function loadNextPage() {    
-// Realizar la solicitud AJAX
+    currentPage++;
     fetch('/userActions/listUser?page=' + currentPage + '&pageSize=' + pageSize)
         .then(function(response) {
         if (response.ok) {
@@ -16,7 +16,6 @@ function loadNextPage() {
         }
         })
         .then(function(data) {
-        currentPage++;
         var tableContent = extractTableContent(data);
         console.log(tableContent);
         document.getElementById("users").innerHTML = tableContent;
@@ -27,7 +26,11 @@ function loadNextPage() {
 }
   
 function loadPreviousPage() {    
-    // Realizar la solicitud AJAX
+    
+    if(currentPage <= 0){
+        alert ("No hay páginas previas");
+    }else{
+        currentPage--;
         fetch('/userActions/listUser?page=' + currentPage + '&pageSize=' + pageSize)
             .then(function(response) {
             if (response.ok) {
@@ -37,18 +40,14 @@ function loadPreviousPage() {
             }
             })
             .then(function(data) {
-                if(currentPage < 0){
-                    alert ("No hay páginas previas");
-                }else{
-                    currentPage--;
-                    var tableContent = extractTableContent(data);
-                    document.getElementById("users").innerHTML = tableContent;
-                }
+                var tableContent = extractTableContent(data);
+                document.getElementById("users").innerHTML = tableContent;
             })
             .catch(function(error) {
             console.error(error);
             });
     }
+}
 
 
   function extractTableContent(data) {
