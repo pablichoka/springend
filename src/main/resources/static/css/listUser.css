@@ -5,13 +5,6 @@ a{
     text-decoration: none;
 }
 
-#delTool{
-    margin-left: 10px;
-    margin-top: 10px;
-    left: -300px;
-    display: none;
-}
-
 .editUser{    
     color: lightgrey;
     border: 1px;
@@ -22,11 +15,6 @@ a{
 
 #brand{
     margin-left: 20px;
-}
-
-#toggleAdmin:hover{
-    border: 10px;
-    border-color: white;
 }
 
 td{

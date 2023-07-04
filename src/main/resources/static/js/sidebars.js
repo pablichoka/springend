@@ -22,7 +22,6 @@
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
-          // Reemplazar el contenido del contenedor con la respuesta obtenida
           document.getElementById('container').innerHTML = xhr.responseText;
         }
       };

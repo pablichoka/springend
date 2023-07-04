@@ -3,7 +3,7 @@ function reloadPage() {
   }
 
   var currentPage = 0; // Variable para almacenar la página actual
-  var pageSize = 1; // Tamaño de la página
+  var pageSize = 2; // Tamaño de la página
 
 function loadNextPage() {    
     currentPage++;
@@ -72,7 +72,6 @@ function checkIfTableIsEmpty(data) {
 
     // Seleccionar solo el contenido de la tabla
     var tableContent = htmlDoc.querySelector('tbody').innerHTML;
-    console.log(tableContent)
     if(/^\s*$/.test(tableContent)){
         return true;
     }else{
