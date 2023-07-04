@@ -3,7 +3,7 @@ function reloadPage() {
   }
 
   var currentPage = 0; // Variable para almacenar la página actual
-  var pageSize = 2; // Tamaño de la página
+  var pageSize = 12; // Tamaño de la página
 
 function loadNextPage() {    
     currentPage++;

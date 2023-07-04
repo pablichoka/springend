@@ -49,8 +49,8 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String myProfile(Principal principal, Model model){
-        UserDB returnedUser = userDBService.returnLoggedUser(principal);
+    public String myProfile(Model model){
+        UserDB returnedUser = userDBService.returnLoggedUser();
         model.addAttribute("user", returnedUser);
         return "/userActions/myProfile";
     }

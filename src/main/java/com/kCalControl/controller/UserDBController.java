@@ -18,9 +18,9 @@ public interface UserDBController {
     @PostMapping("addUser")
     String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
     @GetMapping("userActions/myProfile")
-    String myProfile(Principal principal, Model model);
+    String myProfile(Model model);
     @GetMapping("userActions/listUser")
-    String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int pageSize, Model model); //these values have to be synchronized with JS file
+    String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int pageSize, Model model); //these values have to be synchronized with JS file
 
     //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
     @GetMapping("userActions/editUser/{id}")

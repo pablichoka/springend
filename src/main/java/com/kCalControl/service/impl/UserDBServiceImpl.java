@@ -14,6 +14,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,10 +71,22 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public UserDB returnLoggedUser(Principal principal){
-        UserDB userDB = userRepository.findByUsername(principal.getName())
+    public UserDB returnLoggedUser(){
+        UserDB userDB = userRepository.findByUsername(getUsernameLoggedUser())
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
         return userDB;
+    }
+
+    @Override
+    public String getUsernameLoggedUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return username;
     }
 
     @Override

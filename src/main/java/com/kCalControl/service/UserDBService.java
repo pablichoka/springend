@@ -16,7 +16,9 @@ public interface UserDBService {
 
     UserDB returnUserById(ObjectId id);
 
-    UserDB returnLoggedUser(Principal principal);
+    UserDB returnLoggedUser();
+
+    String getUsernameLoggedUser();
 
     Page<UserDB> getUsers(int page, int pageSize);
 
