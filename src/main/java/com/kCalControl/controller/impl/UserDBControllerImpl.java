@@ -3,6 +3,7 @@ package com.kCalControl.controller.impl;
 import com.kCalControl.config.Checker;
 import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.NewUserDTO;
+import com.kCalControl.dto.UpdatePasswordDTO;
 import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import com.kCalControl.model.UserDB;
@@ -12,15 +13,19 @@ import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Service
 public class UserDBControllerImpl implements UserDBController {
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -66,6 +71,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("user", returnedUser);
         model.addAttribute("userData", new UpdateUserDataDTO());
         model.addAttribute("personalData", new UpdatePersonalDataDTO());
+        model.addAttribute("password", new UpdatePasswordDTO());
         return "/userActions/editUser";
     }
 
@@ -76,11 +82,66 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
+    public String updateUserData(ObjectId id, UpdateUserDataDTO dto, Model model) {
+        UserDB moddedUser = userDBService.returnUserById(id);
+        UserDB modificationUser = userDBService.returnLoggedUser();
+
+        moddedUser.setFirstName(dto.getFirstName());
+        moddedUser.setLastName(dto.getLastName());
+        moddedUser.setMobile(dto.getMobile());
+        moddedUser.setEmail(dto.getEmail());
+        moddedUser.setModificationPerson(modificationUser);
+        moddedUser.setModificationDate(LocalDateTime.now());
+
+        assetsRepository.save(moddedUser.getAssets());
+        userRepository.save(moddedUser);
+
+        return "redirect:/";
+    }
+
+    @Override
+    public String updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model) {
+        UserDB moddedUser = userDBService.returnUserById(id);
+        UserDB modificationUser = userDBService.returnLoggedUser();
+
+        moddedUser.setAge(dto.getAge());
+        moddedUser.setHeight(dto.getHeight());
+        moddedUser.setWeight(dto.getWeight());
+        moddedUser.setGender(dto.getGender());
+
+        moddedUser.setModificationPerson(modificationUser);
+        moddedUser.setModificationDate(LocalDateTime.now());
+
+        assetsRepository.save(moddedUser.getAssets());
+        userRepository.save(moddedUser);
+
+        return "redirect:/";
+    }
+
+    @Override
+    public String updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model) {
+        UserDB moddedUser = userDBService.returnUserById(id);
+        UserDB modificationUser = userDBService.returnLoggedUser();
+
+        moddedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        moddedUser.setModificationPerson(modificationUser);
+        moddedUser.setModificationDate(LocalDateTime.now());
+
+        assetsRepository.save(moddedUser.getAssets());
+        userRepository.save(moddedUser);
+
+        return "redirect:/";
+    }
+
+    @Override
     public String getUsersList(int page, int pageSize, Model model){
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
         return "/userActions/listUser";
     }
+
+
 
 }

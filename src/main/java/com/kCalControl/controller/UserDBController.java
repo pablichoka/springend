@@ -1,6 +1,9 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.dto.NewUserDTO;
+import com.kCalControl.dto.UpdatePasswordDTO;
+import com.kCalControl.dto.UpdatePersonalDataDTO;
+import com.kCalControl.dto.UpdateUserDataDTO;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,5 +30,11 @@ public interface UserDBController {
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
     @GetMapping("userActions/deleteUser/{id}")
     String deleteUser(@PathVariable("id") ObjectId id);
+    @PostMapping("userActions/updateUserData/{id}")
+    String updateUserData(@PathVariable("id")ObjectId id, UpdateUserDataDTO dto, Model model);
+    @PostMapping("userActions/updatePersonalData/{id}")
+    String updatePersonalData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, Model model);
+    @PostMapping("userActions/updatePassword/{id}")
+    String updatePassword(@PathVariable("id")ObjectId id, UpdatePasswordDTO dto, Model model);
 
 }

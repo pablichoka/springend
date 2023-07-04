@@ -14,29 +14,29 @@
   <form th:object="${user}" method="post" th:action="@{/userActions/updateUserData/{id}(id=${user.id})}">
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" class="form-control" id="email" th:field="*{email}" th:placeholder="${user.email}">
+      <input type="email" class="form-control mb-3" id="email" th:field="*{email}" th:placeholder="${user.email}">
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input type="password" class="form-control" id="password" th:field="*{password}">
+      <input type="password" class="form-control mb-3" id="password" th:field="*{password}">
     </div>
     <div class="form-group">
       <label for="mobile">Mobile:</label>
-      <input type="text" class="form-control" id="mobile" th:field="*{mobile}" th:placeholder="${user.mobile}">
+      <input type="text" class="form-control mb-3" id="mobile" th:field="*{mobile}" th:placeholder="${user.mobile}">
     </div>
     <div class="form-group">
       <label for="age">Age:</label>
-      <input type="text" class="form-control" id="age" th:field="*{age}" th:placeholder="${user.age}">
+      <input type="text" class="form-control mb-3" id="age" th:field="*{age}" th:placeholder="${user.age}">
     </div>
     <div class="form-group">
       <label for="weight">Weight:</label>
-      <input type="text" class="form-control" id="weight" th:field="*{weight}" th:placeholder="${user.weight}">
+      <input type="text" class="form-control mb-3" id="weight" th:field="*{weight}" th:placeholder="${user.weight}">
     </div>
     <div class="form-group">
       <label for="height">Height:</label>
-      <input type="text" class="form-control" id="height" th:field="*{height}" th:placeholder="${user.height}">
+      <input type="text" class="form-control mb-3" id="height" th:field="*{height}" th:placeholder="${user.height}">
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <label for="gender">Gender:</label>
       <select id="gender" th:field="*{gender}">
         <option value="Male">Male</option>
