@@ -115,6 +115,12 @@ public class UserDBControllerImpl implements UserDBController {
         assetsRepository.save(moddedUser.getAssets());
         userRepository.save(moddedUser);
 
+//        if (checker.checkRoleAdminById(moddedUser.getId(), model)) {
+//            return "redirect:/adminActions/listUser";
+//        } else {
+//            return "redirect:/userActions/myProfile";
+//        }
+
         return "redirect:/";
     }
 
