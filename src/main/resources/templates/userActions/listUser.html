@@ -57,7 +57,7 @@
                 <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
                 <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
                 <td class="action">
-                    <a th:href="@{/userActions/editUser/{id}(id=${user.id})}" class="ajax-link">
+                    <a th:href="@{/userActions/editUser/{id}(id=${user.id})}" onclick="ajax(this)">
                         <button class="btn btn-secondary">Edit</button>
                     </a>
                 </td>
