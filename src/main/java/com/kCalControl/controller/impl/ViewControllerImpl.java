@@ -34,13 +34,9 @@ public class ViewControllerImpl implements ViewController {
 
     @Override
     public String home(Model model) {
-        Optional<UserDB> userDBOptional = userRepository.findByUsername(userDBService.getUsernameLoggedUser());
-        if(userDBOptional.isPresent()){
-            model.addAttribute("user", userDBOptional.get());
-            return "/home";
-        }else {
-            return "error/404";
-        }
+        UserDB userDB = userDBService.returnLoggedUser();
+        model.addAttribute("user", userDB);
+        return "/home";
     }
 
     @Override

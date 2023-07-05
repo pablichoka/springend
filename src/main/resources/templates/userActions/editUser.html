@@ -44,10 +44,12 @@
       </select>
     </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <button type="submit" class="btn btn-primary">Update data</button>
+    <button type="submit" id="sendButton" class="btn btn-primary">Update data</button>
   </form>
   <br>
-  <button class="btn btn-secondary" onclick="goBack()">Go back</button>
+  <a href="#" id="backToList">
+      <button class="btn btn-secondary" onclick="goBack()">Go back</button>
+  </a>
 </div>
 
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
