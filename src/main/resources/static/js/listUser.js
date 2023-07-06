@@ -1,7 +1,3 @@
-function reloadPage() {
-    location.reload();
-  }
-
   var currentPage = 0; // Variable para almacenar la página actual
   var pageSize = 12; // Tamaño de la página
 
@@ -79,6 +75,6 @@ function checkIfTableIsEmpty(data) {
     }
 }
 
-function goBack() {
-    window.history.back();
+function deleteRow(id){
+    document.getElementById('row-' + id).remove();
 }

@@ -8,8 +8,6 @@
     <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic}" rel="stylesheet" type="text/css" />
 </head>
 <body onload="containerLoad()">
-    <div th:include="home :: sidebar"></div>
-    <div th:include="home :: container">
         <nav class="navbar navbar-dark bg-dark justify-content-center">
             <span id="brand" class="navbar-brand">Users</span>
             <div class="navbar-nav" id="navbarText">
@@ -64,16 +62,14 @@
                         </a>
                     </td>
                     <td class = "action">
-                        <a th:href="@{/userActions/deleteUser/{id}(id=${user.id})}")>
-                            <button class="btn btn-secondary" onclick="reloadPage()" >Delete</button>
+                        <a th:href="@{/userActions/deleteUser/{id}(id=${user.id})}") th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
+                            <button class="btn btn-secondary">Delete</button>
                         </a>
                     </td>
                 </tr>
             </tbody>
         </table>
         </div>
-    </div>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </body>
-<script src="../../js/sidebars.js"></script>
 </html>

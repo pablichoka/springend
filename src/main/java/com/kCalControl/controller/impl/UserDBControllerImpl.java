@@ -10,6 +10,7 @@ import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.UserDBService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -76,9 +77,9 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String deleteUser(ObjectId id){
+    public void deleteUser(ObjectId id, HttpServletResponse response){
         userDBService.deleteUser(id);
-        return "redirect:/home";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override

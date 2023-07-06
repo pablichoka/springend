@@ -4,6 +4,7 @@ import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.UpdatePasswordDTO;
 import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public interface UserDBController {
     @GetMapping("userActions/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
     @GetMapping("userActions/deleteUser/{id}")
-    String deleteUser(@PathVariable("id") ObjectId id);
+    void deleteUser(@PathVariable("id") ObjectId id, HttpServletResponse response);
     @PostMapping("userActions/updateUserData/{id}")
     String updateUserData(@PathVariable("id")ObjectId id, UpdateUserDataDTO dto, Model model);
     @PostMapping("userActions/updatePersonalData/{id}")
