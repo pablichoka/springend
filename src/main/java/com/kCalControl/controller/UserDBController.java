@@ -32,7 +32,7 @@ public interface UserDBController {
     @GetMapping("userActions/deleteUser/{id}")
     void deleteUser(@PathVariable("id") ObjectId id, HttpServletResponse response);
     @PostMapping("userActions/updateUserData/{id}")
-    String updateUserData(@PathVariable("id")ObjectId id, UpdateUserDataDTO dto, Model model);
+    void updateUserData(@PathVariable("id")ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response);
     @PostMapping("userActions/updatePersonalData/{id}")
     String updatePersonalData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, Model model);
     @PostMapping("userActions/updatePassword/{id}")

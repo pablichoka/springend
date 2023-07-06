@@ -83,7 +83,7 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String updateUserData(ObjectId id, UpdateUserDataDTO dto, Model model) {
+    public void updateUserData(ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response) {
         UserDB moddedUser = userDBService.returnUserById(id);
         UserDB modificationUser = userDBService.returnLoggedUser();
 
@@ -96,8 +96,7 @@ public class UserDBControllerImpl implements UserDBController {
 
         assetsRepository.save(moddedUser.getAssets());
         userRepository.save(moddedUser);
-
-        return "redirect:/";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override

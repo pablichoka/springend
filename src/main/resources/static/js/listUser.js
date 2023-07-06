@@ -76,5 +76,6 @@ function checkIfTableIsEmpty(data) {
 }
 
 function deleteRow(id){
+    
     document.getElementById('row-' + id).remove();
 }

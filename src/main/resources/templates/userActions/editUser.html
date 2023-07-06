@@ -8,48 +8,53 @@
 </head>
 <body>
 
-<div class="container">
+<div class="p-4">
   <h1>Update your data</h1>
   <p>Insert only the data you want to modify, unfilled fields will not change</p>
-  <form th:object="${user}" method="post" th:action="@{/userActions/updateUserData/{id}(id=${user.id})}">
+  <form th:object="${userData}" method="post" id="userData" th:action="@{/userActions/updateUserData/{id}(id=${user.id})}">
+    <div class="form-group">
+      <label for="firstName">First name:</label>
+      <input type="text" class="form-control mb-3" id="firstName" th:field="*{firstName}" th:placeholder="${user.firstName}">
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last name:</label>
+      <input type="text" class="form-control mb-3" id="lastName" th:field="*{lastName}" th:placeholder="${user.lastName}">
+    </div>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" class="form-control mb-3" id="email" th:field="*{email}" th:placeholder="${user.email}">
     </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" class="form-control mb-3" id="password" th:field="*{password}">
-    </div>
+<!--    <div class="form-group">-->
+<!--      <label for="password">Password:</label>-->
+<!--      <input type="password" class="form-control mb-3" id="password" th:field="*{password}">-->
+<!--    </div>-->
     <div class="form-group">
       <label for="mobile">Mobile:</label>
       <input type="text" class="form-control mb-3" id="mobile" th:field="*{mobile}" th:placeholder="${user.mobile}">
     </div>
-    <div class="form-group">
-      <label for="age">Age:</label>
-      <input type="text" class="form-control mb-3" id="age" th:field="*{age}" th:placeholder="${user.age}">
-    </div>
-    <div class="form-group">
-      <label for="weight">Weight:</label>
-      <input type="text" class="form-control mb-3" id="weight" th:field="*{weight}" th:placeholder="${user.weight}">
-    </div>
-    <div class="form-group">
-      <label for="height">Height:</label>
-      <input type="text" class="form-control mb-3" id="height" th:field="*{height}" th:placeholder="${user.height}">
-    </div>
-    <div class="form-group mb-3">
-      <label for="gender">Gender:</label>
-      <select id="gender" th:field="*{gender}">
-        <option value="Male">Male</option>
-        <option value="Female" selected>Female</option>
-      </select>
-    </div>
+<!--    <div class="form-group">-->
+<!--      <label for="age">Age:</label>-->
+<!--      <input type="text" class="form-control mb-3" id="age" th:field="*{age}" th:placeholder="${user.age}">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="weight">Weight:</label>-->
+<!--      <input type="text" class="form-control mb-3" id="weight" th:field="*{weight}" th:placeholder="${user.weight}">-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label for="height">Height:</label>-->
+<!--      <input type="text" class="form-control mb-3" id="height" th:field="*{height}" th:placeholder="${user.height}">-->
+<!--    </div>-->
+<!--    <div class="form-group mb-3">-->
+<!--      <label for="gender">Gender:</label>-->
+<!--      <select id="gender" th:field="*{gender}">-->
+<!--        <option value="Male">Male</option>-->
+<!--        <option value="Female" selected>Female</option>-->
+<!--      </select>-->
+<!--    </div>-->
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <button type="submit" id="sendButton" class="btn btn-primary">Update data</button>
+      <button type="submit" id="sendButton" class="btn btn-primary mb-3">Update data</button>
   </form>
-  <br>
-  <a href="#" id="backToList">
       <button class="btn btn-secondary" onclick="goBack()">Go back</button>
-  </a>
 </div>
 
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
