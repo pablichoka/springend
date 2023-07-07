@@ -3,7 +3,7 @@
 
 function loadNextPage() {    
     currentPage++;
-    fetch('/userActions/listUser?page=' + currentPage + '&pageSize=' + pageSize)
+    fetch('/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
         .then(function(response) {
         if (response.ok) {
             return response.text();
@@ -31,7 +31,7 @@ function loadPreviousPage() {
         alert ("There's no previous users");
     }else{
         currentPage--;
-        fetch('/userActions/listUser?page=' + currentPage + '&pageSize=' + pageSize)
+        fetch('/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
             .then(function(response) {
             if (response.ok) {
                 return response.text();

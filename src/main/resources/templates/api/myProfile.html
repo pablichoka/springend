@@ -31,10 +31,14 @@
                             <div class="col-md-12 mb-3"><label class="labels">Last modification date</label><input type="text" class="form-control" th:value="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}" readonly></div>
                         </div>
                         <div class="mt-5 text-center">
-                            <a th:href="@{/userActions/editUser/{id}(id=${user.id})}"><button class="btn btn-primary profile-button" type="button">Edit profile</button></a>
+                            <a th:href="@{/api/editUser/{id}(id=${user.id})}" onclick="ajax(this)">
+                                <button class="btn btn-primary profile-button" type="button">Edit profile</button>
+                            </a>
                         </div>
                         <br>
-                        <a href="/home"><button class="btn btn-secondary">Go home</button></a>
+                        <a href="/home" onclick="ajax(this)">
+                            <button class="btn btn-secondary">Go home</button>
+                        </a>
                     </div>
                 </div>
             </div>

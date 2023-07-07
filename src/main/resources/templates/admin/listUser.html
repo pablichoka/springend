@@ -7,7 +7,7 @@
     <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css" />
     <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic}" rel="stylesheet" type="text/css" />
 </head>
-<body onload="containerLoad()">
+<body>
         <nav class="navbar navbar-dark bg-dark justify-content-center">
             <span id="brand" class="navbar-brand">Users</span>
             <div class="navbar-nav" id="navbarText">
@@ -57,12 +57,12 @@
                     <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
                     <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
                     <td class="action">
-                        <a th:href="@{/userActions/editUser/{id}(id=${user.id})}" onclick="ajax(this)">
-                            <button class="btn btn-secondary" th:data-url="@{/userActions/editUser/{id}(id=${user.id})}">Edit</button>
+                        <a th:href="@{/api/editUser/{id}(id=${user.id})}" onclick="ajax(this)">
+                            <button class="btn btn-secondary">Edit</button>
                         </a>
                     </td>
                     <td class = "action">
-                        <a th:href="@{/userActions/deleteUser/{id}(id=${user.id})}") th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
+                        <a th:href="@{/api/deleteUser/{id}(id=${user.id})}") th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
                             <button class="btn btn-secondary">Delete</button>
                         </a>
                     </td>

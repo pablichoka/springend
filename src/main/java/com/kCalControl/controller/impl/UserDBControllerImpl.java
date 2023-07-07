@@ -58,7 +58,7 @@ public class UserDBControllerImpl implements UserDBController {
     public String myProfile(Model model){
         UserDB returnedUser = userDBService.returnLoggedUser();
         model.addAttribute("user", returnedUser);
-        return "/userActions/myProfile";
+        return "/api/myProfile";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("userData", new UpdateUserDataDTO());
         model.addAttribute("personalData", new UpdatePersonalDataDTO());
         model.addAttribute("password", new UpdatePasswordDTO());
-        return "/userActions/editUser";
+        return "/api/editUser";
     }
 
     @Override
@@ -100,7 +100,7 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model) {
+    public void updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response) {
         UserDB moddedUser = userDBService.returnUserById(id);
         UserDB modificationUser = userDBService.returnLoggedUser();
 
@@ -114,18 +114,11 @@ public class UserDBControllerImpl implements UserDBController {
 
         assetsRepository.save(moddedUser.getAssets());
         userRepository.save(moddedUser);
-
-//        if (checker.checkRoleAdminById(moddedUser.getId(), model)) {
-//            return "redirect:/adminActions/listUser";
-//        } else {
-//            return "redirect:/userActions/myProfile";
-//        }
-
-        return "redirect:/";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override
-    public String updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model) {
+    public void updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response) {
         UserDB moddedUser = userDBService.returnUserById(id);
         UserDB modificationUser = userDBService.returnLoggedUser();
 
@@ -136,8 +129,7 @@ public class UserDBControllerImpl implements UserDBController {
 
         assetsRepository.save(moddedUser.getAssets());
         userRepository.save(moddedUser);
-
-        return "redirect:/";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override
@@ -145,7 +137,7 @@ public class UserDBControllerImpl implements UserDBController {
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
-        return "/userActions/listUser";
+        return "/admin/listUser";
     }
 
 

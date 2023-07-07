@@ -6,6 +6,7 @@ import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,25 +18,27 @@ import java.security.Principal;
 
 @Controller
 public interface UserDBController {
-    @PostMapping("adminActions/addUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("admin/addUser")
     String createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model);
-    @PostMapping("addUser")
-    String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
-    @GetMapping("userActions/myProfile")
-    String myProfile(Model model);
-    @GetMapping("userActions/listUser")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int pageSize, Model model); //these values have to be synchronized with JS file
+    @PostMapping("signUp")
+    String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
+    @GetMapping("api/myProfile")
+    String myProfile(Model model);
 
     //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
-    @GetMapping("userActions/editUser/{id}")
+    @GetMapping("api/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
-    @GetMapping("userActions/deleteUser/{id}")
+    @GetMapping("api/deleteUser/{id}")
     void deleteUser(@PathVariable("id") ObjectId id, HttpServletResponse response);
-    @PostMapping("userActions/updateUserData/{id}")
+    @PostMapping("api/updateUserData/{id}")
     void updateUserData(@PathVariable("id")ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response);
-    @PostMapping("userActions/updatePersonalData/{id}")
-    String updatePersonalData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, Model model);
-    @PostMapping("userActions/updatePassword/{id}")
-    String updatePassword(@PathVariable("id")ObjectId id, UpdatePasswordDTO dto, Model model);
+    @PostMapping("api/updatePersonalData/{id}")
+    void updatePersonalData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response);
+    @PostMapping("api/updatePassword/{id}")
+    void updatePassword(@PathVariable("id")ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response);
 
 }

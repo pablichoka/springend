@@ -17,7 +17,6 @@ const observer = new MutationObserver(function() {
       }, 2000);
     });
   }
-  console.log('Se han detectado cambios en el DOM');
 });
 
 const observerOptions = {
@@ -29,8 +28,8 @@ if (targetElement) {
   observer.observe(targetElement, observerOptions);
 }
 
-function goBack() {
-  var url = '/userActions/listUser';
+function goBack(element) {
+  var url = '/admin/listUser';
   fetch(url)
     .then(function(response) {
       return response.text();

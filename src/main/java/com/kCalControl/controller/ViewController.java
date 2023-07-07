@@ -19,6 +19,6 @@ public interface ViewController {
     String home(Model model);
     @PostMapping("/logout")
     String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
-    @GetMapping("/adminActions/addNewUser")
+    @GetMapping("/admin/addNewUser")
     String addUserFromAdmin(Model model);
 }

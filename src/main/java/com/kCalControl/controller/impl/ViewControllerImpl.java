@@ -51,7 +51,7 @@ public class ViewControllerImpl implements ViewController {
     public String addUserFromAdmin(Model model){
         model.addAttribute("id", userRepository.findByUsername(userDBService.getUsernameLoggedUser()).get().getId());
         model.addAttribute("user", new NewUserDTO());
-        return "/adminActions/addNewUser";
+        return "/admin/addNewUser";
     }
 
 }

@@ -11,7 +11,7 @@
 <div class="p-4">
   <h1>Update your data</h1>
   <p>Insert only the data you want to modify, unfilled fields will not change</p>
-  <form th:object="${userData}" method="post" id="userData" th:action="@{/userActions/updateUserData/{id}(id=${user.id})}">
+  <form th:object="${userData}" method="post" id="userData" th:action="@{/api/updateUserData/{id}(id=${user.id})}">
     <div class="form-group">
       <label for="firstName">First name:</label>
       <input type="text" class="form-control mb-3" id="firstName" th:field="*{firstName}" th:placeholder="${user.firstName}">
@@ -59,7 +59,16 @@
         </div>
       </button>
   </form>
-      <button class="btn btn-secondary" onclick="goBack()">Go back</button>
+  <div th:if="${user.role.roleName eq 'ADMIN'}">
+        <a href="/admin/listUser" onclick="ajax(this)">
+          <button class="btn btn-secondary" >Go back</button>
+        </a>
+  </div>
+  <div th:unless="${user.role.roleName eq 'ADMIN'}">
+    <a href="/api/myProfile" onclick="ajax(this)">
+      <button class="btn btn-secondary" >Go back</button>
+    </a>
+  </div>
 </div>
 
 <script th:src="@{https://code.jquery.com/jquery-3.5.1.slim.min.js}"></script>
