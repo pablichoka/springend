@@ -60,12 +60,12 @@
       </button>
   </form>
   <div th:if="${user.role.roleName eq 'ADMIN'}">
-        <a href="/admin/listUser" onclick="ajax(this)">
+        <a href="/admin/listUser" onclick="ajaxB(this)">
           <button class="btn btn-secondary" >Go back</button>
         </a>
   </div>
   <div th:unless="${user.role.roleName eq 'ADMIN'}">
-    <a href="/api/myProfile" onclick="ajax(this)">
+    <a href="/api/myProfile" onclick="ajaxB(this)">
       <button class="btn btn-secondary" >Go back</button>
     </a>
   </div>

@@ -76,5 +76,10 @@ function checkIfTableIsEmpty(data) {
 }
 
 function deleteRow(id){
-    document.getElementById('row-' + id).remove();
+    let row = document.getElementById('row-' + id);
+    let spinner = row.querySelector('.spinner-border');
+    spinner.style['display']='inherit' ;
+    setTimeout(function() {
+        row.remove();;
+      }, 1000);   
 }

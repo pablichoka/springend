@@ -57,13 +57,18 @@
                     <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
                     <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
                     <td class="action">
-                        <a th:href="@{/api/editUser/{id}(id=${user.id})}" onclick="ajax(this)">
+                        <a th:href="@{/api/editUser/{id}(id=${user.id})}" th:id="'editButton-' + ${user.id}">
                             <button class="btn btn-secondary">Edit</button>
                         </a>
                     </td>
                     <td class = "action">
-                        <a th:href="@{/api/deleteUser/{id}(id=${user.id})}") th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
-                            <button class="btn btn-secondary">Delete</button>
+                        <a th:href="@{/api/deleteUser/{id}(id=${user.id})}") th:id="'deleteButton-' + ${user.id}" th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
+                            <button class="btn btn-secondary">
+                                Delete
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
                         </a>
                     </td>
                 </tr>
