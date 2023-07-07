@@ -21,6 +21,7 @@
           <form th:object="${user}" action="/adminActions/addUser" method="post">
               <div class="row mt-2">
                   <h5>User data</h5>
+                  <input type="hidden" name="id" th:value="${id}" />
                   <div class="col-md-6">
                       <label for="firstName" class="labels">Name</label>
                       <input type="text" id="firstName" th:field="*{firstName}" class="form-control mb-2" placeholder="First name">
@@ -46,29 +47,29 @@
                       <input type="text" th:field="*{mobile}" class="form-control mb-2" placeholder="Put your country prefix">
                   </div>
               </div>
-              <div class="row mt-3">
-                  <h5>Personal data</h5>
-                  <div class="col-md-12">
-                      <label class="labels">Age</label>
-                      <input type="text" th:field="*{age}" class="form-control mb-2">
-                  </div>
-                  <div class="col-md-12">
-                      <label class="labels">Weight</label>
-                      <input type="text" th:field="*{weight}" class="form-control mb-2" placeholder="Up to 2 decimals">
-                  </div>
-                  <div class="col-md-12">
-                      <label class="labels">Height</label>
-                      <input type="text" th:field="*{height}" class="form-control mb-2" placeholder="Up to 2 decimals">
-                  </div>
-                  <div class="col-md-12">
-                      <label for="gender">Gender</label>
-                      <select id="gender" th:field="*{gender}" class="form-control mb-2">
-                          <option value="" selected><i>Select an option</i></option>
-                          <option value="Male">Male</option>
-                          <option value="Female" selected>Female</option>
-                      </select>
-                  </div>
-              </div>
+<!--              <div class="row mt-3">-->
+<!--                  <h5>Personal data</h5>-->
+<!--                  <div class="col-md-12">-->
+<!--                      <label class="labels">Age</label>-->
+<!--                      <input type="text" th:field="*{age}" class="form-control mb-2">-->
+<!--                  </div>-->
+<!--                  <div class="col-md-12">-->
+<!--                      <label class="labels">Weight</label>-->
+<!--                      <input type="text" th:field="*{weight}" class="form-control mb-2" placeholder="Up to 2 decimals">-->
+<!--                  </div>-->
+<!--                  <div class="col-md-12">-->
+<!--                      <label class="labels">Height</label>-->
+<!--                      <input type="text" th:field="*{height}" class="form-control mb-2" placeholder="Up to 2 decimals">-->
+<!--                  </div>-->
+<!--                  <div class="col-md-12">-->
+<!--                      <label for="gender">Gender</label>-->
+<!--                      <select id="gender" th:field="*{gender}" class="form-control mb-2">-->
+<!--                          <option value="" selected><i>Select an option</i></option>-->
+<!--                          <option value="Male">Male</option>-->
+<!--                          <option value="Female" selected>Female</option>-->
+<!--                      </select>-->
+<!--                  </div>-->
+<!--              </div>-->
               <div class="row mt-3">
                   <div class="col-md-12">
                       <label for="role">Role</label>
