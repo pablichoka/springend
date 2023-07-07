@@ -1,12 +1,16 @@
 const targetElement = document.getElementById('container');
 
 const observer = new MutationObserver(function() {
-  // let sendButton = document.getElementById('sendButton');
+  let loadSpinner = document.getElementsByClassName('spinner-border');
+  if(loadSpinner.length > 0){
+    loadSpinner[0].style['display']='none' ;
+  }
   let userDataForm = document.getElementById('userData');
 
   if (userDataForm) {
     userDataForm.addEventListener('submit', function(event) {
       event.preventDefault();
+      loadSpinner[0].style['display']='inherit' ;
       userDataForm.submit();
       setTimeout(function() {
         goBack();
