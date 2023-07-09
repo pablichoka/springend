@@ -13,7 +13,12 @@ function loadNextPage() {
         })
         .then(function(data) {
             if(checkIfTableIsEmpty(data) === true){
-                alert("There's no more users");
+                var alertContainer = document.getElementById('alertContainer');
+                var alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
+                alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                    'There is no more users!';
+                alertContainer.appendChild(alertDiv);
                 currentPage--;
             }else{
                 var tableContent = extractTableContent(data);
@@ -28,7 +33,12 @@ function loadNextPage() {
 function loadPreviousPage() {    
     
     if(currentPage <= 0){
-        alert ("There's no previous users");
+        var alertContainer = document.getElementById('alertContainer');
+        var alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
+        alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            'There is no previous users!';
+        alertContainer.appendChild(alertDiv);
     }else{
         currentPage--;
         fetch('/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)

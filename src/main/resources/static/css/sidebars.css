@@ -71,3 +71,7 @@ main {
   width: 100vw;
   height: 100vh;
 }
+
+.gray{
+  background-color: rgb(230, 230, 230);
+}

@@ -5,7 +5,7 @@
         <title>My profile</title>
     </head>
     <body>
-        <div class="container rounded bg-white mt-1 mb-1">
+        <div class="container rounded-3 bg-white mt-1 mb-1">
             <div class="row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
@@ -30,15 +30,14 @@
                             <div class="col-md-12 mb-3"><label class="labels">Gender</label><input type="text" class="form-control" th:value=${user.gender} readonly></div>
                             <div class="col-md-12 mb-3"><label class="labels">Last modification date</label><input type="text" class="form-control" th:value="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}" readonly></div>
                         </div>
-                        <div class="mt-5 text-center">
+                        <div class="mt-5 text-end">
                             <a th:href="@{/api/editUser/{id}(id=${user.id})}" onclick="ajaxB(this)">
                                 <button class="btn btn-primary profile-button" type="button">Edit profile</button>
                             </a>
+                            <a href="/home" onclick="ajaxB(this)">
+                                <button class="btn btn-secondary">Go home</button>
+                            </a>
                         </div>
-                        <br>
-                        <a href="/home" onclick="ajaxB(this)">
-                            <button class="btn btn-secondary">Go home</button>
-                        </a>
                     </div>
                 </div>
             </div>
