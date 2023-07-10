@@ -140,6 +140,12 @@ public class UserDBControllerImpl implements UserDBController {
         return "/admin/listUser";
     }
 
+    @Override
+    public String searchUsers(int page, int pageSize, String filter, Model model) {
+        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, filter);
+        model.addAttribute("users", userSearchList.getContent());
+        return "/admin/listUser";
+    }
 
 
 }

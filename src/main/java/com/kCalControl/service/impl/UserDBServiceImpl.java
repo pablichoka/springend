@@ -9,6 +9,7 @@ import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
+import com.kCalControl.service.Filters;
 import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class UserDBServiceImpl implements UserDBService {
     RoleRepository roleRepository;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    Filters filters;
 
     @Override
     public UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, String role){
@@ -93,6 +96,13 @@ public class UserDBServiceImpl implements UserDBService {
     public Page<UserDB> getUsers(int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
         return userRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Page<UserDB> getUsersFromSearch(int page, int pageSize, String filter) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        String like = filters.toLike(filter);
+        return userRepository.findByUsernameLikeOrEmailLike(like, like, pageRequest);
     }
 
     @Override
