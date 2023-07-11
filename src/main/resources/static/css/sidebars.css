@@ -8,23 +8,15 @@ html {
 }
 
 main {
-  height: 100vh;
-  max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
 }
 
 #sidebar{
-  /* position: sticky;
-  top: 0; */
-
     position: fixed;
     top: 0;
     left: 0;
-    width: 200px; /* Ajusta el ancho según tus necesidades */
-    height: 100%; /* Ajusta la altura según tus necesidades */
-    /* background-color: #f1f1f1; Ajusta el color de fondo según tus necesidades */
-    padding: 20px;
+    height: 99vh; /* Ajusta la altura según tus necesidades */
 }
 
 .dropdown-toggle { outline: 0; }
@@ -76,7 +68,10 @@ main {
 }
 
 #container{
-  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: auto;
+  /* height: 99vh; Ajusta la altura según tus necesidades */
 }
 
 .gray{
