@@ -12,13 +12,6 @@ main {
   overflow-y: auto;
 }
 
-#sidebar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 99vh; /* Ajusta la altura según tus necesidades */
-}
-
 .dropdown-toggle { outline: 0; }
 
 .btn-toggle {
