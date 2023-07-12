@@ -67,13 +67,6 @@ main {
   left: 1%;
 }
 
-#container{
-  position: fixed;
-  top: 0;
-  left: auto;
-  /* height: 99vh; Ajusta la altura según tus necesidades */
-}
-
 .gray{
   background-color: rgb(230, 230, 230);
 }
