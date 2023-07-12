@@ -36,7 +36,7 @@ public class ViewControllerImpl implements ViewController {
     public String home(Model model) {
         UserDB userDB = userDBService.returnLoggedUser();
         model.addAttribute("user", userDB);
-        return "/home";
+        return "/views/home";
     }
 
     @Override
@@ -52,6 +52,12 @@ public class ViewControllerImpl implements ViewController {
         model.addAttribute("id", userRepository.findByUsername(userDBService.getUsernameLoggedUser()).get().getId());
         model.addAttribute("user", new NewUserDTO());
         return "/admin/addNewUser";
+    }
+
+    @Override
+    public String showDashboard(Model model) {
+        model.addAttribute("user", userDBService.returnLoggedUser());
+        return "/views/dashboard";
     }
 
 }

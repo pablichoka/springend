@@ -8,15 +8,8 @@ html {
 }
 
 main {
-  height: 100vh;
-  max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
-}
-
-#sidebar{
-  position: sticky;
-  top: 0;
 }
 
 .dropdown-toggle { outline: 0; }
@@ -67,7 +60,6 @@ main {
   left: 1%;
 }
 
-#container{
-  width: 100vw;
-  height: 100vh;
+.gray{
+  background-color: rgb(230, 230, 230);
 }
