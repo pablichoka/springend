@@ -25,8 +25,8 @@ public interface UserDBController {
     @GetMapping("admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int pageSize, Model model); //these values have to be synchronized with JS file
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("admin/listUser/search/?query={searchText}")
-    String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @PathVariable("searchText") String filter, Model model);
+    @GetMapping("admin/listUser/search/{query}")
+    String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @PathVariable("query") String filter, Model model);
     @PostMapping("signUp")
     String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
     @GetMapping("api/myProfile")

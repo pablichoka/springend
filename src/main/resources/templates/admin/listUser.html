@@ -21,7 +21,7 @@
             Search users
             </a>
         </span>
-        <form method="get" th:action="@{admin/userList/search/{query}(query=${query})}">
+        <form method="get" th:action="@{/admin/listUser/search/{query}(query=${query})}">
             <div id="searchBar" class="input-group collapse mt-2">
                 <input type="search" class="form-control rounded-2" name="query" placeholder="Enter email or username..."/>
                 <div class="input-group-append">

@@ -35,6 +35,7 @@ public class UserDBControllerImpl implements UserDBController {
     Checker checker;
     @Autowired
     UserDBService userDBService;
+
     @Override
     public String createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model){
         if(!checker.checkRoleAdminById(id, model)){

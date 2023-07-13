@@ -6,7 +6,6 @@ import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.UserDBService;
-import com.kCalControl.service.ViewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
-import java.security.Principal;
-import java.util.Optional;
 
 @Service
 public class ViewControllerImpl implements ViewController {
