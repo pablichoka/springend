@@ -1,32 +1,18 @@
 //Ajax for buttons
 function ajaxB(element){
-    // event.preventDefault();
-    //   var url = element.getAttribute('href');
-    //   var xhr = new XMLHttpRequest();
-    //   xhr.open('GET', url, true);
-    //   xhr.onload = function() {
-    //     document.getElementById('container').innerHTML = xhr.responseText;
-    //   };
-    //   xhr.send();
-  
+    event.preventDefault();
   let spinner = document.getElementById('mainSpinner');
   var url = element.getAttribute('href');
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);
-
-  // Muestra el spinner antes de enviar la petición
   spinner.style.display = 'flex';
 
   xhr.onload = function() {
-        document.getElementById('container').innerHTML = xhr.responseText;
-    
-
-      // Oculta el spinner al completarse la petición
+      document.getElementById('container').innerHTML = xhr.responseText;
       spinner.style.display = 'none';
     }
-  xhr.send();
-    
+  xhr.send();   
 };
 
   
@@ -34,10 +20,14 @@ function ajaxB(element){
 
 //Ajax for functions
 function ajaxF(url){
+  event.preventDefault();
+  let spinner = document.getElementById('mainSpinner');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
+  spinner.style.display = 'flex';
   xhr.onload = function() {
     document.getElementById('container').innerHTML = xhr.responseText;
+    spinner.style.display = 'none';
   };
   xhr.send();
 }
