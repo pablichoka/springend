@@ -21,14 +21,16 @@
             Search users
             </a>
         </span>
-        <form method="get" th:action="@{/admin/listUser/search/{query}(query=${query})}">
+<!--        <form method="get" th:action="@{/admin/listUser/search/{query}(query=${query})}">-->
             <div id="searchBar" class="input-group collapse mt-2">
-                <input type="search" class="form-control rounded-2" name="query" placeholder="Enter email or username..."/>
+                <input type="search" class="form-control rounded-2" th:field="*{query}" placeholder="Enter email or username..."/>
                 <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Go</button>
+                    <a th:href="@{/admin/listUser/search/{query}(query=${query})}">
+                        <button class="btn btn-primary" type="button" onclick="ajaxB(this)">Go</button>
+                    </a>
                 </div>
             </div>
-        </form>
+<!--        </form>-->
     </div>
 </nav>
 <div id="users" data-last="${last}">

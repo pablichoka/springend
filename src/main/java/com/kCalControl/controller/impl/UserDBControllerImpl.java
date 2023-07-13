@@ -136,8 +136,10 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public String getUsersList(int page, int pageSize, Model model){
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
+        String query = "";
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
+        model.addAttribute("query", query);
         return "/admin/listUser";
     }
 
