@@ -15,10 +15,12 @@ public interface ViewController {
 
     @GetMapping("/")
     String index();
-    @GetMapping("/home")
+    @GetMapping("/views/home")
     String home(Model model);
     @PostMapping("/logout")
     String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
     @GetMapping("/admin/addNewUser")
     String addUserFromAdmin(Model model);
+    @GetMapping("/views/dashboard")
+    String showDashboard(Model model);
 }

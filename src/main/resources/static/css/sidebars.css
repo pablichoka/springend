@@ -8,15 +8,8 @@ html {
 }
 
 main {
-  height: 100vh;
-  max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
-}
-
-#sidebar{
-  position: sticky;
-  top: 0;
 }
 
 .dropdown-toggle { outline: 0; }
@@ -67,10 +60,21 @@ main {
   left: 1%;
 }
 
-#container{
-  width: 100vw;
-}
-
 .gray{
   background-color: rgb(230, 230, 230);
+}
+
+.overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.centered {
+  width: 5rem; 
+  height: 5rem;
 }
