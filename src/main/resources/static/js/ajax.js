@@ -30,13 +30,12 @@ function ajaxF(url){
 }
 
 //Ajax for forms
-function ajaxFR(element) {
+function ajaxForSearch(element) {
   event.preventDefault();
   let spinner = document.getElementById('mainSpinner');
   var url = element.getAttribute('href');
   var query = document.getElementById('query').value;
   url = url+query;
-  console.log(url);
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);

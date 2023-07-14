@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Service
 public class UserDBControllerImpl implements UserDBController {
 
+    private static final Logger logger = Logger.getLogger(UserDBControllerImpl.class.getName());
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -145,6 +147,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public String searchUsers(int page, int pageSize, String filter, Model model) {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, filter);
+        logger.info("Los resultados de la buuuusqueda: " + userSearchList.toString());
         model.addAttribute("users", userSearchList.getContent());
         return "/admin/listUser";
     }
