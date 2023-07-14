@@ -139,7 +139,6 @@ public class UserDBControllerImpl implements UserDBController {
         String query = "";
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
-        model.addAttribute("query", query);
         return "/admin/listUser";
     }
 

@@ -25,14 +25,12 @@ public interface UserDBController {
     @GetMapping("admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "12") int pageSize, Model model); //these values have to be synchronized with JS file
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("admin/listUser/search")
-    String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @RequestParam("query") String filter, Model model);
+    @GetMapping("admin/listUser/{query}")
+    String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int pageSize, @PathVariable("query") String filter, Model model);
     @PostMapping("signUp")
     String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
     @GetMapping("api/myProfile")
     String myProfile(Model model);
-
-    //TODO implement a view with two forms collapsed, one for user data and the other one for personal data
     @GetMapping("api/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
     @GetMapping("api/deleteUser/{id}")
