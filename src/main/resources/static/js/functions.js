@@ -1,5 +1,5 @@
 var currentPage = 0; // Variable para almacenar la página actual
-var pageSize = 12; // Tamaño de la página
+var pageSize = 20; // Tamaño de la página
 
 function loadNextPage() {    
   currentPage++;

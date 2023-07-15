@@ -29,13 +29,11 @@ function ajaxF(url){
   xhr.send();
 }
 
-//Ajax for forms
-function ajaxForSearch(element) {
-  event.preventDefault();
+//Ajax for search
+function ajaxForm(formName) {
   let spinner = document.getElementById('mainSpinner');
-  var url = element.getAttribute('href');
-  var query = document.getElementById('query').value;
-  url = url+query;
+  let form = document.getElementById(formName);
+  var url = form.getAttribute('action');
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);

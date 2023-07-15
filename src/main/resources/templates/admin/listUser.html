@@ -21,20 +21,32 @@
             Search users
             </a>
         </span>
-            <div id="searchBar" class="input-group collapse mt-2">
-                <input type="search" class="form-control rounded-2" id="query" placeholder="Enter email or username..." />
-                <div class="input-group-append">
-                    <a href="/admin/listUser/" onclick="ajaxForSearch(this)">
-                        <button class="btn btn-primary" type="button">Go</button>
-                    </a>
+        <form id="searchForm" method="get" action="/admin/listUser/search">
+            <div id="searchBar" class="input-group align-items-center collapse mt-2">
+                <select name="filter" class="form-control rounded-2 m-2">
+                    <option value="username" selected>Username</option>
+                    <option value="role">Role</option>
+                    <option value="email">Email</option>
+                </select>
+                <select name="sort" class="form-control rounded-2 m-2">
+                    <option value="az" selected>A-Z</option>
+                    <option value="za">Z-A</option>
+                    <option value="cDate">Creation date</option>
+                    <option value="mDate">Modification date</option>
+                </select>
+                <input type="search" class="form-control rounded-2 m-2" name="query" placeholder="Enter query..." />
+                <div class="input-group-append m-2">
+                    <button class="btn btn-primary" type="submit" onclick="ajaxForm('searchForm')">Go</button>
                 </div>
             </div>
+        </form>
     </div>
 </nav>
 <div id="users" data-last="${last}">
     <table class="table table-fixed">
         <thead id="header" class="thead-dark">
         <tr>
+            <th scope="col" class="col-2">Username</th>
             <th scope="col" class="col-2">First name</th>
             <th scope="col" class="col-2">Last name</th>
             <th scope="col" class="col-3">Email</th>
@@ -54,7 +66,8 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}" th:id="'row-' + ${user.id}">
-            <td class="col-2" scope="row" th:text="${user.firstName}"></td>
+            <td class="col-2" scope="row" th:text="${user.username}"></td>
+            <td class="col-2" th:text="${user.firstName}"></td>
             <td class="col-2" th:text="${user.lastName}"></td>
             <td class="col-1" th:text="${user.email}"></td>
             <td class="col-2" th:text="${user.mobile}"></td>
