@@ -21,22 +21,26 @@
             Search users
             </a>
         </span>
-        <form id="searchForm" method="get" action="/admin/listUser/search">
+        <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
             <div id="searchBar" class="input-group align-items-center collapse mt-2">
-                <select name="filter" class="form-control rounded-2 m-2">
+                <select th:field="*{filter}" class="form-control rounded-2 m-2">
                     <option value="username" selected>Username</option>
                     <option value="role">Role</option>
                     <option value="email">Email</option>
                 </select>
-                <select name="sort" class="form-control rounded-2 m-2">
+                <select th:field="*{sort}" class="form-control rounded-2 m-2">
                     <option value="az" selected>A-Z</option>
                     <option value="za">Z-A</option>
                     <option value="cDate">Creation date</option>
                     <option value="mDate">Modification date</option>
                 </select>
-                <input type="search" class="form-control rounded-2 m-2" name="query" placeholder="Enter query..." />
+                <input th:field="*{query}" type="search" class="form-control rounded-2 m-2" placeholder="Enter query..." />
+                <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="input-group-append m-2">
-                    <button class="btn btn-primary" type="submit" onclick="ajaxForm('searchForm')">Go</button>
+                    <button class="btn btn-primary" type="submit">
+                        Go
+                        <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>
+                    </button>
                 </div>
             </div>
         </form>

@@ -9,6 +9,7 @@ const observer = new MutationObserver(function() {
     }
   }
 
+  let searchForm = document.getElementById('searchForm');
   let userData = document.getElementById('userData');
   let personalData = document.getElementById('personalData');
   let password = document.getElementById('passwordForm');
@@ -99,6 +100,16 @@ const observer = new MutationObserver(function() {
         ajaxF('/admin/listUser');
       }, 2000);
       }
+    });
+  }
+
+  if(searchForm){
+    searchForm.addEventListener('submit', function(event){
+      event.preventDefault();
+      document.getElementById('searchSpinner').style.display = 'flex';
+      setTimeout(function() {
+        ajaxForm('searchForm');
+      }, 1000);
     });
   }
 });

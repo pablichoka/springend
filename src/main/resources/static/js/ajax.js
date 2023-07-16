@@ -31,17 +31,20 @@ function ajaxF(url){
 
 //Ajax for search
 function ajaxForm(formName) {
+  // event.preventDefault();
   let spinner = document.getElementById('mainSpinner');
   let form = document.getElementById(formName);
   var url = form.getAttribute('action');
+  var csrfToken = document.getElementById('csrf').value;
+  var formData = new FormData(form);
   var xhr = new XMLHttpRequest();
-
-  xhr.open('GET', url, true);
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
   spinner.style.display = 'flex';
 
   xhr.onload = function() {
       document.getElementById('container').innerHTML = xhr.responseText;
       spinner.style.display = 'none';
   }
-  xhr.send();   
+  xhr.send(formData);   
 };
