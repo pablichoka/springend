@@ -6,6 +6,7 @@ function ajaxB(element){
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);
+  document.getElementById('container').innerHTML = "";
   spinner.style.display = 'flex';
 
   xhr.onload = function() {
@@ -21,6 +22,7 @@ function ajaxF(url){
   let spinner = document.getElementById('mainSpinner');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
+  document.getElementById('container').innerHTML = "";
   spinner.style.display = 'flex';
   xhr.onload = function() {
     document.getElementById('container').innerHTML = xhr.responseText;
@@ -40,6 +42,7 @@ function ajaxForm(formName) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
   xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+  document.getElementById('container').innerHTML = "";
   spinner.style.display = 'flex';
 
   xhr.onload = function() {

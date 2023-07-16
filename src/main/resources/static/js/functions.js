@@ -98,3 +98,23 @@ function showDashboard(){
   url = '/views/dashboard';
   ajaxF(url);
 }
+
+function checkIncompatibilities(formName) {
+    let form = document.getElementById(formName);
+    let selects = form.querySelectorAll('select');
+    let filter = selects[0];
+    let sort = selects[1];
+    let filterOptions = filter.querySelectorAll('option');
+    let sortOptions = sort.querySelectorAll('option');
+
+    if (filterOptions[1].selected) {
+        sortOptions[2].disabled = true;
+        sortOptions[3].disabled = true;
+    } else if (sortOptions[2].selected || sortOptions[3].selected) {
+        filterOptions[1].disabled = true;
+    } else {
+        filterOptions[1].disabled = false; // Reestablecer la opción desactivada si no se cumple ninguna condición
+        sortOptions[2].disabled = false; // Reestablecer las opciones desactivadas si no se cumple ninguna condición
+        sortOptions[3].disabled = false;
+    }
+}
