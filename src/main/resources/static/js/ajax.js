@@ -17,7 +17,7 @@ function ajaxB(element){
 
 //Ajax for functions
 function ajaxF(url){
-  event.preventDefault();
+  // event.preventDefault();
   let spinner = document.getElementById('mainSpinner');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);

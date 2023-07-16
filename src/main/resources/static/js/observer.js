@@ -106,7 +106,7 @@ const observer = new MutationObserver(function() {
   if(searchForm){
     searchForm.addEventListener('submit', function(event){
       event.preventDefault();
-      document.getElementById('searchSpinner').style.display = 'flex';
+      document.getElementById('searchSpinner').style.display = 'inherit';
       setTimeout(function() {
         ajaxForm('searchForm');
       }, 1000);

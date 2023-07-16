@@ -21,14 +21,14 @@
             Search users
             </a>
         </span>
-        <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
-            <div id="searchBar" class="input-group align-items-center collapse mt-2">
-                <select th:field="*{filter}" class="form-control rounded-2 m-2">
+        <div id="searchBar" class="input-group justify-content-center collapse mt-2">
+            <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
+                <select th:field="*{filter}" class="form-select rounded-2 m-2">
                     <option value="username" selected>Username</option>
                     <option value="role">Role</option>
                     <option value="email">Email</option>
                 </select>
-                <select th:field="*{sort}" class="form-control rounded-2 m-2">
+                <select th:field="*{sort}" class="form-select rounded-2 m-2">
                     <option value="az" selected>A-Z</option>
                     <option value="za">Z-A</option>
                     <option value="cDate">Creation date</option>
@@ -37,13 +37,13 @@
                 <input th:field="*{query}" type="search" class="form-control rounded-2 m-2" placeholder="Enter query..." />
                 <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="input-group-append m-2">
-                    <button class="btn btn-primary" type="submit">
+                    <button class="btn btn-primary rounded-2 m-2 w-100" type="submit">
                         Go
                         <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>
                     </button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </nav>
 <div id="users" data-last="${last}">
