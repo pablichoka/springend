@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.management.relation.RoleInfoNotFoundException;
 import java.security.Principal;
 
 public interface UserDBService {
@@ -22,7 +23,7 @@ public interface UserDBService {
 
     Page<UserDB> getUsers(int page, int pageSize);
 
-    Page<UserDB> getUsersFromSearch(int page, int pageSize, String filter);
+    Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort);
 
     UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 

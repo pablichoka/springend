@@ -5,28 +5,34 @@ import com.kCalControl.dto.UpdatePasswordDTO;
 import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import com.kCalControl.model.Assets;
+import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
-import com.kCalControl.service.Filters;
 import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleInfoNotFoundException;
+import javax.management.relation.RoleNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class UserDBServiceImpl implements UserDBService {
 
+    private static final Logger logger = Logger.getLogger(UserDBServiceImpl.class.getName());
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -35,8 +41,6 @@ public class UserDBServiceImpl implements UserDBService {
     RoleRepository roleRepository;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    Filters filters;
 
     @Override
     public UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, String role){
@@ -94,15 +98,37 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public Page<UserDB> getUsers(int page, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Sort sort = Sort.by(Sort.Direction.ASC, "username");
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
         return userRepository.findAll(pageRequest);
     }
 
+    //TODO implement more type of sorts and more type of filters
     @Override
-    public Page<UserDB> getUsersFromSearch(int page, int pageSize, String filter) {
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
-        String like = filters.toLike(filter);
-        return userRepository.findByUsernameLikeOrEmailLike(like, like, pageRequest);
+    public Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort) {
+        Sort sorted = null;
+        switch(sort){
+            case "az": sorted = Sort.by(Sort.Direction.ASC, filter); break;
+            case "za": sorted = Sort.by(Sort.Direction.DESC, filter); break;
+            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
+            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
+            default: sorted = Sort.unsorted(); break;
+        }
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
+        if(filter.equals("username")){
+            return userRepository.findByUsernameLike(query, pageRequest);
+        } else if (filter.equals("email")) {
+            return userRepository.findByEmailLike(query, pageRequest);
+        } else if (filter.equals("role")) {
+            Optional<Role> role = roleRepository.findByRoleNameLike(query);
+            if(role.isPresent()) {
+                Role roleQ = role.get();
+                return userRepository.findByRole_Id(roleQ.getId(), pageRequest);
+            }
+        } else {
+            throw new UsernameNotFoundException("The query does not match with any user.");
+        }
+        return null;
     }
 
     @Override

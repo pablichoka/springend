@@ -18,5 +18,8 @@ public interface UserRepository extends MongoRepository<UserDB, ObjectId> {
     Optional<UserDB> findByUsername(String name);
     Optional<UserDB> findByEmail(String email);
     List<UserDB> findAllByRole(Role role);
-    Page<UserDB> findByUsernameLikeOrEmailLike(String name, String email, Pageable pageable);
+    Page<UserDB> findByUsernameLike(String name, Pageable pageable);
+    Page<UserDB> findByEmailLike(String name, Pageable pageable);
+    Page<UserDB> findByRole_Id(ObjectId id, Pageable pageable);
+//    Page<UserDB> findByRoleLike(String name, Pageable pageable);
 }

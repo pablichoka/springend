@@ -2,10 +2,7 @@ package com.kCalControl.controller.impl;
 
 import com.kCalControl.config.Checker;
 import com.kCalControl.controller.UserDBController;
-import com.kCalControl.dto.NewUserDTO;
-import com.kCalControl.dto.UpdatePasswordDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
-import com.kCalControl.dto.UpdateUserDataDTO;
+import com.kCalControl.dto.*;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.UserRepository;
@@ -39,14 +36,14 @@ public class UserDBControllerImpl implements UserDBController {
     UserDBService userDBService;
 
     @Override
-    public String createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model){
-        if(!checker.checkRoleAdminById(id, model)){
-            return "error/403";
-        }
+    public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response){
+//        if(!checker.checkRoleAdminById(id, model)){
+//            return "error/403";
+//        }
         UserDB newUserDB = userDBService.newUser(id, dto, role);
         assetsRepository.save(newUserDB.getAssets());
         userRepository.save(newUserDB);
-        return "redirect:/home";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class UserDBControllerImpl implements UserDBController {
         UserDB newUserDB = userDBService.newUser(id, dto, "USER");
         assetsRepository.save(newUserDB.getAssets());
         userRepository.save(newUserDB);
-        return "redirect:/home";
+        return "/views/home";
     }
 
     @Override
@@ -138,17 +135,17 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public String getUsersList(int page, int pageSize, Model model){
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
-        String query = "";
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
+        model.addAttribute("params",new SearchParamsDTO());
         return "/admin/listUser";
     }
 
     @Override
-    public String searchUsers(int page, int pageSize, String filter, Model model) {
-        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, filter);
-        logger.info("Los resultados de la buuuusqueda: " + userSearchList.toString());
+    public String searchUsers(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
+        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
         model.addAttribute("users", userSearchList.getContent());
+        model.addAttribute("params",new SearchParamsDTO());
         return "/admin/listUser";
     }
 
