@@ -56,4 +56,9 @@ public class ViewControllerImpl implements ViewController {
         return "/views/dashboard";
     }
 
+    @Override
+    public String bmCalculator() {
+        return "/views/calcBM";
+    }
+
 }

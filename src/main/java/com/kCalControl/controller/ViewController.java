@@ -23,4 +23,6 @@ public interface ViewController {
     String addUserFromAdmin(Model model);
     @GetMapping("/views/dashboard")
     String showDashboard(Model model);
+    @GetMapping("/views/calcBM")
+    String bmCalculator();
 }
