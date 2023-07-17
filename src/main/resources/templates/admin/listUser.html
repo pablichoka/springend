@@ -9,7 +9,12 @@
           type="text/css"/>
 </head>
 <body>
-<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <div id="searchError" class="alert alert-dismissible fade show alert-warning" style="display: none;">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+        'Write into the search bar in order to filter by role!'
+    </div>
+</div>
 <nav class="navbar navbar-dark bg-dark justify-content-center rounded-3">
     <span id="brand" class="navbar-brand">User's list</span>
     <div class="navbar-nav" id="navbarText">
@@ -23,12 +28,12 @@
         </span>
         <div id="searchBar" class="input-group justify-content-center collapse mt-2">
             <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
-                <select onchange="checkIncompatibilities('searchBar')" th:field="*{filter}" class="form-select rounded-2 m-2">
+                <select th:field="*{filter}" class="form-select rounded-2 m-2">
                     <option value="username" selected>Username</option>
                     <option value="role">Role</option>
                     <option value="email">Email</option>
                 </select>
-                <select onchange="checkIncompatibilities('searchBar')" th:field="*{sort}" class="form-select rounded-2 m-2">
+                <select th:field="*{sort}" class="form-select rounded-2 m-2">
                     <option value="az" selected>A-Z</option>
                     <option value="za">Z-A</option>
                     <option value="newer">Newer first</option>

@@ -14,7 +14,7 @@ function loadNextPage() {
       .then(function(data) {
           if(checkIfTableIsEmpty(data) === true){
               var alertContainer = document.getElementById('alertContainer');
-              var alertDiv = document.createElement('div');
+              let alertDiv = document.createElement('div');
               alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
               alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                   'There is no more users!';
@@ -34,7 +34,7 @@ function loadPreviousPage() {
   
   if(currentPage <= 0){
       var alertContainer = document.getElementById('alertContainer');
-      var alertDiv = document.createElement('div');
+      let alertDiv = document.createElement('div');
       alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
       alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                           'There is no previous users!';
@@ -99,22 +99,25 @@ function showDashboard(){
   ajaxF(url);
 }
 
-function checkIncompatibilities(formName) {
-    let form = document.getElementById(formName);
-    let selects = form.querySelectorAll('select');
-    let filter = selects[0];
-    let sort = selects[1];
-    let filterOptions = filter.querySelectorAll('option');
-    let sortOptions = sort.querySelectorAll('option');
+function checkQueryFilled() {
+    let form = document.getElementById('searchBar');
+    let filter = form.querySelector('select');
+    let query = form.querySelector('input');
+    filterOptions = filter.querySelectorAll('option');
 
-    if (filterOptions[1].selected) {
-        sortOptions[2].disabled = true;
-        sortOptions[3].disabled = true;
-    } else if (sortOptions[2].selected || sortOptions[3].selected) {
-        filterOptions[1].disabled = true;
-    } else {
-        filterOptions[1].disabled = false; // Reestablecer la opción desactivada si no se cumple ninguna condición
-        sortOptions[2].disabled = false; // Reestablecer las opciones desactivadas si no se cumple ninguna condición
-        sortOptions[3].disabled = false;
+    if(filterOptions[1].selected && query.value === ''){
+        var alertContainer = document.getElementById('alertContainer');
+        let existingAlert = alertContainer.querySelector('.alert');
+        if (existingAlert) {
+        existingAlert.remove(); // Eliminar la alerta existente
+        }
+        let alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-warning');
+        alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            'Write into the search bar in order to filter by role!';
+        alertContainer.appendChild(alertDiv);
+        return true;
+    }else{
+        return false;
     }
 }
