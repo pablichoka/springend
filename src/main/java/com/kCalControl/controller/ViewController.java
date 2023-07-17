@@ -24,5 +24,5 @@ public interface ViewController {
     @GetMapping("/views/dashboard")
     String showDashboard(Model model);
     @GetMapping("/views/calcBM")
-    String bmCalculator();
+    String bmCalculator(Model model);
 }

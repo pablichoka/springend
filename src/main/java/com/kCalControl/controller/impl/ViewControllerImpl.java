@@ -57,7 +57,8 @@ public class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public String bmCalculator() {
+    public String bmCalculator(Model model) {
+        model.addAttribute("user", userDBService.returnLoggedUser());
         return "/views/calcBM";
     }
 

@@ -17,7 +17,67 @@
     </div>
     <hr>
     <div class="m-1 p-2 bg-light rounded shadow">
-        dasds
+        <div class="row m-3">
+            <div class="col-md-6">
+                <p class="display-5 text-center bg-dark text-white rounded shadow p-3">
+                    Check your data
+                </p>
+                <p class="text-center">
+                    <a class="btn text-muted fs-5" data-bs-toggle="collapse" href="#uptData" role="button" aria-expanded="false"
+                       aria-controls="userData">
+                    If it's not correct, or you still haven't filled it up, click here
+                    </a>
+                    <br>
+                    <a id="uptData" class="collapse" th:href="@{/api/editUser/{id}(id=${user.id})}" onclick="ajaxB(this)">
+                        <button type="button" class="btn btn-secondary mt-3">
+                            Update data
+                        </button>
+                    </a>
+                </p>
+                <hr>
+                <div class="form-group m-2 p-1">
+                    Age<input class="form-control" th:value="${user.age}" readonly>
+                    Gender<input class="form-control" th:value="${user.gender}" readonly>
+                    Weight<input class="form-control" th:value="${user.weight}" readonly>
+                    Height<input class="form-control" th:value="${user.height}" readonly>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <p class="display-5 text-center bg-dark text-white rounded shadow p-3">
+                    Check your objectives
+                </p>
+                <p class="text-muted text-center fs-5">
+                    Set up the type of diet that you want to follow
+                </p>
+                <hr>
+                <div class="form-group m-2 p-1">
+                    <form method="post" th:action="@{}" th:object="${userBM}">
+                        <label for="baseBM">Calculated BM</label>
+                            <input class="form-control" id="baseBM" th:value="*{baseBM}" readonly>
+                        <label for="numDaysEx">How often do you exercise each week?</label>
+                            <select class="form-select" id="numDaysEx" th:field="*{numDaysExercise}">
+                                <option value=0 selected>I don't do any exercise</option>
+                                <option value=1>Once a week</option>
+                                <option value=2>Twice a week</option>
+                                <option value=3>Three times a week</option>
+                                <option value=4>Four times a week</option>
+                                <option value=5>Five times a week</option>
+                                <option value=6>Six times a week</option>
+                                <option value=7>Seven times a week</option>
+                            </select>
+                        <label for="weight">Weight</label>
+                            <input id="weight" class="form-control" th:field="*{dietType}">
+                        <label for="height">Height</label>
+                            <input id="height" class="form-control" th:value="${userBM.finalBM}" readonly>
+                        <button type="submit" class="btn btn-success">
+                            Calculate
+                            <div class="spinner-border spinner-border-sm" role="status"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     </body>
 </html>
