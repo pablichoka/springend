@@ -99,23 +99,23 @@ public class UserDBControllerImpl implements UserDBController {
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
-    @Override
-    public void updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response) {
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setAge(dto.getAge());
-        moddedUser.setHeight(dto.getHeight());
-        moddedUser.setWeight(dto.getWeight());
-        moddedUser.setGender(dto.getGender());
-
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userDBRepository.save(moddedUser);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-    }
+//    @Override
+//    public void updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response) {
+//        UserDB moddedUser = userDBService.returnUserById(id);
+//        UserDB modificationUser = userDBService.returnLoggedUser();
+//
+//        moddedUser.setAge(dto.getAge());
+//        moddedUser.setHeight(dto.getHeight());
+//        moddedUser.setWeight(dto.getWeight());
+//        moddedUser.setGender(dto.getGender());
+//
+//        moddedUser.setModificationPerson(modificationUser);
+//        moddedUser.setModificationDate(LocalDateTime.now());
+//
+//        assetsRepository.save(moddedUser.getAssets());
+//        userDBRepository.save(moddedUser);
+//        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//    }
 
     @Override
     public void updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response) {

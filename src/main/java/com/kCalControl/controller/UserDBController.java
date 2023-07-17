@@ -43,8 +43,8 @@ public interface UserDBController {
     @PostMapping("api/updateUserData/{id}")
     void updateUserData(@PathVariable("id") ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response);
 
-    @PostMapping("api/updatePersonalData/{id}")
-    void updatePersonalData(@PathVariable("id") ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response);
+//    @PostMapping("api/updatePersonalData/{id}")
+//    void updatePersonalData(@PathVariable("id") ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response);
 
     @PostMapping("api/updatePassword/{id}")
     void updatePassword(@PathVariable("id") ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response);

@@ -1,27 +1,52 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.model.UserBM;
-import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.UserBMRepository;
-import com.kCalControl.service.UserBMService;
+import com.kCalControl.dto.BMDataDTO;
+import com.kCalControl.model.BMData;
+import com.kCalControl.repository.BMDataRepository;
+import com.kCalControl.service.BMDataService;
 import com.kCalControl.service.UserDBService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class UserBMServiceImpl implements UserBMService {
+public class BMDataServiceImpl implements BMDataService {
     @Autowired
-    UserBMRepository userBMRepository;
+    BMDataRepository BMDataRepository;
     @Autowired
     UserDBService userDBService;
 
     @Override
-    public UserBM returnBMLoggedUser() {
-        return userBMRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
+    public BMData returnBMLoggedUser() {
+        Optional<BMData> bmDataOptional = BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
+        if(bmDataOptional.isPresent()){
+            return bmDataOptional.get();
+        }else {
+            return new BMData(0, 0.0, 0, "", 0.0, 0, "", 0.0);
+        }
+
+    }
+    @Override
+    public BMData returnUserBMByUserDBId(ObjectId id){
+        Optional<BMData> bmDataOptional = BMDataRepository.findByUserAssoc_Id(id);
+        if(bmDataOptional.isPresent()){
+            return bmDataOptional.get();
+        }else {
+            return new BMData(0, 0.0, 0, "", 0.0, 0, "", 0.0);
+        }
+    }
+
+    @Override
+    public void saveData(BMDataDTO dto){
+        BMData BMData = dto.BMDataDTO2UserBM(dto);
+        BMData.setUserAssoc(userDBService.returnLoggedUser());
+        BMDataRepository.save(BMData);
     }
     @Override
     public Double calculateBaseBM() {
-        UserDB user = userDBService.returnLoggedUser();
+        BMData user = BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId()).get();
         Double baseBM;
         switch (user.getGender()) {
             case "Male":

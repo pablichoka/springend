@@ -24,7 +24,7 @@ public interface UserDBService {
 
     Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort);
 
-    UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
+//    UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 
     UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal);
 

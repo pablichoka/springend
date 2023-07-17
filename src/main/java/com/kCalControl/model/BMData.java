@@ -15,13 +15,21 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @Builder
 @Document(collection = "basalMet")
-public class UserBM {
+public class BMData {
 
     @Id
     private ObjectId id;
     @DBRef
     @Field("userBM.userAssoc")
     private UserDB userAssoc;
+    @Field("userDB.age")
+    private Integer age;
+    @Field("userDB.weight")
+    private Double weight;
+    @Field("userDB.height")
+    private Integer height;
+    @Field("userDB.gender")
+    private String gender;
     @Field("userBM.baseBM")
     private Double baseBM;
     @Field("userBM.numDaysEx")
@@ -34,8 +42,18 @@ public class UserBM {
     public String getUsername() {
         return getUserAssoc().getUsername();
     }
-
     public ObjectId getUserId() {
         return getUserAssoc().getId();
+    }
+
+    public BMData(Integer age, Double weight, Integer height, String gender, Double baseBM, Integer numDaysEx, String dietType, Double totalBM) {
+        this.age = age;
+        this.weight = weight;
+        this.height = height;
+        this.gender = gender;
+        this.baseBM = baseBM;
+        this.numDaysEx = numDaysEx;
+        this.dietType = dietType;
+        this.totalBM = totalBM;
     }
 }

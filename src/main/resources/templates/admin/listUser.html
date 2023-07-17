@@ -62,10 +62,6 @@
             <th scope="col" class="col-2">Last name</th>
             <th scope="col" class="col-3">Email</th>
             <th scope="col" class="col-2">Mobile</th>
-            <th scope="col" class="col-1">Age</th>
-            <th scope="col" class="col-1">Weight</th>
-            <th scope="col" class="col-1">Height</th>
-            <th scope="col" class="col-1">Gender</th>
             <th scope="col" class="col-1">Role</th>
             <th scope="col" class="col-2">Creation person</th>
             <th scope="col" class="col-1">Creation date</th>
@@ -82,10 +78,6 @@
             <td class="col-2" th:text="${user.lastName}"></td>
             <td class="col-1" th:text="${user.email}"></td>
             <td class="col-2" th:text="${user.mobile}"></td>
-            <td class="col-1" th:text="${user.age}"></td>
-            <td class="col-1" th:text="${user.weight}"></td>
-            <td class="col-1" th:text="${user.height}"></td>
-            <td class="col-1" th:text="${user.gender}"></td>
             <td class="col-1" th:text="${user.role.roleName}"></td>
             <td class="col-2" th:text="${user.assets.creationPerson.username}"></td>
             <td class="col-1" th:text="${#temporals.format(user.assets.creationDate, 'dd/MM/yyyy')}"></td>

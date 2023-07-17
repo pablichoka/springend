@@ -137,22 +137,22 @@ public class UserDBServiceImpl implements UserDBService {
         throw new UsernameNotFoundException("User cannot be found");
     }
 
-    @Override
-    public UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal){
-
-        UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
-
-        userDB.setAge(dto.getAge());
-        userDB.setHeight(dto.getHeight());
-        userDB.setWeight(dto.getWeight());
-        userDB.setGender(dto.getGender());
-        userDB.setModificationPerson(modificationPerson);
-        userDB.setModificationDate(LocalDateTime.now());
-
-        return userDB;
-    }
+//    @Override
+//    public UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal){
+//
+//        UserDB userDB = userDBRepository.findById(id)
+//                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
+//        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
+//
+//        userDB.setAge(dto.getAge());
+//        userDB.setHeight(dto.getHeight());
+//        userDB.setWeight(dto.getWeight());
+//        userDB.setGender(dto.getGender());
+//        userDB.setModificationPerson(modificationPerson);
+//        userDB.setModificationDate(LocalDateTime.now());
+//
+//        return userDB;
+//    }
 
     @Override
     public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal){
