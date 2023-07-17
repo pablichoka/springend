@@ -5,7 +5,7 @@ import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.*;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
@@ -27,7 +27,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    UserRepository userRepository;
+    UserDBRepository userDBRepository;
     @Autowired
     AssetsRepository assetsRepository;
     @Autowired
@@ -42,7 +42,7 @@ public class UserDBControllerImpl implements UserDBController {
 //        }
         UserDB newUserDB = userDBService.newUser(id, dto, role);
         assetsRepository.save(newUserDB.getAssets());
-        userRepository.save(newUserDB);
+        userDBRepository.save(newUserDB);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -50,7 +50,7 @@ public class UserDBControllerImpl implements UserDBController {
     public String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model){
         UserDB newUserDB = userDBService.newUser(id, dto, "USER");
         assetsRepository.save(newUserDB.getAssets());
-        userRepository.save(newUserDB);
+        userDBRepository.save(newUserDB);
         return "/views/home";
     }
 
@@ -95,7 +95,7 @@ public class UserDBControllerImpl implements UserDBController {
         moddedUser.setModificationDate(LocalDateTime.now());
 
         assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
+        userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -113,7 +113,7 @@ public class UserDBControllerImpl implements UserDBController {
         moddedUser.setModificationDate(LocalDateTime.now());
 
         assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
+        userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -128,7 +128,7 @@ public class UserDBControllerImpl implements UserDBController {
         moddedUser.setModificationDate(LocalDateTime.now());
 
         assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
+        userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 

@@ -53,6 +53,10 @@ public class UserDB {
     @Field("userDB.assets")
     private Assets assets;
 
+    @DBRef
+    @Field("userDB.userBM")
+    private UserBM bmData;
+
     public UserDTO UserDB2UserDTO() {
 
         UserDTO userDTO = new UserDTO();

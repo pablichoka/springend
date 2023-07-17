@@ -9,7 +9,7 @@ import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.RoleRepository;
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UserDBServiceImpl implements UserDBService {
 
     private static final Logger logger = Logger.getLogger(UserDBServiceImpl.class.getName());
     @Autowired
-    UserRepository userRepository;
+    UserDBRepository userDBRepository;
     @Autowired
     AssetsRepository assetsRepository;
     @Autowired
@@ -42,7 +42,7 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, String role){
-        UserDB creationPerson = userRepository.findById(creationPersonId)
+        UserDB creationPerson = userDBRepository.findById(creationPersonId)
                 .orElseThrow(() -> new UsernameNotFoundException("The creator does not exist"));
 
         UserDB userDB = new UserDB();
@@ -70,14 +70,14 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public UserDB returnUserById(ObjectId id){
-        UserDB userDB = userRepository.findById(id)
+        UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
         return userDB;
     }
 
     @Override
     public UserDB returnLoggedUser(){
-        UserDB userDB = userRepository.findByUsername(getUsernameLoggedUser())
+        UserDB userDB = userDBRepository.findByUsername(getUsernameLoggedUser())
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
         return userDB;
     }
@@ -98,7 +98,7 @@ public class UserDBServiceImpl implements UserDBService {
     public Page<UserDB> getUsers(int page, int pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "username");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
-        return userRepository.findAll(pageRequest);
+        return userDBRepository.findAll(pageRequest);
     }
 
     //TODO find a solution to implement sorting by date
@@ -118,21 +118,21 @@ public class UserDBServiceImpl implements UserDBService {
         }
         PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
         if(filter.equals("username")){
-            return userRepository.findByUsernameLike(query, pageRequest);
+            return userDBRepository.findByUsernameLike(query, pageRequest);
         } else if (filter.equals("email")) {
-            return userRepository.findByEmailLike(query, pageRequest);
+            return userDBRepository.findByEmailLike(query, pageRequest);
         } else if (filter.equals("role")) {
             Optional<Role> role = roleRepository.findByRoleNameLike(query);
             if(role.isPresent()) {
                 Role roleQ = role.get();
-                return userRepository.findByRole_Id(roleQ.getId(), pageRequest);
+                return userDBRepository.findByRole_Id(roleQ.getId(), pageRequest);
             }
         } else if (filter.equals("firstName")) {
-            return userRepository.findByFirstNameLike(query, pageRequest);
+            return userDBRepository.findByFirstNameLike(query, pageRequest);
         } else if (filter.equals("lastName")) {
-            return userRepository.findByLastNameLike(query, pageRequest);
+            return userDBRepository.findByLastNameLike(query, pageRequest);
         } else {
-            return userRepository.findAll(pageRequest);
+            return userDBRepository.findAll(pageRequest);
         }
         throw new UsernameNotFoundException("User cannot be found");
     }
@@ -140,9 +140,9 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal){
 
-        UserDB userDB = userRepository.findById(id)
+        UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userRepository.findByUsername(principal.getName()).get();
+        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
 
         userDB.setAge(dto.getAge());
         userDB.setHeight(dto.getHeight());
@@ -156,9 +156,9 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal){
-        UserDB userDB = userRepository.findById(id)
+        UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userRepository.findByUsername(principal.getName()).get();
+        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
 
         userDB.setFirstName(dto.getFirstName());
         userDB.setLastName(dto.getLastName());
@@ -172,9 +172,9 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal){
-        UserDB userDB = userRepository.findById(id)
+        UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userRepository.findByUsername(principal.getName()).get();
+        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
 
         LocalDateTime time = LocalDateTime.now();
 
@@ -188,10 +188,10 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public void deleteUser(ObjectId id){
-        UserDB userDB = userRepository.findById(id)
+        UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to delete does not exist"));
         assetsRepository.delete(userDB.getAssets());
-        userRepository.deleteById(id);
+        userDBRepository.deleteById(id);
     }
 
 }

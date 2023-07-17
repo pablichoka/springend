@@ -1,7 +1,7 @@
 package com.kCalControl.config;
 
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserDBRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class UserSession implements UserDetailsService {
     private final static Logger logger = LoggerFactory.getLogger(UserSession.class);
     @Autowired
-    private UserRepository userRepository;
+    private UserDBRepository userDBRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<UserDB> userOptional = userRepository.findByUsername(name);
+        Optional<UserDB> userOptional = userDBRepository.findByUsername(name);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("User does not exist");
         }
