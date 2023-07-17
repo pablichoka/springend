@@ -23,5 +23,4 @@ public interface UserRepository extends MongoRepository<UserDB, ObjectId> {
     Page<UserDB> findByRole_Id(ObjectId id, Pageable pageable);
     Page<UserDB> findByFirstNameLike(String name, Pageable pageable);
     Page<UserDB> findByLastNameLike(String name, Pageable pageable);
-
 }

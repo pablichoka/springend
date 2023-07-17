@@ -22,8 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleInfoNotFoundException;
-import javax.management.relation.RoleNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -103,17 +101,19 @@ public class UserDBServiceImpl implements UserDBService {
         return userRepository.findAll(pageRequest);
     }
 
-    //TODO fix sorting by date
+    //TODO find a solution to implement sorting by date
     @Override
     public Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort) {
         Sort sorted = null;
+        if (filter.equals("")){filter = "username";}//In case not filtering, target will be username
+
         switch(sort){
             case "az": sorted = Sort.by(Sort.Direction.ASC, filter); break;
             case "za": sorted = Sort.by(Sort.Direction.DESC, filter); break;
-            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
-            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
-            case "newerM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
-            case "olderM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
+//            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
+//            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
+//            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
+//            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
             default: sorted = Sort.unsorted(); break;
         }
         PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
