@@ -14,6 +14,8 @@ public class UserBMControllerImpl implements UserBMController {
     @Autowired
     UserBMService userBMService;
 
+    //TODO implement an endpoint to receive the data from the form, save it and return by ajax request the page with updated data
+    //TODO create DTO for the form
     @Override
     public String bmCalculator(Model model) {
         model.addAttribute("user", userDBService.returnLoggedUser());
