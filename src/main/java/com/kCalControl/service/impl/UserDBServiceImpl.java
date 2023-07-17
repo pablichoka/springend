@@ -103,7 +103,7 @@ public class UserDBServiceImpl implements UserDBService {
         return userRepository.findAll(pageRequest);
     }
 
-    //TODO implement more type of sorts and more type of filters
+    //TODO fix sorting by date
     @Override
     public Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort) {
         Sort sorted = null;
@@ -112,6 +112,8 @@ public class UserDBServiceImpl implements UserDBService {
             case "za": sorted = Sort.by(Sort.Direction.DESC, filter); break;
             case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
             case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
+            case "newerM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
+            case "olderM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
             default: sorted = Sort.unsorted(); break;
         }
         PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
@@ -125,10 +127,14 @@ public class UserDBServiceImpl implements UserDBService {
                 Role roleQ = role.get();
                 return userRepository.findByRole_Id(roleQ.getId(), pageRequest);
             }
+        } else if (filter.equals("firstName")) {
+            return userRepository.findByFirstNameLike(query, pageRequest);
+        } else if (filter.equals("lastName")) {
+            return userRepository.findByLastNameLike(query, pageRequest);
         } else {
-            throw new UsernameNotFoundException("The query does not match with any user.");
+            return userRepository.findAll(pageRequest);
         }
-        return null;
+        throw new UsernameNotFoundException("User cannot be found");
     }
 
     @Override

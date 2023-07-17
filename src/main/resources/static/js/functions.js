@@ -105,7 +105,7 @@ function checkQueryFilled() {
     let query = form.querySelector('input');
     filterOptions = filter.querySelectorAll('option');
 
-    if(filterOptions[1].selected && query.value === ''){
+    if(filterOptions[5].selected && query.value === ''){
         var alertContainer = document.getElementById('alertContainer');
         let existingAlert = alertContainer.querySelector('.alert');
         if (existingAlert) {
