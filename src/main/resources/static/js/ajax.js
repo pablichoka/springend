@@ -45,10 +45,13 @@ function ajaxForm(formName) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-    document.getElementById('container').innerHTML = "";
+    document.getElementById('users').innerHTML = "";
 
     xhr.onload = function() {
-      document.getElementById('container').innerHTML = xhr.responseText;
+      var parser = new DOMParser();
+    var doc = parser.parseFromString(xhr.responseText, 'text/html');
+    var div = doc.getElementById('users');
+      document.getElementById('users').innerHTML = div.innerHTML;
       spinner.style.display = 'none';
     }
     

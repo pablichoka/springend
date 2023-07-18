@@ -37,28 +37,28 @@
                       th:object="${personalDataDTO}">
                     <div id="containerBMData">
                         <label for="age">Age</label>
-                        <input id="age" type="text" class="form-control bmData" th:placeholder="${BMData.age}"
+                        <input id="age" type="text" class="form-control mb-2 bmData" th:placeholder="${BMData.age}"
                                th:field="*{age}">
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="actGender">Gender</label>
-                                <input id="actGender" type="text" class="form-control" th:value="${BMData.gender}"
+                                <input id="actGender" type="text" class="form-control mb-2" th:value="${BMData.gender}"
                                        readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="gender">Do you want to change it?</label>
-                                <select class="form-select" id="gender" th:field="*{gender}">
+                                <select class="form-select mb-2" id="gender" th:field="*{gender}">
                                     <option value="" selected>Select a gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
                         </div>
-                        <label for="weight"></label>Weight
-                        <input id="weight" type="text" class="form-control bmData" th:field="*{weight}"
+                        <label for="weight">Weight (kg)</label>
+                        <input id="weight" type="text" class="form-control mb-2 bmData" th:field="*{weight}"
                                th:placeholder="${BMData.weight}">
-                        <label for="height">Height</label>
-                        <input id="height" type="text" class="form-control bmData" th:field="*{height}"
+                        <label for="height">Height (cm)</label>
+                        <input id="height" type="text" class="form-control mb-2 bmData" th:field="*{height}"
                                th:placeholder="${BMData.height}">
                         <a id="uptData" class="collapse">
                             <button type="submit" class="btn btn-success mt-3">
@@ -86,18 +86,18 @@
                 <form id="bmCalc" method="post" th:action="@{/api/updateBMCalc/{id}(id=${user.id})}"
                       th:object="${BMDataDTO}">
                     <div id="containerBMCalc">
-                        <label for="baseBM">Calculated BM</label>
-                        <input class="form-control" type="text" id="baseBM" th:value="${#numbers.formatDecimal(BMData.baseBM, 0, 0.00)}" readonly>
+                        <label for="baseBM">Calculated BM (kCal)</label>
+                        <input class="form-control mb-2" type="text" id="baseBM" th:value="${#numbers.formatDecimal(BMData.baseBM, 0, 0.00)}" readonly>
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="actNumDaysEx">Actual exercise frequency</label>
-                                <input type="text" id="actNumDaysEx" class="form-control"
+                                <label for="actNumDaysEx">Actual exercise frequency (days/week)</label>
+                                <input type="text" id="actNumDaysEx" class="form-control mb-2"
                                        th:value="${BMData.numDaysEx}"
                                        readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="numDaysEx">Update it</label>
-                                <select class="form-select" id="numDaysEx" th:field="*{numDaysEx}">
+                                <select class="form-select mb-2" id="numDaysEx" th:field="*{numDaysEx}">
                                     <option value="" selected>Select the frequency</option>
                                     <option value="0">I don't do any exercise</option>
                                     <option value="1">Once a week</option>
@@ -113,12 +113,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="actDietType">Actual diet type</label>
-                                <input type="text" id="actDietType" class="form-control"
+                                <input type="text" id="actDietType" class="form-control mb-2"
                                        th:value="${BMData.dietType}">
                             </div>
                             <div class="col-md-6">
                                 <label for="dietType">Update it</label>
-                                <select class="form-select" id="dietType" th:field="*{dietType}">
+                                <select class="form-select mb-2" id="dietType" th:field="*{dietType}">
                                     <option value="" selected>Select the diet type</option>
                                     <option value="Definition">Definition</option>
                                     <option value="Maintain">Maintain</option>
@@ -126,8 +126,8 @@
                                 </select>
                             </div>
                         </div>
-                        <label for="finalBM">Total BM</label>
-                        <input id="finalBM" type="text" class="form-control" th:value="${#numbers.formatDecimal(BMData.totalBM, 0, 0.00)}" readonly>
+                        <label for="finalBM">Total BM (kCal)</label>
+                        <input id="finalBM" type="text" class="form-control mb-2" th:value="${#numbers.formatDecimal(BMData.totalBM, 0, 0.00)}" readonly>
                         <a id="uptCalc" class="collapse">
                             <button type="submit" class="btn btn-success mt-3">
                                 Calculate
