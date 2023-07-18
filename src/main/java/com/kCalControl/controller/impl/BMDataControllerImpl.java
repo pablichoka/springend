@@ -21,13 +21,13 @@ public class BMDataControllerImpl implements BMDataController {
     BMDataService BMDataService;
     @Autowired
     BMDataRepository BMDataRepository;
-
-    //TODO implement an endpoint to receive the data from the form, save it and return by ajax request the page with updated data
-    //TODO create DTO for the form
     @Override
     public String bmCalculator(Model model) {
         model.addAttribute("user", userDBService.returnLoggedUser());
-        model.addAttribute("BMData", BMDataService.returnBMDataLoggedUser());
+        BMData bmData = BMDataService.returnBMDataLoggedUser();
+        BMDataService.calculateBaseBM(bmData);
+        BMDataService.calculateFinalBM(bmData, bmData.getDietType(), bmData.getNumDaysEx());
+        model.addAttribute("BMData", bmData);
         model.addAttribute("BMDataDTO", new BMDataDTO());
         model.addAttribute("personalDataDTO", new UpdatePersonalDataDTO());
         return "/views/calcBM";
@@ -36,8 +36,8 @@ public class BMDataControllerImpl implements BMDataController {
     @Override
     public void updateBMCalc(ObjectId id, BMDataDTO dto, HttpServletResponse httpServletResponse) {
         BMData bmData = BMDataService.saveCalc(id, dto);
-        bmData.setBaseBM(BMDataService.calculateBaseBM(bmData));
-        bmData.setTotalBM(BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx()));
+        BMDataService.calculateBaseBM(bmData);
+        BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx());
         BMDataRepository.save(bmData);
         httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }

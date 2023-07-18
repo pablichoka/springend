@@ -46,7 +46,7 @@ function ajaxForm(formName) {
     xhr.open('POST', url, true);
     xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
     document.getElementById('container').innerHTML = "";
-    
+
     xhr.onload = function() {
       document.getElementById('container').innerHTML = xhr.responseText;
       spinner.style.display = 'none';
@@ -54,4 +54,38 @@ function ajaxForm(formName) {
     
     xhr.send(formData);
   }
+}
+
+function ajaxBMData(url){
+  // event.preventDefault();
+  let spinner = document.getElementById('mainSpinner');
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  document.getElementById('containerBMData').innerHTML = "";
+  spinner.style.display = 'flex';
+  xhr.onload = function() {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(xhr.responseText, 'text/html');
+    var div = doc.getElementById('containerBMData');
+    document.getElementById('containerBMData').innerHTML = div.innerHTML;
+    spinner.style.display = 'none';
+  };
+  xhr.send();
+}
+
+function ajaxBMCalc(url){
+  // event.preventDefault();
+  let spinner = document.getElementById('mainSpinner');
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  document.getElementById('containerBMCalc').innerHTML = "";
+  spinner.style.display = 'flex';
+  xhr.onload = function() {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(xhr.responseText, 'text/html');
+    var div = doc.getElementById('containerBMCalc');
+    document.getElementById('containerBMCalc').innerHTML = div.innerHTML;
+    spinner.style.display = 'none';
+  };
+  xhr.send();
 }

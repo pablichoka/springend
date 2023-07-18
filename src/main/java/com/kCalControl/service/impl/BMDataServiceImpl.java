@@ -51,7 +51,7 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public Double calculateBaseBM(BMData bmData) {
+    public void calculateBaseBM(BMData bmData) {
         Double baseBM;
         switch (bmData.getGender()) {
             case "Male":
@@ -63,21 +63,22 @@ public class BMDataServiceImpl implements BMDataService {
             default: baseBM = 0.0;
                 break;
         }
-        return baseBM;
+        bmData.setBaseBM(baseBM);
+        BMDataRepository.save(bmData);
     }
     @Override
-    public Double calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx) {
+    public void calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx) {
         Double percentageOfkCal;
         Double exFactor;
         Double totalBM;
         switch (dietType) {
-            case "def":
+            case "Definition":
                 percentageOfkCal = 0.85;
                 break;
-            case "main":
+            case "Maintain":
                 percentageOfkCal = 1.00;
                 break;
-            case "gain":
+            case "Gaining":
                 percentageOfkCal = 1.15;
                 break;
             default:
@@ -120,8 +121,9 @@ public class BMDataServiceImpl implements BMDataService {
                 exFactor = 0.0;
                 break;
         }
-        totalBM = calculateBaseBM(bmData)*percentageOfkCal*exFactor;
-        return totalBM;
+        totalBM = bmData.getBaseBM()*percentageOfkCal*exFactor;
+        bmData.setTotalBM(totalBM);
+        BMDataRepository.save(bmData);
         }
 }
 

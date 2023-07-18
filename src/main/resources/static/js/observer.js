@@ -65,9 +65,13 @@ const observer = new MutationObserver(function() {
           personalDataInputs[i].value = personalDataInputs[i].placeholder;
         }
       }
-      personalDataForm.submit();
+      let gender = document.getElementById('gender');
+      if(gender.value === null || gender.value === ''){
+        gender.value = document.getElementById('actGender').value;
+      }
+      personalData.submit();
       setTimeout(function() {
-        ajaxF('/views/calcBM');
+        ajaxBMData('/views/calcBM');
       }, 1000);
     });
   }
@@ -76,9 +80,17 @@ const observer = new MutationObserver(function() {
     calcData.addEventListener('submit', function(event) {
       event.preventDefault();
       document.getElementById('bmCalcSpinner').style['display']='inherit';
-      personalDataForm.submit();
+      let dietType = document.getElementById('dietType');
+      let numDaysEx = document.getElementById('numDaysEx');
+      if(dietType.value === null || dietType.value === ''){
+        dietType.value = document.getElementById('actDietType').value;
+      }
+      if ((numDaysEx.value === null || numDaysEx.value === '')) {
+        numDaysEx.value = document.getElementById('actNumDaysEx').value;
+      }
+      calcData.submit();
       setTimeout(function() {
-        ajaxF('/views/calcBM');
+        ajaxBMCalc('/views/calcBM');
       }, 1000);
     });
   }

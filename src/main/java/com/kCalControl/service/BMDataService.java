@@ -14,7 +14,7 @@ public interface BMDataService {
 
     BMData saveCalc(ObjectId id, BMDataDTO dto);
 
-    Double calculateBaseBM(BMData bmData);
+    void calculateBaseBM(BMData bmData);
 
-    Double calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx);
+    void calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx);
 }
