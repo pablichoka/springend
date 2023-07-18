@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface BMDataRepository extends MongoRepository<BMData, ObjectId> {
-    Optional<BMData> findByUserAssoc_Id(ObjectId id);
+    BMData findByUserAssoc_Id(ObjectId id);
 
 }

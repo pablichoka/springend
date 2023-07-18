@@ -121,11 +121,3 @@ function checkQueryFilled() {
         return false;
     }
 }
-
-function toggleReadonly(formName){
-    let form = document.getElementById(formName);
-    let inputs = form.querySelectorAll('input[type="text"]');
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].readOnly = true;
-      }
-}

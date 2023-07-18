@@ -45,7 +45,7 @@ public class UserDB {
     private Assets assets;
 
     @DBRef
-    @Field("userDB.userBM")
+    @Field("userDB.bmData")
     private BMData bmData;
 
     public UserDB(String username, String firstName, String lastName, String mobile, String email, String password) {

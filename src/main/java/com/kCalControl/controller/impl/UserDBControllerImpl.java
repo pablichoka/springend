@@ -5,6 +5,7 @@ import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.*;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
+import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +32,8 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     AssetsRepository assetsRepository;
     @Autowired
+    BMDataRepository bmDataRepository;
+    @Autowired
     Checker checker;
     @Autowired
     UserDBService userDBService;
@@ -41,6 +44,7 @@ public class UserDBControllerImpl implements UserDBController {
 //            return "error/403";
 //        }
         UserDB newUserDB = userDBService.newUser(id, dto, role);
+        bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
@@ -49,6 +53,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model){
         UserDB newUserDB = userDBService.newUser(id, dto, "USER");
+        bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
         return "/views/home";
@@ -98,24 +103,6 @@ public class UserDBControllerImpl implements UserDBController {
         userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
-
-//    @Override
-//    public void updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response) {
-//        UserDB moddedUser = userDBService.returnUserById(id);
-//        UserDB modificationUser = userDBService.returnLoggedUser();
-//
-//        moddedUser.setAge(dto.getAge());
-//        moddedUser.setHeight(dto.getHeight());
-//        moddedUser.setWeight(dto.getWeight());
-//        moddedUser.setGender(dto.getGender());
-//
-//        moddedUser.setModificationPerson(modificationUser);
-//        moddedUser.setModificationDate(LocalDateTime.now());
-//
-//        assetsRepository.save(moddedUser.getAssets());
-//        userDBRepository.save(moddedUser);
-//        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-//    }
 
     @Override
     public void updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response) {

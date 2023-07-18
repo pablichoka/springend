@@ -2,9 +2,9 @@ package com.kCalControl.service.impl;
 
 import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.UpdatePasswordDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import com.kCalControl.model.Assets;
+import com.kCalControl.model.BMData;
 import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
@@ -64,6 +64,11 @@ public class UserDBServiceImpl implements UserDBService {
         assets.setModificationDate(time);
         userDB.setAssets(assets);
         userDB.setRole(roleRepository.findByRoleName(role).get());
+
+        BMData bmData = new BMData();
+        bmData.setUserAssoc(userDB);
+
+        userDB.setBmData(bmData);
 
         return userDB;
     }

@@ -24,25 +24,27 @@
                 </p>
                 <p class="text-center">
                     <a class="btn text-muted fs-5" data-bs-toggle="collapse" href="#uptData" role="button" aria-expanded="false"
-                       aria-controls="userData" onclick="toggleReadonly('bmData')">
-                    If it's not correct, or you still haven't filled it up, click here
+                       aria-controls="userData">
+                    To do any modification, please click here
                     </a>
                 </p>
                 <hr>
+                <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="form-group m-2 p-1">
-                    <form id="bmData" method="post" th:action="@{/api/updateBMData/{id}(id=${user.id})}" th:object="${userBMDTO}">
+                    <form id="bmData" method="post" th:action="@{/api/updateBMData/{id}(id=${user.id})}" th:object="${personalDataDTO}">
                         <label for="age">Age</label>
-                        <input id="age" type="text" class="form-control" th:field="*{age}" th:placeholder="${BMData.age}">
+                        <input id="age" type="text" class="form-control bmData" th:placeholder="${BMData.age}" th:field="*{age}">
                         <label for="gender">Gender</label>
-                        <input id="gender" type="text" class="form-control" th:field="*{gender}" th:placeholder="${BMData.gender}">
+                        <input id="gender" type="text" class="form-control bmData" th:field="*{gender}" th:placeholder="${BMData.gender}">
                         <label for="weight"></label>Weight
-                        <input id="weight" type="text" class="form-control" th:field="*{weight}" th:placeholder="${BMData.weight}">
+                        <input id="weight" type="text" class="form-control bmData" th:field="*{weight}" th:placeholder="${BMData.weight}">
                         <label for="height">Height</label>
-                        <input id="height" type="text" class="form-control" th:field="*{height}" th:placeholder="${BMData.height}">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input id="height" type="text" class="form-control bmData" th:field="*{height}" th:placeholder="${BMData.height}">
+<!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
                         <a id="uptData" class="collapse" onclick="ajaxForm('bmData')">
                             <button type="button" class="btn btn-secondary mt-3">
                                 Update data
+                                <div id="bmDataSpinner" class="spinner-border spinner-border-sm" role="status"></div>
                             </button>
                         </a>
                     </form>
@@ -58,30 +60,30 @@
                 </p>
                 <hr>
                 <div class="form-group m-2 p-1">
-                    <form id="bmCalc" method="post" th:action="@{/api/updateBMCalc/{id}(id=${user.id})}" th:object="${userBMDTO}">
+                    <form id="bmCalc" method="post" th:action="@{/api/updateBMCalc/{id}(id=${user.id})}" th:object="${BMDataDTO}">
                         <label for="baseBM">Calculated BM</label>
-                            <input class="form-control" type="text" id="baseBM" th:placeholder="${BMData.baseBM}" readonly>
+                            <input class="form-control" type="text" id="baseBM" th:value="${BMData.baseBM}" readonly>
                         <label for="numDaysEx">How often do you exercise each week?</label>
                             <select class="form-select" id="numDaysEx" th:field="*{numDaysEx}">
-                                <option value=0 th:selected="${obj.numDaysEx == 0}">I don't do any exercise</option>
-                                <option value=1 th:selected="${obj.numDaysEx == 1}">Once a week</option>
-                                <option value=2 th:selected="${obj.numDaysEx == 2}">Twice a week</option>
-                                <option value=3 th:selected="${obj.numDaysEx == 3}">Three times a week</option>
-                                <option value=4 th:selected="${obj.numDaysEx == 4}">Four times a week</option>
-                                <option value=5 th:selected="${obj.numDaysEx == 5}">Five times a week</option>
-                                <option value=6 th:selected="${obj.numDaysEx == 6}">Six times a week</option>
-                                <option value=7 th:selected="${obj.numDaysEx == 7}">Seven times a week</option>
+                                <option value=0 th:selected="${obj?.numDaysEx == 0}">I don't do any exercise</option>
+                                <option value=1 th:selected="${obj?.numDaysEx == 1}">Once a week</option>
+                                <option value=2 th:selected="${obj?.numDaysEx == 2}">Twice a week</option>
+                                <option value=3 th:selected="${obj?.numDaysEx == 3}">Three times a week</option>
+                                <option value=4 th:selected="${obj?.numDaysEx == 4}">Four times a week</option>
+                                <option value=5 th:selected="${obj?.numDaysEx == 5}">Five times a week</option>
+                                <option value=6 th:selected="${obj?.numDaysEx == 6}">Six times a week</option>
+                                <option value=7 th:selected="${obj?.numDaysEx == 7}">Seven times a week</option>
                             </select>
                         <label for="dietType">Diet type</label>
                             <select class="form-select" id="dietType" th:field="*{dietType}">
-                                <option value="def" th:selected="${obj.numDaysEx == 'def'}">Definition</option>
-                                <option value="main" th:selected="${obj.numDaysEx == 'main'}">Maintaining</option>
-                                <option value="gain" th:selected="${obj.numDaysEx == 'gain'}">To gain weight</option>
+                                <option value="def" th:selected="${obj?.dietType == 'def'}">Definition</option>
+                                <option value="main" th:selected="${obj?.dietType == 'main'}">Maintaining</option>
+                                <option value="gain" th:selected="${obj?.dietType == 'gain'}">To gain weight</option>
                             </select>
                         <label for="finalBM">Total BM</label>
-                            <input id="finalBM" type="text" class="form-control" th:placeholder="${BMData.finalBM}" readonly>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                        <button type="submit" class="btn btn-success">
+                            <input id="finalBM" type="text" class="form-control" th:value="${BMData.totalBM}" readonly>
+<!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                        <button type="submit" class="btn btn-success mt-3">
                             Calculate
                             <div class="spinner-border spinner-border-sm" role="status"></div>
                         </button>

@@ -20,23 +20,23 @@ public class BMData {
     @Id
     private ObjectId id;
     @DBRef
-    @Field("userBM.userAssoc")
+    @Field("bmData.userAssoc")
     private UserDB userAssoc;
-    @Field("userDB.age")
+    @Field("bmData.age")
     private Integer age;
-    @Field("userDB.weight")
+    @Field("bmData.weight")
     private Double weight;
-    @Field("userDB.height")
+    @Field("bmData.height")
     private Integer height;
-    @Field("userDB.gender")
+    @Field("bmData.gender")
     private String gender;
-    @Field("userBM.baseBM")
+    @Field("bmData.baseBM")
     private Double baseBM;
-    @Field("userBM.numDaysEx")
+    @Field("bmData.numDaysEx")
     private Integer numDaysEx;
-    @Field("userBM.dietType")
+    @Field("bmData.dietType")
     private String dietType;
-    @Field("userBM.totalBM")
+    @Field("bmData.totalBM")
     private Double totalBM;
 
     public String getUsername() {

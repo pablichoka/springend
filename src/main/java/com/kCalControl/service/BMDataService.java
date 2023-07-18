@@ -1,17 +1,20 @@
 package com.kCalControl.service;
 
 import com.kCalControl.dto.BMDataDTO;
+import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.model.BMData;
 import org.bson.types.ObjectId;
 
 public interface BMDataService {
-    BMData returnBMLoggedUser();
+    BMData returnBMDataLoggedUser();
 
-    BMData returnUserBMByUserDBId(ObjectId id);
+    BMData returnBMDataByUserDBId(ObjectId id);
 
-    void saveData(BMDataDTO dto);
+    BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO);
 
-    Double calculateBaseBM();
+    BMData saveCalc(ObjectId id, BMDataDTO dto);
 
-    Double calculateFinalBM(String dietType, Integer numDaysEx);
+    Double calculateBaseBM(BMData bmData);
+
+    Double calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx);
 }

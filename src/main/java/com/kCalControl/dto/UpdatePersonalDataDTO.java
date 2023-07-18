@@ -1,5 +1,6 @@
 package com.kCalControl.dto;
 
+import com.kCalControl.model.BMData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

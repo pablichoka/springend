@@ -1,6 +1,7 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.dto.BMDataDTO;
+import com.kCalControl.dto.UpdatePersonalDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,6 @@ public interface BMDataController {
     @PostMapping("/api/updateBMCalc/{id}")
     void updateBMCalc(@PathVariable("id")ObjectId id, BMDataDTO dto, HttpServletResponse httpServletResponse);
     @PostMapping("/api/updateBMData/{id}")
-    void updateBMData(@PathVariable("id")ObjectId id, BMDataDTO dto, HttpServletResponse httpServletResponse);
+    void updateBMData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
 
 }
