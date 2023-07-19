@@ -31,8 +31,14 @@ const observer = new MutationObserver(function() {
         }
       }
       userDataForm.submit();
+      let url;
+      if(document.getElementById('role').value === 'ADMIN'){
+        url = '/auth/admin/listUser';
+      }else{
+        url = '/auth/api/myProfile';
+      }
       setTimeout(function() {
-        ajaxF('/auth/admin/listUser');
+        ajaxF(url);
       }, 2000);
     });
 
@@ -47,9 +53,15 @@ const observer = new MutationObserver(function() {
                             'You cannot enter an empty password!';
         alertContainer.appendChild(alertDiv);
       }else{
+          let url;
+        if(document.getElementById('role').value === 'ADMIN'){
+          url = '/auth/admin/listUser';
+        }else{
+          url = '/auth/api/myProfile';
+        }
         passwordForm.submit();
       setTimeout(function() {
-        ajaxF('/admin/listUser');
+        ajaxF('url');
       }, 2000);
       }
     });
