@@ -20,6 +20,7 @@
             Password
         </a>
     </p>
+    <input type="hidden" id="role" th:value="${user.role.roleName}">
     <div class="row m-3">
         <div class="p-3 rounded-3 border border-1 border-black gray mb-3 collapse col-md-6" id="userData">
             <form th:object="${userData}" method="post" th:action="@{/auth/api/updateUserData/{id}(id=${user.id})}">
@@ -68,7 +69,7 @@
             </form>
         </div>
     </div>
-    <div th:if="${user.role.roleName eq 'ADMIN'}" class="text-end">
+    <div th:unless="${user.role.roleName eq 'USER'}" class="text-end">
         <a href="/auth/admin/listUser" onclick="ajaxB(this)">
             <button class="btn btn-secondary">Go back</button>
         </a>
