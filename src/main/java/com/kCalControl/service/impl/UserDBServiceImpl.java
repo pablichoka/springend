@@ -41,9 +41,9 @@ public class UserDBServiceImpl implements UserDBService {
     BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, String role){
-        UserDB creationPerson = userDBRepository.findById(creationPersonId)
-                .orElseThrow(() -> new UsernameNotFoundException("The creator does not exist"));
+    public UserDB newAdminUser(ObjectId creationPersonId, NewUserDTO dto, String role){
+
+        UserDB creationPerson;
 
         UserDB userDB = new UserDB();
         userDB.setId(new ObjectId());
@@ -57,6 +57,12 @@ public class UserDBServiceImpl implements UserDBService {
         LocalDateTime time = LocalDateTime.now();
         Assets assets = new Assets();
 
+        if(userDBRepository.findById(creationPersonId).isPresent()){
+            creationPerson = userDBRepository.findById(creationPersonId).get();
+        }else{
+            creationPerson = null;
+        }
+
         userDB.setPasswordDate(time);
         assets.setCreationPerson(creationPerson);
         assets.setCreationDate(time);
@@ -64,6 +70,39 @@ public class UserDBServiceImpl implements UserDBService {
         assets.setModificationDate(time);
         userDB.setAssets(assets);
         userDB.setRole(roleRepository.findByRoleName(role).get());
+
+        BMData bmData = new BMData();
+        bmData.setUserAssoc(userDB);
+
+        userDB.setBmData(bmData);
+
+        return userDB;
+    }
+
+    @Override
+    public UserDB newNormalUser(NewUserDTO dto){
+
+        UserDB userDB = new UserDB();
+        userDB.setId(new ObjectId());
+        userDB.setUsername(dto.getUsername());
+        userDB.setFirstName(dto.getFirstName());
+        userDB.setLastName(dto.getLastName());
+        userDB.setEmail(dto.getEmail());
+        userDB.setMobile(dto.getMobile());
+        userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+//        userDBRepository.save(userDB);
+
+        LocalDateTime time = LocalDateTime.now();
+        Assets assets = new Assets();
+
+        userDB.setPasswordDate(time);
+        assets.setCreationPerson(userDB);
+        assets.setCreationDate(time);
+        assets.setModificationPerson(userDB);
+        assets.setModificationDate(time);
+        userDB.setAssets(assets);
+        userDB.setRole(roleRepository.findByRoleName("USER").get());
 
         BMData bmData = new BMData();
         bmData.setUserAssoc(userDB);

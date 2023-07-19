@@ -32,7 +32,7 @@ const observer = new MutationObserver(function() {
       }
       userDataForm.submit();
       setTimeout(function() {
-        ajaxF('/admin/listUser');
+        ajaxF('/auth/admin/listUser');
       }, 2000);
     });
 
@@ -71,7 +71,7 @@ const observer = new MutationObserver(function() {
       }
       personalData.submit();
       setTimeout(function() {
-        ajaxBMData('/views/calcBM');
+        ajaxBMData('/auth/views/calcBM');
       }, 1000);
     });
   }
@@ -90,7 +90,7 @@ const observer = new MutationObserver(function() {
       }
       calcData.submit();
       setTimeout(function() {
-        ajaxBMCalc('/views/calcBM');
+        ajaxBMCalc('/auth/views/calcBM');
       }, 1000);
     });
   }
@@ -122,7 +122,7 @@ const observer = new MutationObserver(function() {
       }else{
         addNewAdminUserForm.submit();
         setTimeout(function() {
-        ajaxF('/admin/listUser');
+        ajaxF('/auth/admin/listUser');
       }, 2000);
       }
     });

@@ -32,7 +32,7 @@ public class ViewControllerImpl implements ViewController {
     public String home(Model model) {
         UserDB userDB = userDBService.returnLoggedUser();
         model.addAttribute("user", userDB);
-        return "/views/home";
+        return "/auth/views/home";
     }
 
     @Override
@@ -47,12 +47,18 @@ public class ViewControllerImpl implements ViewController {
     public String addUserFromAdmin(Model model){
         model.addAttribute("id", userDBRepository.findByUsername(userDBService.getUsernameLoggedUser()).get().getId());
         model.addAttribute("user", new NewUserDTO());
-        return "/admin/addNewUser";
+        return "/auth/admin/addNewUser";
     }
 
     @Override
     public String showDashboard(Model model) {
         model.addAttribute("user", userDBService.returnLoggedUser());
-        return "/views/dashboard";
+        return "/auth/views/dashboard";
+    }
+
+    @Override
+    public String signUp(Model model) {
+        model.addAttribute("user",new NewUserDTO());
+        return "/noAuth/signUp";
     }
 }

@@ -30,7 +30,7 @@ public class BMDataControllerImpl implements BMDataController {
         model.addAttribute("BMData", bmData);
         model.addAttribute("BMDataDTO", new BMDataDTO());
         model.addAttribute("personalDataDTO", new UpdatePersonalDataDTO());
-        return "/views/calcBM";
+        return "/auth/views/calcBM";
     }
 
     @Override

@@ -33,7 +33,7 @@
 
             <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="form-group m-2 p-1">
-                <form id="bmData" method="post" th:action="@{/api/updateBMData/{id}(id=${user.id})}"
+                <form id="bmData" method="post" th:action="@{/auth/api/updateBMData/{id}(id=${user.id})}"
                       th:object="${personalDataDTO}">
                     <div id="containerBMData">
                         <label for="age">Age</label>
@@ -83,14 +83,14 @@
             </p>
             <hr>
             <div class="form-group m-2 p-1">
-                <form id="bmCalc" method="post" th:action="@{/api/updateBMCalc/{id}(id=${user.id})}"
+                <form id="bmCalc" method="post" th:action="@{/auth/api/updateBMCalc/{id}(id=${user.id})}"
                       th:object="${BMDataDTO}">
                     <div id="containerBMCalc">
                         <label for="baseBM">Calculated BM (kCal)</label>
                         <input class="form-control mb-2" type="text" id="baseBM" th:value="${#numbers.formatDecimal(BMData.baseBM, 0, 0.00)}" readonly>
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="actNumDaysEx">Actual exercise frequency (days/week)</label>
+                                <label for="actNumDaysEx">Set exercise frequency (days/week)</label>
                                 <input type="text" id="actNumDaysEx" class="form-control mb-2"
                                        th:value="${BMData.numDaysEx}"
                                        readonly>

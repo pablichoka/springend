@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public interface BMDataController {
 
-    @GetMapping("/views/calcBM")
+    @GetMapping("/auth/views/calcBM")
     String bmCalculator(Model model);
-    @PostMapping("/api/updateBMCalc/{id}")
+    @PostMapping("/auth/api/updateBMCalc/{id}")
     void updateBMCalc(@PathVariable("id")ObjectId id, BMDataDTO dto, HttpServletResponse httpServletResponse);
-    @PostMapping("/api/updateBMData/{id}")
+    @PostMapping("/auth/api/updateBMData/{id}")
     void updateBMData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
 
 }

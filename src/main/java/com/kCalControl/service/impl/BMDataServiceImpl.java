@@ -60,7 +60,8 @@ public class BMDataServiceImpl implements BMDataService {
             case "Female":
                 baseBM = ((655 + (9.6 * bmData.getWeight())) + ((1.8 * bmData.getHeight()) - (4.7 * bmData.getAge())));
                 break;
-            default: baseBM = 0.0;
+            case null, default:
+                baseBM = 0.0;
                 break;
         }
         bmData.setBaseBM(baseBM);
@@ -81,7 +82,7 @@ public class BMDataServiceImpl implements BMDataService {
             case "Gaining":
                 percentageOfkCal = 1.15;
                 break;
-            default:
+            case null, default:
                 percentageOfkCal = 0.00;
                 break;
         }
@@ -117,7 +118,7 @@ public class BMDataServiceImpl implements BMDataService {
                 exFactor = 1.85;
                 ;
                 break;
-            default:
+            case null, default:
                 exFactor = 0.0;
                 break;
         }

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 
 public interface UserDBService {
-    UserDB newUser(ObjectId creationPersonId, NewUserDTO dto, @RequestParam("role") String role);
+    UserDB newAdminUser(ObjectId creationPersonId, NewUserDTO dto, @RequestParam("role") String role);
+
+    UserDB newNormalUser(NewUserDTO dto);
 
     UserDB returnUserById(ObjectId id);
 
@@ -23,8 +25,6 @@ public interface UserDBService {
     Page<UserDB> getUsers(int page, int pageSize);
 
     Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort);
-
-//    UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 
     UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal);
 

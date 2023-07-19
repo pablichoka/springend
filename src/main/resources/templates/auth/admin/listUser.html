@@ -23,7 +23,7 @@
             </a>
         </span>
         <div id="searchBar" class="input-group justify-content-center collapse mt-2">
-            <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
+            <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listUser">
                 <select th:field="*{filter}" class="form-select rounded-2 m-2">
                     <option value="" selected>Select filtering</option>
                     <option value="username">Username</option>
@@ -84,13 +84,13 @@
             <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
             <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
             <td class="action">
-                <a th:href="@{/api/editUser/{id}(id=${user.id})}"
+                <a th:href="@{/auth/api/editUser/{id}(id=${user.id})}"
                    th:id="'editButton-' + ${user.id}" th:onclick="ajaxB(this)">
                     <button class="btn btn-secondary">Edit</button>
                 </a>
             </td>
             <td class="action">
-                <a th:href="@{/api/deleteUser/{id}(id=${user.id})}" ) th:id="'deleteButton-' + ${user.id}"
+                <a th:href="@{/auth/api/deleteUser/{id}(id=${user.id})}" ) th:id="'deleteButton-' + ${user.id}"
                    th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
                     <span>
                         <button class="btn btn-danger">

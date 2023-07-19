@@ -7,6 +7,7 @@ import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
+import com.kCalControl.service.BMDataService;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
@@ -34,16 +35,15 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     BMDataRepository bmDataRepository;
     @Autowired
+    BMDataService bmDataService;
+    @Autowired
     Checker checker;
     @Autowired
     UserDBService userDBService;
 
     @Override
     public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response){
-//        if(!checker.checkRoleAdminById(id, model)){
-//            return "error/403";
-//        }
-        UserDB newUserDB = userDBService.newUser(id, dto, role);
+        UserDB newUserDB = userDBService.newAdminUser(id, dto, role);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
@@ -51,26 +51,26 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model){
-        UserDB newUserDB = userDBService.newUser(id, dto, "USER");
+    public String createNormalUser(NewUserDTO dto, Model model){
+        UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
-        return "/views/home";
+        return "index";
     }
 
     @Override
     public String myProfile(Model model){
-        UserDB returnedUser = userDBService.returnLoggedUser();
-        model.addAttribute("user", returnedUser);
-        return "/api/myProfile";
+        model.addAttribute("user", userDBService.returnLoggedUser());
+        model.addAttribute("bmData", bmDataService.returnBMDataLoggedUser());
+        return "/auth/api/myProfile";
     }
 
     @Override
     public String editUser(ObjectId id, Model model, Principal principal) {
         if (!checker.checkSameUser(principal, id, model)) {
             if (!checker.checkRoleAdminByPrincipal(principal, model)) {
-                return "error/403";
+                return "/noAuth/error/403";
             }
         }
         UserDB returnedUser = userDBService.returnUserById(id);
@@ -78,7 +78,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("userData", new UpdateUserDataDTO());
         model.addAttribute("personalData", new UpdatePersonalDataDTO());
         model.addAttribute("password", new UpdatePasswordDTO());
-        return "/api/editUser";
+        return "/auth/api/editUser";
     }
 
     @Override
@@ -125,7 +125,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
         model.addAttribute("params",new SearchParamsDTO());
-        return "/admin/listUser";
+        return "/auth/admin/listUser";
     }
 
     @Override
@@ -133,7 +133,7 @@ public class UserDBControllerImpl implements UserDBController {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
         model.addAttribute("users", userSearchList.getContent());
         model.addAttribute("params",new SearchParamsDTO());
-        return "/admin/listUser";
+        return "/auth/admin/listUser";
     }
 
 
