@@ -3,7 +3,7 @@ var pageSize = 20; // Tamaño de la página
 
 function loadNextPage() {    
   currentPage++;
-  fetch('/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
+  fetch('/auth/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
       .then(function(response) {
       if (response.ok) {
           return response.text();
@@ -41,7 +41,7 @@ function loadPreviousPage() {
       alertContainer.appendChild(alertDiv);
   }else{
       currentPage--;
-      fetch('/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
+      fetch('/auth/admin/listUser?page=' + currentPage + '&pageSize=' + pageSize)
           .then(function(response) {
           if (response.ok) {
               return response.text();
@@ -95,7 +95,7 @@ function deleteRow(id){
 }
 
 function showDashboard(){
-  url = '/views/dashboard';
+  url = '/auth/views/dashboard';
   ajaxF(url);
 }
 

@@ -5,7 +5,9 @@ import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.*;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.BMDataRepository;
+import com.kCalControl.repository.UserDBRepository;
+import com.kCalControl.service.BMDataService;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
@@ -27,9 +29,13 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    UserRepository userRepository;
+    UserDBRepository userDBRepository;
     @Autowired
     AssetsRepository assetsRepository;
+    @Autowired
+    BMDataRepository bmDataRepository;
+    @Autowired
+    BMDataService bmDataService;
     @Autowired
     Checker checker;
     @Autowired
@@ -37,35 +43,34 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response){
-//        if(!checker.checkRoleAdminById(id, model)){
-//            return "error/403";
-//        }
-        UserDB newUserDB = userDBService.newUser(id, dto, role);
+        UserDB newUserDB = userDBService.newAdminUser(id, dto, role);
+        bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
-        userRepository.save(newUserDB);
+        userDBRepository.save(newUserDB);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override
-    public String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model){
-        UserDB newUserDB = userDBService.newUser(id, dto, "USER");
+    public String createNormalUser(NewUserDTO dto, Model model){
+        UserDB newUserDB = userDBService.newNormalUser(dto);
+        bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
-        userRepository.save(newUserDB);
-        return "/views/home";
+        userDBRepository.save(newUserDB);
+        return "index";
     }
 
     @Override
     public String myProfile(Model model){
-        UserDB returnedUser = userDBService.returnLoggedUser();
-        model.addAttribute("user", returnedUser);
-        return "/api/myProfile";
+        model.addAttribute("user", userDBService.returnLoggedUser());
+        model.addAttribute("bmData", bmDataService.returnBMDataLoggedUser());
+        return "/auth/api/myProfile";
     }
 
     @Override
     public String editUser(ObjectId id, Model model, Principal principal) {
         if (!checker.checkSameUser(principal, id, model)) {
             if (!checker.checkRoleAdminByPrincipal(principal, model)) {
-                return "error/403";
+                return "/noAuth/error/403";
             }
         }
         UserDB returnedUser = userDBService.returnUserById(id);
@@ -73,7 +78,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("userData", new UpdateUserDataDTO());
         model.addAttribute("personalData", new UpdatePersonalDataDTO());
         model.addAttribute("password", new UpdatePasswordDTO());
-        return "/api/editUser";
+        return "/auth/api/editUser";
     }
 
     @Override
@@ -95,25 +100,7 @@ public class UserDBControllerImpl implements UserDBController {
         moddedUser.setModificationDate(LocalDateTime.now());
 
         assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-    }
-
-    @Override
-    public void updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response) {
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setAge(dto.getAge());
-        moddedUser.setHeight(dto.getHeight());
-        moddedUser.setWeight(dto.getWeight());
-        moddedUser.setGender(dto.getGender());
-
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
+        userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -128,7 +115,7 @@ public class UserDBControllerImpl implements UserDBController {
         moddedUser.setModificationDate(LocalDateTime.now());
 
         assetsRepository.save(moddedUser.getAssets());
-        userRepository.save(moddedUser);
+        userDBRepository.save(moddedUser);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
@@ -138,7 +125,7 @@ public class UserDBControllerImpl implements UserDBController {
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
         model.addAttribute("params",new SearchParamsDTO());
-        return "/admin/listUser";
+        return "/auth/admin/listUser";
     }
 
     @Override
@@ -146,7 +133,7 @@ public class UserDBControllerImpl implements UserDBController {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
         model.addAttribute("users", userSearchList.getContent());
         model.addAttribute("params",new SearchParamsDTO());
-        return "/admin/listUser";
+        return "/auth/admin/listUser";
     }
 
 

@@ -16,36 +16,33 @@ import java.security.Principal;
 @Controller
 public interface UserDBController {
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("admin/addUser")
+    @PostMapping("auth/admin/addUser")
     void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response);
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("admin/listUser")
+    @GetMapping("auth/admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize, Model model); //these values have lower priority than the JS ones
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("admin/listUser")
+    @PostMapping("auth/admin/listUser")
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
                      SearchParamsDTO dto, Model model, HttpServletResponse response);
 
-    @PostMapping("signUp")
-    String createNormalUser(@RequestParam("id") ObjectId id, NewUserDTO dto, Model model);
+    @PostMapping("noAuth/signUp")
+    String createNormalUser(NewUserDTO dto, Model model);
 
-    @GetMapping("api/myProfile")
+    //TODO check why a USER user tries to return to listUser without being ADMIN, editUser template
+    @GetMapping("auth/api/myProfile")
     String myProfile(Model model);
 
-    @GetMapping("api/editUser/{id}")
+    @GetMapping("auth/api/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);
 
-    @GetMapping("api/deleteUser/{id}")
+    @GetMapping("auth/api/deleteUser/{id}")
     void deleteUser(@PathVariable("id") ObjectId id, HttpServletResponse response);
 
-    @PostMapping("api/updateUserData/{id}")
+    @PostMapping("auth/api/updateUserData/{id}")
     void updateUserData(@PathVariable("id") ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response);
-
-    @PostMapping("api/updatePersonalData/{id}")
-    void updatePersonalData(@PathVariable("id") ObjectId id, UpdatePersonalDataDTO dto, Model model, HttpServletResponse response);
-
-    @PostMapping("api/updatePassword/{id}")
+    @PostMapping("auth/api/updatePassword/{id}")
     void updatePassword(@PathVariable("id") ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response);
 }

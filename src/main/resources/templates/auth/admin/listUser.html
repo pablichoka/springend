@@ -10,10 +10,6 @@
 </head>
 <body>
 <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
-    <div id="searchError" class="alert alert-dismissible fade show alert-warning" style="display: none;">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
-        'Write into the search bar in order to filter by role!'
-    </div>
 </div>
 <nav class="navbar navbar-dark bg-dark justify-content-center rounded-3">
     <span id="brand" class="navbar-brand">User's list</span>
@@ -23,11 +19,11 @@
             <button class="btn btn-secondary" onclick="loadNextPage()">Next page</button>
             <a class="btn btn-info" data-bs-toggle="collapse" href="#searchBar" role="button" aria-expanded="false"
                aria-controls="userData">
-            Search users
+            Search options
             </a>
         </span>
         <div id="searchBar" class="input-group justify-content-center collapse mt-2">
-            <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
+            <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listUser">
                 <select th:field="*{filter}" class="form-select rounded-2 m-2">
                     <option value="" selected>Select filtering</option>
                     <option value="username">Username</option>
@@ -66,10 +62,6 @@
             <th scope="col" class="col-2">Last name</th>
             <th scope="col" class="col-3">Email</th>
             <th scope="col" class="col-2">Mobile</th>
-            <th scope="col" class="col-1">Age</th>
-            <th scope="col" class="col-1">Weight</th>
-            <th scope="col" class="col-1">Height</th>
-            <th scope="col" class="col-1">Gender</th>
             <th scope="col" class="col-1">Role</th>
             <th scope="col" class="col-2">Creation person</th>
             <th scope="col" class="col-1">Creation date</th>
@@ -86,30 +78,24 @@
             <td class="col-2" th:text="${user.lastName}"></td>
             <td class="col-1" th:text="${user.email}"></td>
             <td class="col-2" th:text="${user.mobile}"></td>
-            <td class="col-1" th:text="${user.age}"></td>
-            <td class="col-1" th:text="${user.weight}"></td>
-            <td class="col-1" th:text="${user.height}"></td>
-            <td class="col-1" th:text="${user.gender}"></td>
             <td class="col-1" th:text="${user.role.roleName}"></td>
             <td class="col-2" th:text="${user.assets.creationPerson.username}"></td>
             <td class="col-1" th:text="${#temporals.format(user.assets.creationDate, 'dd/MM/yyyy')}"></td>
             <td class="col-2" th:text="${user.assets.modificationPerson.username}"></td>
             <td class="col-1" th:text="${#temporals.format(user.assets.modificationDate, 'dd/MM/yyyy')}"></td>
             <td class="action">
-                <a th:href="@{/api/editUser/{id}(id=${user.id})}"
+                <a th:href="@{/auth/api/editUser/{id}(id=${user.id})}"
                    th:id="'editButton-' + ${user.id}" th:onclick="ajaxB(this)">
                     <button class="btn btn-secondary">Edit</button>
                 </a>
             </td>
             <td class="action">
-                <a th:href="@{/api/deleteUser/{id}(id=${user.id})}" ) th:id="'deleteButton-' + ${user.id}"
+                <a th:href="@{/auth/api/deleteUser/{id}(id=${user.id})}" ) th:id="'deleteButton-' + ${user.id}"
                    th:data-name="${user.id}" th:onclick="deleteRow(this.getAttribute('data-name'))">
                     <span>
                         <button class="btn btn-danger">
                             Delete
-                            <div class="spinner-border spinner-border-sm" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+                            <div class="spinner-border spinner-border-sm" role="status"></div>
                         </button>
                     </span>
                 </a>

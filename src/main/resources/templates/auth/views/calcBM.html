@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="https://thymeleaf.org">
+<head>
+    <title>Calculate your BM</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic}" rel="stylesheet"
+          type="text/css"/>
+</head>
+<body>
+<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+</div>
+<div class="p-3 bg-dark rounded shadow text-center mb-5">
+    <h2 class="text-white display-2">BM Calculator</h2>
+    <p class="lead text-white mt-3">Calculate your BM and set up your objectives</p>
+</div>
+<hr>
+<div class="m-1 p-2 bg-light rounded shadow">
+    <div class="row m-3">
+        <div class="col-md-6">
+            <p class="display-5 text-center bg-dark text-white rounded shadow p-3">
+                Check your data
+            </p>
+            <p class="text-center">
+                <a class="btn text-muted fs-5" data-bs-toggle="collapse" href="#uptData" role="button"
+                   aria-expanded="false"
+                   aria-controls="userData">
+                    To do any modification, please click here
+                </a>
+            </p>
+            <hr>
+
+            <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="form-group m-2 p-1">
+                <form id="bmData" method="post" th:action="@{/auth/api/updateBMData/{id}(id=${user.id})}"
+                      th:object="${personalDataDTO}">
+                    <div id="containerBMData">
+                        <label for="age">Age</label>
+                        <input id="age" type="text" class="form-control mb-2 bmData" th:placeholder="${BMData.age}"
+                               th:field="*{age}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="actGender">Gender</label>
+                                <input id="actGender" type="text" class="form-control mb-2" th:value="${BMData.gender}"
+                                       readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="gender">Do you want to change it?</label>
+                                <select class="form-select mb-2" id="gender" th:field="*{gender}">
+                                    <option value="" selected>Select a gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label for="weight">Weight (kg)</label>
+                        <input id="weight" type="text" class="form-control mb-2 bmData" th:field="*{weight}"
+                               th:placeholder="${BMData.weight}">
+                        <label for="height">Height (cm)</label>
+                        <input id="height" type="text" class="form-control mb-2 bmData" th:field="*{height}"
+                               th:placeholder="${BMData.height}">
+                        <a id="uptData" class="collapse">
+                            <button type="submit" class="btn btn-success mt-3">
+                                Update data
+                                <div id="bmDataSpinner" class="spinner-border spinner-border-sm" role="status"></div>
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p class="display-5 text-center bg-dark text-white rounded shadow p-3">
+                Check your objectives
+            </p>
+            <p class="text-center">
+                <a class="btn text-muted fs-5" data-bs-toggle="collapse" href="#uptCalc" role="button"
+                   aria-expanded="false"
+                   aria-controls="userData">
+                    Set up the type of diet that you want to follow
+                </a>
+            </p>
+            <hr>
+            <div class="form-group m-2 p-1">
+                <form id="bmCalc" method="post" th:action="@{/auth/api/updateBMCalc/{id}(id=${user.id})}"
+                      th:object="${BMDataDTO}">
+                    <div id="containerBMCalc">
+                        <label for="baseBM">Calculated BM (kCal)</label>
+                        <input class="form-control mb-2" type="text" id="baseBM" th:value="${#numbers.formatDecimal(BMData.baseBM, 0, 0.00)}" readonly>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="actNumDaysEx">Set exercise frequency (days/week)</label>
+                                <input type="text" id="actNumDaysEx" class="form-control mb-2"
+                                       th:value="${BMData.numDaysEx}"
+                                       readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="numDaysEx">Update it</label>
+                                <select class="form-select mb-2" id="numDaysEx" th:field="*{numDaysEx}">
+                                    <option value="" selected>Select the frequency</option>
+                                    <option value="0">I don't do any exercise</option>
+                                    <option value="1">Once a week</option>
+                                    <option value="2">Twice a week</option>
+                                    <option value="3">Three times a week</option>
+                                    <option value="4">Four times a week</option>
+                                    <option value="5">Five times a week</option>
+                                    <option value="6">Six times a week</option>
+                                    <option value="7">Seven times a week</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="actDietType">Actual diet type</label>
+                                <input type="text" id="actDietType" class="form-control mb-2"
+                                       th:value="${BMData.dietType}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dietType">Update it</label>
+                                <select class="form-select mb-2" id="dietType" th:field="*{dietType}">
+                                    <option value="" selected>Select the diet type</option>
+                                    <option value="Definition">Definition</option>
+                                    <option value="Maintain">Maintain</option>
+                                    <option value="Gaining">To gain weight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label for="finalBM">Total BM (kCal)</label>
+                        <input id="finalBM" type="text" class="form-control mb-2" th:value="${#numbers.formatDecimal(BMData.totalBM, 0, 0.00)}" readonly>
+                        <a id="uptCalc" class="collapse">
+                            <button type="submit" class="btn btn-success mt-3">
+                                Calculate
+                                <div id="bmCalcSpinner" class="spinner-border spinner-border-sm"
+                                     role="status"></div>
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -10,11 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdatePersonalDataDTO {
+public class BMDataDTO {
 
-    private Double weight;
-    private Integer age;
-    private Integer height;
-    private String gender;
-
+    private Integer numDaysEx;
+    private String dietType;
 }

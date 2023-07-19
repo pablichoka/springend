@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<UserDB, ObjectId> {
+public interface UserDBRepository extends MongoRepository<UserDB, ObjectId> {
     @Query(value = "{'userDB.username': ?0}")
     Optional<UserDB> findByUsername(String name);
     Optional<UserDB> findByEmail(String email);

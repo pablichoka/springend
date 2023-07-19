@@ -1,6 +1,6 @@
 package com.kCalControl.config;
 
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserDBRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -10,10 +10,10 @@ import java.security.Principal;
 public class Checker {
 
     @Autowired
-    UserRepository userRepository;
+    UserDBRepository userDBRepository;
 
     public boolean checkRoleAdminByPrincipal(Principal principal, Model model){
-        if (!userRepository.findByUsername(principal.getName()).get().getRoleName().equals("ADMIN")) {
+        if (!userDBRepository.findByUsername(principal.getName()).get().getRoleName().equals("ADMIN")) {
             model.addAttribute("error", "You do not have permission to edit this user.");
             return false;
         }else{
@@ -21,7 +21,7 @@ public class Checker {
         }
     }
     public boolean checkRoleAdminById(ObjectId id, Model model){
-        if (!userRepository.findById(id).get().getRoleName().equals("ADMIN")) {
+        if (!userDBRepository.findById(id).get().getRoleName().equals("ADMIN")) {
             model.addAttribute("error", "You do not have permission to edit this user.");
             return false;
         }else{
@@ -29,7 +29,7 @@ public class Checker {
         }
     }
     public boolean checkUserExistsByPrincipal(Principal principal, Model model){
-        if (!userRepository.findByUsername(principal.getName()).isPresent()) {
+        if (!userDBRepository.findByUsername(principal.getName()).isPresent()) {
             model.addAttribute("error", "User not found.");
             return false;
         }else{
@@ -37,7 +37,7 @@ public class Checker {
         }
     }
     public boolean checkUserExistsById(ObjectId id, Model model){
-        if (!userRepository.findById(id).isPresent()) {
+        if (!userDBRepository.findById(id).isPresent()) {
             model.addAttribute("error", "User not found.");
             return false;
         }else{
@@ -45,7 +45,7 @@ public class Checker {
         }
     }
     public boolean checkSameUser(Principal principal, ObjectId id, Model model){
-        if (!userRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
+        if (!userDBRepository.findByUsername(principal.getName()).get().getId().equals(id)) {
             model.addAttribute("error", "You do not have permission to edit this user.");
             return false;
         }

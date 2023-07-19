@@ -11,14 +11,14 @@ const observer = new MutationObserver(function() {
 
   let searchForm = document.getElementById('searchForm');
   let userData = document.getElementById('userData');
-  let personalData = document.getElementById('personalData');
+  let personalData = document.getElementById('bmData');
+  let calcData = document.getElementById('bmCalc');
   let password = document.getElementById('passwordForm');
   let addNewAdminUser = document.getElementById('addNewAdminUserForm');
 
-  if (userData && personalData && password) {
+  if (userData && password) {
 
     let userDataForm = document.getElementById('userData').querySelector('form');
-    let personalDataForm = document.getElementById('personalData').querySelector('form');
     let passwordForm = document.getElementById('passwordForm').querySelector('form');
 
     userDataForm.addEventListener('submit', function(event) {
@@ -32,22 +32,7 @@ const observer = new MutationObserver(function() {
       }
       userDataForm.submit();
       setTimeout(function() {
-        ajaxF('/admin/listUser');
-      }, 2000);
-    });
-
-    personalDataForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-      loadSpinner[1].style['display']='inherit' ;
-      let personalDataInputs = document.getElementsByClassName('personalDataForm');
-      for (let i = 0; i < personalDataInputs.length; i++) {
-        if(personalDataInputs[i].value === '' || personalDataInputs[i].value === null){
-          personalDataInputs[i].value = personalDataInputs[i].placeholder;
-        }
-      }
-      personalDataForm.submit();
-      setTimeout(function() {
-        ajaxF('/admin/listUser');
+        ajaxF('/auth/admin/listUser');
       }, 2000);
     });
 
@@ -67,6 +52,46 @@ const observer = new MutationObserver(function() {
         ajaxF('/admin/listUser');
       }, 2000);
       }
+    });
+  }
+  
+  if(personalData){
+    personalData.addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('bmDataSpinner').style['display']='inherit' ;
+      let personalDataInputs = document.getElementsByClassName('bmData');
+      for (let i = 0; i < personalDataInputs.length; i++) {
+        if(personalDataInputs[i].value === '' || personalDataInputs[i].value === null){
+          personalDataInputs[i].value = personalDataInputs[i].placeholder;
+        }
+      }
+      let gender = document.getElementById('gender');
+      if(gender.value === null || gender.value === ''){
+        gender.value = document.getElementById('actGender').value;
+      }
+      personalData.submit();
+      setTimeout(function() {
+        ajaxBMData('/auth/views/calcBM');
+      }, 1000);
+    });
+  }
+
+  if(calcData){
+    calcData.addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('bmCalcSpinner').style['display']='inherit';
+      let dietType = document.getElementById('dietType');
+      let numDaysEx = document.getElementById('numDaysEx');
+      if(dietType.value === null || dietType.value === ''){
+        dietType.value = document.getElementById('actDietType').value;
+      }
+      if ((numDaysEx.value === null || numDaysEx.value === '')) {
+        numDaysEx.value = document.getElementById('actNumDaysEx').value;
+      }
+      calcData.submit();
+      setTimeout(function() {
+        ajaxBMCalc('/auth/views/calcBM');
+      }, 1000);
     });
   }
 
@@ -97,7 +122,7 @@ const observer = new MutationObserver(function() {
       }else{
         addNewAdminUserForm.submit();
         setTimeout(function() {
-        ajaxF('/admin/listUser');
+        ajaxF('/auth/admin/listUser');
       }, 2000);
       }
     });

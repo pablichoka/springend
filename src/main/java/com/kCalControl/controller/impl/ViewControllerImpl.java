@@ -4,7 +4,7 @@ import com.kCalControl.config.Checker;
 import com.kCalControl.controller.ViewController;
 import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.UserRepository;
+import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ import org.springframework.ui.Model;
 public class ViewControllerImpl implements ViewController {
 
     @Autowired
-    UserRepository userRepository;
+    UserDBRepository userDBRepository;
     @Autowired
     Checker checker;
     @Autowired
@@ -32,7 +32,7 @@ public class ViewControllerImpl implements ViewController {
     public String home(Model model) {
         UserDB userDB = userDBService.returnLoggedUser();
         model.addAttribute("user", userDB);
-        return "/views/home";
+        return "/auth/views/home";
     }
 
     @Override
@@ -45,15 +45,20 @@ public class ViewControllerImpl implements ViewController {
 
     @Override
     public String addUserFromAdmin(Model model){
-        model.addAttribute("id", userRepository.findByUsername(userDBService.getUsernameLoggedUser()).get().getId());
+        model.addAttribute("id", userDBRepository.findByUsername(userDBService.getUsernameLoggedUser()).get().getId());
         model.addAttribute("user", new NewUserDTO());
-        return "/admin/addNewUser";
+        return "/auth/admin/addNewUser";
     }
 
     @Override
     public String showDashboard(Model model) {
         model.addAttribute("user", userDBService.returnLoggedUser());
-        return "/views/dashboard";
+        return "/auth/views/dashboard";
     }
 
+    @Override
+    public String signUp(Model model) {
+        model.addAttribute("user",new NewUserDTO());
+        return "/noAuth/signUp";
+    }
 }
