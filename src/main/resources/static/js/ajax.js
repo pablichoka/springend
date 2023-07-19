@@ -6,6 +6,7 @@ function ajaxB(element){
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', url, true);
+  document.getElementById('container').innerHTML = "";
   spinner.style.display = 'flex';
 
   xhr.onload = function() {
@@ -15,19 +16,42 @@ function ajaxB(element){
   xhr.send();   
 };
 
-  
-
-
 //Ajax for functions
 function ajaxF(url){
-  event.preventDefault();
+  // event.preventDefault();
   let spinner = document.getElementById('mainSpinner');
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
+  document.getElementById('container').innerHTML = "";
   spinner.style.display = 'flex';
   xhr.onload = function() {
     document.getElementById('container').innerHTML = xhr.responseText;
     spinner.style.display = 'none';
   };
   xhr.send();
+}
+
+//Ajax for search
+function ajaxForm(formName) {
+  // event.preventDefault();
+  let spinner = document.getElementById('mainSpinner');
+  let form = document.getElementById(formName);
+  
+  if (form) {
+    spinner.style.display = 'flex';
+    var url = form.getAttribute('action');
+    var csrfToken = document.getElementById('csrf').value;
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    document.getElementById('container').innerHTML = "";
+    
+    xhr.onload = function() {
+      document.getElementById('container').innerHTML = xhr.responseText;
+      spinner.style.display = 'none';
+    }
+    
+    xhr.send(formData);
+  }
 }

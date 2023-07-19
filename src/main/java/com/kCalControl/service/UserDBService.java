@@ -1,10 +1,10 @@
 package com.kCalControl.service;
 
+import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.UpdatePasswordDTO;
+import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.dto.NewUserDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +21,8 @@ public interface UserDBService {
     String getUsernameLoggedUser();
 
     Page<UserDB> getUsers(int page, int pageSize);
+
+    Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort);
 
     UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal);
 

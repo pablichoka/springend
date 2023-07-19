@@ -1,5 +1,5 @@
 var currentPage = 0; // Variable para almacenar la página actual
-var pageSize = 12; // Tamaño de la página
+var pageSize = 20; // Tamaño de la página
 
 function loadNextPage() {    
   currentPage++;
@@ -14,7 +14,7 @@ function loadNextPage() {
       .then(function(data) {
           if(checkIfTableIsEmpty(data) === true){
               var alertContainer = document.getElementById('alertContainer');
-              var alertDiv = document.createElement('div');
+              let alertDiv = document.createElement('div');
               alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
               alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                   'There is no more users!';
@@ -34,7 +34,7 @@ function loadPreviousPage() {
   
   if(currentPage <= 0){
       var alertContainer = document.getElementById('alertContainer');
-      var alertDiv = document.createElement('div');
+      let alertDiv = document.createElement('div');
       alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-info');
       alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                           'There is no previous users!';
@@ -97,4 +97,27 @@ function deleteRow(id){
 function showDashboard(){
   url = '/views/dashboard';
   ajaxF(url);
+}
+
+function checkQueryFilled() {
+    let form = document.getElementById('searchBar');
+    let filter = form.querySelector('select');
+    let query = form.querySelector('input');
+    filterOptions = filter.querySelectorAll('option');
+
+    if(filterOptions[5].selected && query.value === ''){
+        var alertContainer = document.getElementById('alertContainer');
+        let existingAlert = alertContainer.querySelector('.alert');
+        if (existingAlert) {
+        existingAlert.remove(); // Eliminar la alerta existente
+        }
+        let alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'alert-warning');
+        alertDiv.innerHTML = '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            'Write into the search bar in order to filter by role!';
+        alertContainer.appendChild(alertDiv);
+        return true;
+    }else{
+        return false;
+    }
 }

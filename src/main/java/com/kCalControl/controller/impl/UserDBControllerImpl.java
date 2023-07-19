@@ -2,10 +2,7 @@ package com.kCalControl.controller.impl;
 
 import com.kCalControl.config.Checker;
 import com.kCalControl.controller.UserDBController;
-import com.kCalControl.dto.NewUserDTO;
-import com.kCalControl.dto.UpdatePasswordDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
-import com.kCalControl.dto.UpdateUserDataDTO;
+import com.kCalControl.dto.*;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.UserRepository;
@@ -21,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Service
 public class UserDBControllerImpl implements UserDBController {
 
+    private static final Logger logger = Logger.getLogger(UserDBControllerImpl.class.getName());
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -35,15 +34,16 @@ public class UserDBControllerImpl implements UserDBController {
     Checker checker;
     @Autowired
     UserDBService userDBService;
+
     @Override
-    public String createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model){
-        if(!checker.checkRoleAdminById(id, model)){
-            return "error/403";
-        }
+    public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response){
+//        if(!checker.checkRoleAdminById(id, model)){
+//            return "error/403";
+//        }
         UserDB newUserDB = userDBService.newUser(id, dto, role);
         assetsRepository.save(newUserDB.getAssets());
         userRepository.save(newUserDB);
-        return "redirect:/home";
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class UserDBControllerImpl implements UserDBController {
         UserDB newUserDB = userDBService.newUser(id, dto, "USER");
         assetsRepository.save(newUserDB.getAssets());
         userRepository.save(newUserDB);
-        return "redirect:/home";
+        return "/views/home";
     }
 
     @Override
@@ -137,9 +137,17 @@ public class UserDBControllerImpl implements UserDBController {
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
+        model.addAttribute("params",new SearchParamsDTO());
         return "/admin/listUser";
     }
 
+    @Override
+    public String searchUsers(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
+        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
+        model.addAttribute("users", userSearchList.getContent());
+        model.addAttribute("params",new SearchParamsDTO());
+        return "/admin/listUser";
+    }
 
 
 }

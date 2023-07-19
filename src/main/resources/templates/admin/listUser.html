@@ -1,28 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="https://thymeleaf.org">
 <head>
-    <title>List of users</title>
+    <title>User's list</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link th:href="@{https://fonts.googleapis.com/css?family=Montserrat:400,700}" rel="stylesheet" type="text/css"/>
     <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic}" rel="stylesheet"
           type="text/css"/>
 </head>
-<body >
-<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+<body>
+<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <div id="searchError" class="alert alert-dismissible fade show alert-warning" style="display: none;">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+        'Write into the search bar in order to filter by role!'
+    </div>
+</div>
 <nav class="navbar navbar-dark bg-dark justify-content-center rounded-3">
-    <span id="brand" class="navbar-brand">Users</span>
+    <span id="brand" class="navbar-brand">User's list</span>
     <div class="navbar-nav" id="navbarText">
         <span class="nav-item">
             <button class="btn btn-secondary" onclick="loadPreviousPage()">Previous page</button>
             <button class="btn btn-secondary" onclick="loadNextPage()">Next page</button>
+            <a class="btn btn-info" data-bs-toggle="collapse" href="#searchBar" role="button" aria-expanded="false"
+               aria-controls="userData">
+            Search users
+            </a>
         </span>
+        <div id="searchBar" class="input-group justify-content-center collapse mt-2">
+            <form th:object="${params}" id="searchForm" method="post" action="/admin/listUser">
+                <select th:field="*{filter}" class="form-select rounded-2 m-2">
+                    <option value="" selected>Select filtering</option>
+                    <option value="username">Username</option>
+                    <option value="email">Email</option>
+                    <option value="firstName">First name</option>
+                    <option value="lastName">Last name</option>
+                    <option value="role">Role</option> //Update JS function if order is modified
+                </select>
+                <select th:field="*{sort}" class="form-select rounded-2 m-2">
+                    <option value="" selected>Select sorting</option>
+                    <option value="az">A-Z</option>
+                    <option value="za">Z-A</option>
+<!--                    <option value="newer">Newer first</option>-->
+<!--                    <option value="older">Older first</option>-->
+<!--                    <option value="newerM">Newer modification first</option>-->
+<!--                    <option value="olderM">Older modification first</option>-->
+                </select>
+                <input th:field="*{query}" type="search" class="form-control rounded-2 m-2" placeholder="Enter query..." />
+                <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="input-group-append m-2">
+                    <button class="btn btn-primary rounded-2 m-2 w-100" type="submit">
+                        Go
+                        <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </nav>
 <div id="users" data-last="${last}">
     <table class="table table-fixed">
         <thead id="header" class="thead-dark">
         <tr>
+            <th scope="col" class="col-2">Username</th>
             <th scope="col" class="col-2">First name</th>
             <th scope="col" class="col-2">Last name</th>
             <th scope="col" class="col-3">Email</th>
@@ -42,7 +81,8 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}" th:id="'row-' + ${user.id}">
-            <td class="col-2" scope="row" th:text="${user.firstName}"></td>
+            <td class="col-2" scope="row" th:text="${user.username}"></td>
+            <td class="col-2" th:text="${user.firstName}"></td>
             <td class="col-2" th:text="${user.lastName}"></td>
             <td class="col-1" th:text="${user.email}"></td>
             <td class="col-2" th:text="${user.mobile}"></td>
