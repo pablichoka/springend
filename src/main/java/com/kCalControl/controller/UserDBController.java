@@ -31,6 +31,7 @@ public interface UserDBController {
     @PostMapping("noAuth/signUp")
     String createNormalUser(NewUserDTO dto, Model model);
 
+    //TODO check why a USER user tries to return to listUser without being ADMIN, editUser template
     @GetMapping("auth/api/myProfile")
     String myProfile(Model model);
 
