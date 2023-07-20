@@ -83,7 +83,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public void deleteUser(ObjectId id, HttpServletResponse response){
-        userDBService.deleteUser(id);
+        userDBService.deleteUserFromAdmin(id);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 

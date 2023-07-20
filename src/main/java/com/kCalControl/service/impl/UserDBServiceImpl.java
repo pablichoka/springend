@@ -8,6 +8,7 @@ import com.kCalControl.model.BMData;
 import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
+import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
@@ -37,6 +38,8 @@ public class UserDBServiceImpl implements UserDBService {
     AssetsRepository assetsRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    BMDataRepository bmDataRepository;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
@@ -90,8 +93,6 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setEmail(dto.getEmail());
         userDB.setMobile(dto.getMobile());
         userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-//        userDBRepository.save(userDB);
 
         LocalDateTime time = LocalDateTime.now();
         Assets assets = new Assets();
@@ -181,23 +182,6 @@ public class UserDBServiceImpl implements UserDBService {
         throw new UsernameNotFoundException("User cannot be found");
     }
 
-//    @Override
-//    public UserDB updatePersonalData(ObjectId id, UpdatePersonalDataDTO dto, Principal principal){
-//
-//        UserDB userDB = userDBRepository.findById(id)
-//                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-//        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
-//
-//        userDB.setAge(dto.getAge());
-//        userDB.setHeight(dto.getHeight());
-//        userDB.setWeight(dto.getWeight());
-//        userDB.setGender(dto.getGender());
-//        userDB.setModificationPerson(modificationPerson);
-//        userDB.setModificationDate(LocalDateTime.now());
-//
-//        return userDB;
-//    }
-
     @Override
     public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal){
         UserDB userDB = userDBRepository.findById(id)
@@ -231,10 +215,11 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public void deleteUser(ObjectId id){
+    public void deleteUserFromAdmin(ObjectId id){
         UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to delete does not exist"));
         assetsRepository.delete(userDB.getAssets());
+        bmDataRepository.delete(userDB.getBmData());
         userDBRepository.deleteById(id);
     }
 

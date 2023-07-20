@@ -91,8 +91,18 @@ function deleteRow(id){
   spinner.style['display']='inherit' ;
   setTimeout(function() {
       row.remove();;
-    }, 1000);   
+    }, 1000);
 }
+
+function deleteRowFromSelfUser(id){
+    let spinner = document.getElementById('spinnerDel');
+    spinner.style['display']='inherit' ;
+    setTimeout(function() {
+        var url = new URL("/", window.location.origin);
+        window.location.href = url.href;
+      }, 1000);
+    
+  }
 
 function showDashboard(){
   url = '/auth/views/dashboard';
