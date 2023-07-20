@@ -82,3 +82,8 @@ main {
 #sidebar{
   width: 200px;
 }
+
+a:focus,
+button:focus {
+  outline: none;
+}
