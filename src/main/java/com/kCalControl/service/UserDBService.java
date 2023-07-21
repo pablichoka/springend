@@ -2,7 +2,6 @@ package com.kCalControl.service;
 
 import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.UpdatePasswordDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
 import com.kCalControl.dto.UpdateUserDataDTO;
 import com.kCalControl.model.UserDB;
 import org.bson.types.ObjectId;
@@ -30,5 +29,5 @@ public interface UserDBService {
 
     UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal);
 
-    void deleteUser(ObjectId id);
+    void deleteUserFromAdmin(ObjectId id);
 }

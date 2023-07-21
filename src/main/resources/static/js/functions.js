@@ -91,8 +91,18 @@ function deleteRow(id){
   spinner.style['display']='inherit' ;
   setTimeout(function() {
       row.remove();;
-    }, 1000);   
+    }, 1000);
 }
+
+function deleteRowFromSelfUser(id){
+    let spinner = document.getElementById('spinnerDel');
+    spinner.style['display']='inherit' ;
+    setTimeout(function() {
+        var url = new URL("/", window.location.origin);
+        window.location.href = url.href;
+      }, 1000);
+    
+  }
 
 function showDashboard(){
   url = '/auth/views/dashboard';
@@ -100,7 +110,7 @@ function showDashboard(){
 }
 
 function checkQueryFilled() {
-    let form = document.getElementById('searchBar');
+    let form = document.getElementById('searchForm');
     let filter = form.querySelector('select');
     let query = form.querySelector('input');
     filterOptions = filter.querySelectorAll('option');

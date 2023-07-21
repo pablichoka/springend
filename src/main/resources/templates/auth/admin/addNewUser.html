@@ -8,6 +8,10 @@
 </head>
 <body>
 <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+<div class="p-3 mb-5 rounded shadow text-center bg-dark">
+    <h1 class="text-white display-2">Add user</h1>
+    <p class="lead text-white mt-3">Fill the form with the new user's data</p>
+</div>
 <div class="rounded bg-white mt-1 mb-1">
     <div class="row m-2">
         <div class="col-md-3 border-right">
@@ -18,9 +22,6 @@
         </div>
         <div class="col-md-5 border-right">
             <div class="p-3 py-5" id="addNewAdminUserForm">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="text-right">New user</h3>
-                </div>
                 <form th:object="${user}" action="/auth/admin/addUser" method="post">
                     <div class="row mt-2">
                         <h5>User data</h5>
