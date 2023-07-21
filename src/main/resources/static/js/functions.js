@@ -110,7 +110,7 @@ function showDashboard(){
 }
 
 function checkQueryFilled() {
-    let form = document.getElementById('searchBar');
+    let form = document.getElementById('searchForm');
     let filter = form.querySelector('select');
     let query = form.querySelector('input');
     filterOptions = filter.querySelectorAll('option');

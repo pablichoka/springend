@@ -13,10 +13,10 @@ a{
     border-right: 0px;
 }
 
-#brand{
-    margin-left: 20px;
-}
-
 td{
     padding-top: 12px;
 }
+
+.d-inherit {
+    display: inherit;
+  }

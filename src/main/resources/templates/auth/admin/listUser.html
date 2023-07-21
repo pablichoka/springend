@@ -11,48 +11,109 @@
 <body>
 <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
 </div>
-<nav class="navbar navbar-dark bg-dark justify-content-center rounded-3">
-    <span id="brand" class="navbar-brand">User's list</span>
-    <div class="navbar-nav" id="navbarText">
-        <span class="nav-item">
-            <button class="btn btn-secondary" onclick="loadPreviousPage()">Previous page</button>
-            <button class="btn btn-secondary" onclick="loadNextPage()">Next page</button>
-            <a class="btn btn-info" data-bs-toggle="collapse" href="#searchBar" role="button" aria-expanded="false"
-               aria-controls="userData">
-            Search options
-            </a>
-        </span>
-        <div id="searchBar" class="input-group justify-content-center collapse mt-2">
-            <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listUser">
-                <select th:field="*{filter}" class="form-select rounded-2 m-2">
-                    <option value="" selected>Select filtering</option>
-                    <option value="username">Username</option>
-                    <option value="email">Email</option>
-                    <option value="firstName">First name</option>
-                    <option value="lastName">Last name</option>
-                    <option value="role">Role</option> //Update JS function if order is modified
-                </select>
-                <select th:field="*{sort}" class="form-select rounded-2 m-2">
-                    <option value="" selected>Select sorting</option>
-                    <option value="az">A-Z</option>
-                    <option value="za">Z-A</option>
-<!--                    <option value="newer">Newer first</option>-->
-<!--                    <option value="older">Older first</option>-->
-<!--                    <option value="newerM">Newer modification first</option>-->
-<!--                    <option value="olderM">Older modification first</option>-->
-                </select>
-                <input th:field="*{query}" type="search" class="form-control rounded-2 m-2" placeholder="Enter query..." />
-                <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <div class="input-group-append m-2">
-                    <button class="btn btn-primary rounded-2 m-2 w-100" type="submit">
-                        Go
-                        <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>
-                    </button>
+<div class="p-3 mb-5 text-center rounded shadow bg-dark">
+    <h2 class="text-white display-2">User's list</h2>
+    <div id="navbarText">
+        <div class="row">
+            <div class="col-md-6 justify-content-center d-inherit">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary">
+                            Search options
+                        </button>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li>
+                            <div class="input-group text-start justify-content-center p-2">
+                                <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listUser">
+                                    <select th:field="*{filter}" class="form-select rounded-2">
+                                        <option value="" selected>Select filtering</option>
+                                        <option value="username">Username</option>
+                                        <option value="email">Email</option>
+                                        <option value="firstName">First name</option>
+                                        <option value="lastName">Last name</option>
+                                        <option value="role">Role</option>
+                                        <!-- Update JS function if order is modified -->
+                                    </select>
+                                    <hr class="dropdown-divider">
+                                    <select th:field="*{sort}" class="form-select rounded-2">
+                                        <option value="" selected>Select sorting</option>
+                                        <option value="az">A-Z</option>
+                                        <option value="za">Z-A</option>
+                                        <!--                    <option value="newer">Newer first</option>-->
+                                        <!--                    <option value="older">Older first</option>-->
+                                        <!--                    <option value="newerM">Newer modification first</option>-->
+                                        <!--                    <option value="olderM">Older modification first</option>-->
+                                    </select>
+                                    <hr class="dropdown-divider">
+                                    <input th:field="*{query}" type="search" class="form-control rounded-2" placeholder="Enter query..." />
+                                    <hr class="dropdown-divider">
+                                    <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                    <div class="input-group-append m-2">
+                                        <button class="btn btn-primary rounded-2 w-100" type="submit">
+                                            Go
+                                            <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </form>
+<!--                <span class="text-start">-->
+<!--                    <a class="btn btn-info" data-bs-toggle="collapse" href="#searchBar" role="button"-->
+<!--                       aria-expanded="false"-->
+<!--                       aria-controls="userData">-->
+<!--                    Search options-->
+<!--                    </a>-->
+<!--                </span>-->
+                <!--                <span>-->
+<!--                    <div id="searchBar" class="input-group text-start justify-content-center collapse mt-2">-->
+<!--                        <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listUser">-->
+<!--                            <select th:field="*{filter}" class="form-select rounded-2 m-2">-->
+<!--                                <option value="" selected>Select filtering</option>-->
+<!--                                <option value="username">Username</option>-->
+<!--                                <option value="email">Email</option>-->
+<!--                                <option value="firstName">First name</option>-->
+<!--                                <option value="lastName">Last name</option>-->
+<!--                                <option value="role">Role</option>-->
+<!--                                //Update JS function if order is modified-->
+<!--                            </select>-->
+<!--                            <select th:field="*{sort}" class="form-select rounded-2 m-2">-->
+<!--                                <option value="" selected>Select sorting</option>-->
+<!--                                <option value="az">A-Z</option>-->
+<!--                                <option value="za">Z-A</option>-->
+<!--                                &lt;!&ndash;                    <option value="newer">Newer first</option>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                    <option value="older">Older first</option>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                    <option value="newerM">Newer modification first</option>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                    <option value="olderM">Older modification first</option>&ndash;&gt;-->
+<!--                            </select>-->
+<!--                            <input th:field="*{query}" type="search" class="form-control rounded-2 m-2"-->
+<!--                                   placeholder="Enter query..."/>-->
+<!--                            <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--                            <div class="input-group-append m-2">-->
+<!--                                <button class="btn btn-primary rounded-2 m-2 w-100" type="submit">-->
+<!--                                    Go-->
+<!--                                    <div id="searchSpinner" class="spinner-border spinner-border-sm" role="status"></div>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </span>-->
+            </div>
+            <div class="col-md-6 col align-self-center">
+                <span class="text-end">
+                    <button class="btn btn-secondary" onclick="loadPreviousPage()">Previous page</button>
+                    <button class="btn btn-secondary" onclick="loadNextPage()">Next page</button>
+                </span>
+            </div>
         </div>
     </div>
-</nav>
+    </p>
+</div>
+<!--<nav class="navbar navbar-dark bg-dark justify-content-center rounded-3">-->
+<!--</nav>-->
 <div id="users" data-last="${last}">
     <table class="table table-fixed">
         <thead id="header" class="thead-dark">
