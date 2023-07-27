@@ -21,19 +21,12 @@ public class UserDB {
 
     @Id
     private ObjectId id;
-    @Field("userDB.username")
     private String username;
-    @Field("userDB.firstName")
     private String firstName;
-    @Field("userDB.lastName")
     private String lastName;
-    @Field("userDB.mobile")
     private String mobile;
-    @Field("userDB.email")
     private String email;
-    @Field("userDB.password")
     private String password;
-    @Field("userDB.passwordDate")
     private LocalDateTime passwordDate;
 
     @DBRef
