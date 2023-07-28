@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IngredientsOldRepository extends MongoRepository<IngredientsOld, ObjectId> {
 
-    List<IngredientsOld> findAllByCategoryLike(String category);
+    List<IngredientsOld> findByCategoryLike(String category);
 
 }

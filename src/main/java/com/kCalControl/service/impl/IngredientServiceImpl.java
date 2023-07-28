@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 
+@Service
 public class IngredientServiceImpl implements IngredientService {
 
     @Autowired
@@ -25,6 +27,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient convertIngredientOld2Ingredient(IngredientsOld ingredientsOld) {
         Ingredient ingredient = new Ingredient();
+        ingredient.setId(ingredientsOld.getId());
         ingredient.setCategory(ingredientsOld.getCategory());
         ingredient.setDescription(ingredientsOld.getDescription());
 
@@ -64,7 +67,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Page<Ingredient> getIngredients(int page, int pageSize) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "username");
+        Sort sort = Sort.by(Sort.Direction.ASC, "category");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
         return ingredientRepository.findAll(pageRequest);
     }

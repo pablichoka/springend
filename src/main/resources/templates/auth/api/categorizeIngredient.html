@@ -27,11 +27,11 @@
     </p>
     <div class="m-3">
         <div class="p-3 rounded-3 border border-1 border-black gray mb-3 collapse" id="categorize">
-            <form method="post" th:action="@{/auth/api/categorizeIngredient}">
-                <label for="name">Enter ingredient name:</label>
-                <input type="text" class="form-control mb-3" name="name" id="name">
+            <form method="post" th:object="${dto}" th:action="@{/auth/api/categorizeIngredient}">
                 <label for="category">Enter ingredient name:</label>
-                <select id="category" name="category" class="form-control mb-2 addUserData">
+                <input type="text" class="form-control mb-3" th:field="*{category}" id="category">
+                <label for="type">Select ingredient type:</label>
+                <select id="type" th:field="*{type}" class="form-control mb-2 addUserData">
                     <option value="" selected><i>Select an option</i></option>
                     <option value="meat">Meat</option>
                     <option value="vegetables">Vegetables</option>

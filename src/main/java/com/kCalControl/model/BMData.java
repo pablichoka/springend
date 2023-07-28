@@ -19,15 +19,24 @@ public class BMData {
 
     @Id
     private ObjectId id;
+    @Field("bmData.age")
     private Integer age;
+    @Field("bmData.weight")
     private Double weight;
+    @Field("bmData.height")
     private Integer height;
+    @Field("bmData.gender")
     private String gender;
+    @Field("bmData.baseBM")
     private Double baseBM;
+    @Field("bmData.numDaysEx")
     private Integer numDaysEx;
+    @Field("bmData.dietType")
     private String dietType;
+    @Field("bmData.totalBM")
     private Double totalBM;
     @DBRef
+    @Field("bmData.userAssoc")
     private UserDB userAssoc;
 
     public String getUsername() {
