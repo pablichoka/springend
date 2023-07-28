@@ -26,7 +26,7 @@ public interface UserDBController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("auth/admin/listUser")
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
-                     SearchParamsDTO dto, Model model, HttpServletResponse response);
+                       SearchUserParamsDTO dto, Model model, HttpServletResponse response);
 
     @PostMapping("noAuth/signUp")
     String createNormalUser(NewUserDTO dto, Model model);

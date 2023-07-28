@@ -124,15 +124,15 @@ public class UserDBControllerImpl implements UserDBController {
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
-        model.addAttribute("params",new SearchParamsDTO());
+        model.addAttribute("params",new SearchUserParamsDTO());
         return "/auth/admin/listUser";
     }
 
     @Override
-    public String searchUsers(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
+    public String searchUsers(int page, int pageSize, SearchUserParamsDTO dto, Model model, HttpServletResponse response) {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
         model.addAttribute("users", userSearchList.getContent());
-        model.addAttribute("params",new SearchParamsDTO());
+        model.addAttribute("params",new SearchUserParamsDTO());
         return "/auth/admin/listUser";
     }
 

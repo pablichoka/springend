@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @Builder
 @Document(collection = "ingredients")
-public class Ingredients {
+public class Ingredient {
 
     @Id
     ObjectId id;
