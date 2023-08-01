@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,14 +45,19 @@ public class IngredientControllerImpl implements IngredientController {
 
     @Override
     public void categorizeIngredients(CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse) {
-        List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());
-        List<Ingredient> ingredientList = ingredientsOldList.stream()
-                .map(i -> ingredientService.convertIngredientOld2Ingredient(i))
-                .collect(Collectors.toList());
-        ingredientList.stream().forEach(i -> i.setType(dto.getType()));
-        ingredientList.stream().forEach(i -> nutrientsRepository.save(i.getNutrients()));
-        ingredientRepository.saveAll(ingredientList);
-        httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        Optional<Ingredient> ingredientExistingList = ingredientRepository.findByCategoryLike(dto.getCategory());
+        if(ingredientExistingList.isPresent()){
+            httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+        }else {
+            List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());
+            List<Ingredient> ingredientList = ingredientsOldList.stream()
+                    .map(i -> ingredientService.convertIngredientOld2Ingredient(i))
+                    .collect(Collectors.toList());
+            ingredientList.stream().forEach(i -> i.setType(dto.getType()));
+            ingredientList.stream().forEach(i -> nutrientsRepository.save(i.getNutrients()));
+            ingredientRepository.saveAll(ingredientList);
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
     }
 
     @Override

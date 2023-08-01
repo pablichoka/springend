@@ -92,3 +92,26 @@ function ajaxBMCalc(url){
   };
   xhr.send();
 }
+
+function ajaxIngCat(url, formName){
+  let spinner = document.getElementById('spinner');
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  spinner.style.display = 'inherit';
+  var csrfToken = document.getElementById('csrf').value;
+  xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+  let formData = new FormData(document.getElementById(formName))
+  xhr.onload = function() {
+    if(xhr.status === 204){
+      spinner.style.display = 'none';
+      addErrorMessage('Type correctly added!','success');
+    }else if(xhr.status === 409){
+      spinner.style.display = 'none';
+      addErrorMessage('Type is already added fot that category!','warning');
+    }else{
+      spinner.style.display = 'none';
+      addErrorMessage('Something went wrong!','danger');
+    }
+  };
+  xhr.send(formData);
+}
