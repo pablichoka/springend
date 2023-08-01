@@ -26,12 +26,11 @@ public interface UserDBController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("auth/admin/listUser")
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
-                       SearchUserParamsDTO dto, Model model, HttpServletResponse response);
+                       SearchParamsDTO dto, Model model, HttpServletResponse response);
 
     @PostMapping("noAuth/signUp")
     String createNormalUser(NewUserDTO dto, Model model);
 
-    //TODO check why a USER user tries to return to listUser without being ADMIN, editUser template
     @GetMapping("auth/api/myProfile")
     String myProfile(Model model);
 

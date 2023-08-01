@@ -21,7 +21,6 @@ public class Assets {
 
     @Id
     private ObjectId id;
-    //TODO add field tags and try to implement filter by date
     @DBRef
     private UserDB creationPerson;
     private LocalDateTime creationDate;

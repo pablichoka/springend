@@ -2,7 +2,6 @@ package com.kCalControl.service;
 
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.IngredientsOld;
-import com.kCalControl.model.Nutrients;
 import org.springframework.data.domain.Page;
 
 public interface IngredientService {
@@ -11,5 +10,7 @@ public interface IngredientService {
 
     Ingredient convertIngredientOld2Ingredient(IngredientsOld ingredientsOld);
 
-    public Page<Ingredient> getIngredients(int page, int pageSize);
+    public Page<Ingredient> getIngredient(int page, int pageSize);
+
+    Page<Ingredient> getIngredientsFromSearch(int page, int pageSize, String query, String filter, String sort);
 }

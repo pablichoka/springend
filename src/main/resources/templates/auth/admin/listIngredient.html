@@ -26,12 +26,12 @@
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                         <li>
                             <div class="input-group text-start justify-content-center p-2">
-                                <form th:object="${params}" id="searchForm" method="post" action="/auth/admin/listIngredient">
+                                <form th:object="${params}" id="searchIngredientsForm" method="post" action="/auth/admin/listIngredient">
                                     <select th:field="*{filter}" class="form-select rounded-2">
                                         <option value="" selected>Select filtering</option>
-                                        <option value="category">Username</option>
-                                        <option value="type">Email</option>
-                                        <!-- Update JS function if order is modified -->
+                                        <option value="category">Category</option>
+                                        <option value="type">Type</option>
+                                        <option value="type">Description</option>
                                     </select>
                                     <hr class="dropdown-divider">
                                     <select th:field="*{sort}" class="form-select rounded-2">
@@ -46,7 +46,7 @@
                                     <hr class="dropdown-divider">
                                     <input th:field="*{query}" type="search" class="form-control rounded-2" placeholder="Enter query..." />
                                     <hr class="dropdown-divider">
-                                    <input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                     <div class="input-group-append m-2">
                                         <button class="btn btn-primary rounded-2 w-100" type="submit">
                                             Go
@@ -61,15 +61,15 @@
             </div>
             <div class="col-md-6 col align-self-center">
                 <span class="text-end">
-                    <button class="btn btn-secondary" onclick="loadPreviousPage()">Previous page</button>
-                    <button class="btn btn-secondary" onclick="loadNextPage()">Next page</button>
+                    <button class="btn btn-secondary" onclick="loadPreviousPageIng()">Previous page</button>
+                    <button class="btn btn-secondary" onclick="loadNextPageIng()">Next page</button>
                 </span>
             </div>
         </div>
     </div>
     </p>
 </div>
-<div id="users" data-last="${last}">
+<div id="ingredients" data-last="${last}">
     <table class="table table-fixed">
         <thead id="header" class="thead-dark">
         <tr>
@@ -80,7 +80,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="ingr : ${ingredient}" th:id="'row-' + ${ingredient.id}">
+        <tr th:each="ingr : ${ingredient}" th:id="'row-' + ${ingr.id}">
             <td class="col-2" scope="row" th:text="${ingr.category}"></td>
             <td class="col-2" th:text="${ingr.type}"></td>
             <td class="col-6" th:text="${ingr.description}"></td>
@@ -98,6 +98,6 @@
         </tbody>
     </table>
 </div>
-<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<input type="hidden" id="csrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 </body>
 </html>

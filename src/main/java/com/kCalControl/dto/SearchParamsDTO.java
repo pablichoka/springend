@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SearchUserParamsDTO {
+public class SearchParamsDTO {
 
     String query;
     String filter;

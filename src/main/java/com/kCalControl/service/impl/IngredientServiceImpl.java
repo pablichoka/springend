@@ -1,8 +1,6 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.model.Ingredient;
-import com.kCalControl.model.IngredientsOld;
-import com.kCalControl.model.Nutrients;
+import com.kCalControl.model.*;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +60,41 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Page<Ingredient> getIngredients(int page, int pageSize) {
+    public Page<Ingredient> getIngredient(int page, int pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "category");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
         return ingredientRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Page<Ingredient> getIngredientsFromSearch(int page, int pageSize, String query, String filter, String sort) {
+        Sort sorted = null;
+        if (filter.isEmpty()){filter = "category";}//In case not filtering, target will be username
+
+        sorted = switch (sort) {
+            case "az" -> Sort.by(Sort.Direction.ASC, filter);
+            case "za" -> Sort.by(Sort.Direction.DESC, filter);
+//            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
+//            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
+//            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
+//            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
+            default -> Sort.unsorted();
+        };
+        PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
+        switch (filter) {
+            case "username" -> {
+                return ingredientRepository.findByCategoryLike(query, pageRequest);
+            }
+            case "email" -> {
+                return ingredientRepository.findByDescriptionLike(query, pageRequest);
+            }
+            case "lastName" -> {
+                return ingredientRepository.findByTypeLike(query, pageRequest);
+            }
+            default -> {
+                return ingredientRepository.findAll(pageRequest);
+            }
+        }
     }
 
 }

@@ -1,18 +1,15 @@
 package com.kCalControl.controller.impl;
 
-import com.kCalControl.config.UserSession;
 import com.kCalControl.controller.IngredientController;
 import com.kCalControl.dto.CategorizeIngredientsDTO;
-import com.kCalControl.dto.SearchUserParamsDTO;
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.IngredientsOld;
-import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.repository.IngredientsOldRepository;
 import com.kCalControl.repository.NutrientsRepository;
 import com.kCalControl.service.IngredientService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,13 +56,22 @@ public class IngredientControllerImpl implements IngredientController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
-
+    //TODO add search option to listIngredients
     @Override
     public String listIngredients(Model model, int page, int pageSize) {
-        Page<Ingredient> usersList = ingredientService.getIngredients(page, pageSize);
-        model.addAttribute("users", usersList.getContent());
-        model.addAttribute("last", usersList.isLast());
-        model.addAttribute("params",new SearchUserParamsDTO());
+        Page<Ingredient> ingredientsList = ingredientService.getIngredient(page, pageSize);
+        model.addAttribute("ingredient", ingredientsList.getContent());
+        model.addAttribute("last", ingredientsList.isLast());
+        model.addAttribute("params",new SearchParamsDTO());
         return "auth/admin/listIngredient";
     }
+
+    @Override
+    public String searchIngredients(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
+        Page<Ingredient> userSearchList = ingredientService.getIngredientsFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
+        model.addAttribute("users", userSearchList.getContent());
+        model.addAttribute("params",new SearchParamsDTO());
+        return "/auth/admin/listIngredient";
+    }
+
 }

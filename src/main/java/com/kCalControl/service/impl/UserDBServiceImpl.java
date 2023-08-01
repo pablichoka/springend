@@ -150,36 +150,43 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort) {
         Sort sorted = null;
-        if (filter.equals("")){filter = "username";}//In case not filtering, target will be username
+        if (filter.isEmpty()){filter = "username";}//In case not filtering, target will be username
 
-        switch(sort){
-            case "az": sorted = Sort.by(Sort.Direction.ASC, filter); break;
-            case "za": sorted = Sort.by(Sort.Direction.DESC, filter); break;
+        sorted = switch (sort) {
+            case "az" -> Sort.by(Sort.Direction.ASC, filter);
+            case "za" -> Sort.by(Sort.Direction.DESC, filter);
 //            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
 //            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
 //            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
 //            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
-            default: sorted = Sort.unsorted(); break;
-        }
+            default -> Sort.unsorted();
+        };
         PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
-        if(filter.equals("username")){
-            return userDBRepository.findByUsernameLike(query, pageRequest);
-        } else if (filter.equals("email")) {
-            return userDBRepository.findByEmailLike(query, pageRequest);
-        } else if (filter.equals("role")) {
-            Optional<Role> role = roleRepository.findByRoleNameLike(query);
-            if(role.isPresent()) {
-                Role roleQ = role.get();
-                return userDBRepository.findByRole_Id(roleQ.getId(), pageRequest);
+        switch (filter) {
+            case "username" -> {
+                return userDBRepository.findByUsernameLike(query, pageRequest);
             }
-        } else if (filter.equals("firstName")) {
-            return userDBRepository.findByFirstNameLike(query, pageRequest);
-        } else if (filter.equals("lastName")) {
-            return userDBRepository.findByLastNameLike(query, pageRequest);
-        } else {
-            return userDBRepository.findAll(pageRequest);
+            case "email" -> {
+                return userDBRepository.findByEmailLike(query, pageRequest);
+            }
+            case "role" -> {
+                Optional<Role> role = roleRepository.findByRoleNameLike(query);
+                if (role.isPresent()) {
+                    Role roleQ = role.get();
+                    return userDBRepository.findByRole_Id(roleQ.getId(), pageRequest);
+                }
+            }
+            case "firstName" -> {
+                return userDBRepository.findByFirstNameLike(query, pageRequest);
+            }
+            case "lastName" -> {
+                return userDBRepository.findByLastNameLike(query, pageRequest);
+            }
+            default -> {
+                return userDBRepository.findAll(pageRequest);
+            }
         }
-        throw new UsernameNotFoundException("User cannot be found");
+        return null;
     }
 
     @Override
