@@ -14,22 +14,16 @@
 <div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
 </div>
 <div class="p-3 bg-dark rounded shadow text-center mb-5">
-    <h2 class="text-white display-2">Assign categories</h2>
-    <p class="lead text-white mt-3">Insert the name of an ingredient and add a category fot it</p>
+    <h2 class="text-white display-2">Assign food types</h2>
+    <p class="lead text-white mt-3">Insert the category of an ingredient and add a type for it</p>
 </div>
 <hr>
 <div class="p-3 m-3 rounded-3 bg-light bg-gradient">
-    <p>
-        <a class="btn btn-outline-dark" data-bs-toggle="collapse" href="#categorize" role="button" aria-expanded="false"
-           aria-controls="categorize">
-            User data
-        </a>
-    </p>
     <div class="m-3">
-        <div class="p-3 rounded-3 border border-1 border-black gray mb-3 collapse" id="categorize">
+        <div class="p-3 rounded-3 border border-1 border-black gray mb-3" id="categorize">
             <form method="post" th:object="${dto}" th:action="@{/auth/api/categorizeIngredient}">
                 <label for="category">Enter ingredient name:</label>
-                <input type="text" class="form-control mb-3" th:field="*{category}" id="category">
+                <input type="text" class="form-control mb-3" th:field="*{category}" id="category" placeholder="Pay attention to caps...">
                 <label for="type">Select ingredient type:</label>
                 <select id="type" th:field="*{type}" class="form-control mb-2 addUserData">
                     <option value="" selected><i>Select an option</i></option>
@@ -49,14 +43,14 @@
                 </select>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit" class="btn btn-primary">
-                    Update data
+                    Add type
                     <div class="spinner-border spinner-border-sm" role="status">
                     </div>
                 </button>
             </form>
         </div>
     </div>
-    <div class="text-end">
+    <div class="text-center">
         <a href="/auth/admin/listUser" onclick="ajaxB(this)">
             <button class="btn btn-secondary">Go back</button>
         </a>

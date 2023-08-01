@@ -43,10 +43,6 @@ public class IngredientServiceImpl implements IngredientService {
                 field.setAccessible(true);
                 String fieldName = field.getName();
 
-                if (fieldName.equals("id")) {
-                    continue;
-                }
-
                 Object value = field.get(ingredientsOld);
 
                 try {

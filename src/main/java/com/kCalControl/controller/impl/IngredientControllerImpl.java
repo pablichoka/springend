@@ -9,6 +9,7 @@ import com.kCalControl.model.IngredientsOld;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.repository.IngredientsOldRepository;
+import com.kCalControl.repository.NutrientsRepository;
 import com.kCalControl.service.IngredientService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
@@ -31,6 +32,8 @@ public class IngredientControllerImpl implements IngredientController {
     @Autowired
     IngredientRepository ingredientRepository;
     @Autowired
+    NutrientsRepository nutrientsRepository;
+    @Autowired
     IngredientService ingredientService;
 
     @Override
@@ -46,8 +49,8 @@ public class IngredientControllerImpl implements IngredientController {
                 .map(i -> ingredientService.convertIngredientOld2Ingredient(i))
                 .collect(Collectors.toList());
         ingredientList.stream().forEach(i -> i.setType(dto.getType()));
-        logger.info("Ingredienteeees: " + ingredientList.get(0).toString());
-        ingredientRepository.saveAll(ingredientList); //!
+        ingredientList.stream().forEach(i -> nutrientsRepository.save(i.getNutrients()));
+        ingredientRepository.saveAll(ingredientList);
         httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
