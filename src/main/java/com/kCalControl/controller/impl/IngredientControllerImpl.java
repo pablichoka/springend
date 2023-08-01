@@ -45,8 +45,8 @@ public class IngredientControllerImpl implements IngredientController {
 
     @Override
     public void categorizeIngredients(CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse) {
-        Optional<Ingredient> ingredientExistingList = ingredientRepository.findByCategoryLike(dto.getCategory());
-        if(ingredientExistingList.isPresent()){
+        boolean ingredientExistingList = ingredientRepository.existsByCategoryLike(dto.getCategory());
+        if(ingredientExistingList){
             httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
         }else {
             List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());

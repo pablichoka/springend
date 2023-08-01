@@ -178,7 +178,7 @@ const observer = new MutationObserver(function () {
       event.preventDefault();
       let url = typeIngForm.getAttribute('action');
       let id = typeIngForm.getAttribute('id');
-      ajaxIngCat(url, id)
+      ajaxIngCat(url, id);
     });
   }
 });
