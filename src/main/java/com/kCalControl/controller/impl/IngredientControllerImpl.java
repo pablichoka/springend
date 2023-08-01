@@ -56,6 +56,7 @@ public class IngredientControllerImpl implements IngredientController {
             ingredientList.stream().forEach(i -> i.setType(dto.getType()));
             ingredientList.stream().forEach(i -> nutrientsRepository.save(i.getNutrients()));
             ingredientRepository.saveAll(ingredientList);
+            ingredientsOldRepository.deleteAll(ingredientsOldList);
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
