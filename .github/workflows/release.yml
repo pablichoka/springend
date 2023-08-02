@@ -19,4 +19,3 @@ jobs:
                   git tag -a "$tag" -m "$tag"
                 done
                 git push origin "${TAGS[@]}"
-                shell: /usr/bin/bash -e {0}
