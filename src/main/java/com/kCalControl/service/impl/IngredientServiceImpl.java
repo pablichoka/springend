@@ -69,7 +69,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Page<Ingredient> getIngredientsFromSearch(int page, int pageSize, String query, String filter, String sort) {
         Sort sorted = null;
-        if (filter.isEmpty()){filter = "category";}//In case not filtering, target will be username
+        if (filter.isEmpty()){filter = "category";}//In case not filtering, target will be category
 
         sorted = switch (sort) {
             case "az" -> Sort.by(Sort.Direction.ASC, filter);
@@ -82,13 +82,13 @@ public class IngredientServiceImpl implements IngredientService {
         };
         PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
         switch (filter) {
-            case "username" -> {
+            case "category" -> {
                 return ingredientRepository.findByCategoryLike(query, pageRequest);
             }
-            case "email" -> {
+            case "description" -> {
                 return ingredientRepository.findByDescriptionLike(query, pageRequest);
             }
-            case "lastName" -> {
+            case "type" -> {
                 return ingredientRepository.findByTypeLike(query, pageRequest);
             }
             default -> {

@@ -56,7 +56,6 @@ public class IngredientControllerImpl implements IngredientController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
-    //TODO add search option to listIngredients
     @Override
     public String listIngredients(Model model, int page, int pageSize) {
         Page<Ingredient> ingredientsList = ingredientService.getIngredient(page, pageSize);
@@ -68,8 +67,8 @@ public class IngredientControllerImpl implements IngredientController {
 
     @Override
     public String searchIngredients(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
-        Page<Ingredient> userSearchList = ingredientService.getIngredientsFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
-        model.addAttribute("users", userSearchList.getContent());
+        Page<Ingredient> ingredientsSearchList = ingredientService.getIngredientsFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
+        model.addAttribute("ingredient", ingredientsSearchList.getContent());
         model.addAttribute("params",new SearchParamsDTO());
         return "/auth/admin/listIngredient";
     }
