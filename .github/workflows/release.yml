@@ -1,4 +1,4 @@
-name: Release
+name: tagged-release
 on:
     push:
         tags:
@@ -9,6 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: "marvinpinto/action-automatic-releases@latest"
-              with:
+              env:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
+              with:
                 prerelease: false
