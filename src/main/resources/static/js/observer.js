@@ -9,7 +9,8 @@ const observer = new MutationObserver(function () {
     }
   }
 
-  let searchForm = document.getElementById("searchForm");
+  let searchUserForm = document.getElementById("searchForm");
+  let searchIngredientForm = document.getElementById("searchIngredientForm");
   let userData = document.getElementById("userData");
   let personalData = document.getElementById("bmData");
   let calcData = document.getElementById("bmCalc");
@@ -161,13 +162,13 @@ const observer = new MutationObserver(function () {
     });
   }
 
-  if (searchForm) {
-    searchForm.addEventListener("submit", function (event) {
+  if (searchUserForm) {
+    searchUserForm.addEventListener("submit", function (event) {
       event.preventDefault();
       if (checkQueryFilled() === false) {
         document.getElementById("searchSpinner").style.display = "inherit";
         setTimeout(function () {
-          ajaxForm("searchForm");
+          ajaxForm("searchForm", "users");
         }, 1000);
       }
     });
@@ -179,6 +180,16 @@ const observer = new MutationObserver(function () {
       let url = typeIngForm.getAttribute('action');
       let id = typeIngForm.getAttribute('id');
       ajaxIngCat(url, id);
+    });
+  }
+
+  if (searchIngredientForm) {
+    searchIngredientForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      document.getElementById("searchSpinner").style.display = "inherit";
+      setTimeout(function () {
+        ajaxForm("searchIngredientForm", "ingredients");
+      }, 1000);
     });
   }
 });

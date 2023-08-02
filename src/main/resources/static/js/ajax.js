@@ -32,8 +32,7 @@ function ajaxF(url){
 }
 
 //Ajax for search
-function ajaxForm(formName) {
-  // event.preventDefault();
+function ajaxForm(formName, id) {
   let spinner = document.getElementById('mainSpinner');
   let form = document.getElementById(formName);
   
@@ -45,13 +44,13 @@ function ajaxForm(formName) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-    document.getElementById('users').innerHTML = "";
+    document.getElementById(id).innerHTML = "";
 
     xhr.onload = function() {
       var parser = new DOMParser();
     var doc = parser.parseFromString(xhr.responseText, 'text/html');
-    var div = doc.getElementById('users');
-      document.getElementById('users').innerHTML = div.innerHTML;
+    var div = doc.getElementById(id);
+      document.getElementById(id).innerHTML = div.innerHTML;
       spinner.style.display = 'none';
     }
     
