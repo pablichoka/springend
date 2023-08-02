@@ -9,6 +9,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: "marvinpinto/action-automatic-releases@latest"
-              env:
+              with:
                 repo_token: ${{ secrets.RELEASE_TOKEN }}
                 prerelease: false
