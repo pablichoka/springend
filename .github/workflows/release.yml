@@ -14,8 +14,10 @@ jobs:
                 prerelease: false
             - name: "add-tags"
               run: |
+                cd $GITHUB_WORKSPACE
                 IFS=',' read -ra TAGS <<< "$GITHUB_REF"
                 for tag in "${TAGS[@]}"; do
                   git tag -a "$tag" -m "$tag"
                 done
                 git push origin "${TAGS[@]}"
+                shell: /usr/bin/bash -e {0}
