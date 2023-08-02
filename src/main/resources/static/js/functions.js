@@ -75,7 +75,7 @@ function loadPreviousPage() {
 function loadNextPageIng() {
   currentPage++;
   fetch(
-    "/auth/admin/listIngredients?page=" + currentPage + "&pageSize=" + pageSize
+    "/auth/admin/listIngredient?page=" + currentPage + "&pageSize=" + pageSize
   )
     .then(function (response) {
       if (response.ok) {
@@ -102,7 +102,7 @@ function loadNextPageIng() {
         currentPage--;
       } else {
         var tableContent = extractTableContent(data);
-        document.getElementById("users").innerHTML = tableContent;
+        document.getElementById("ingredients").innerHTML = tableContent;
       }
     })
     .catch(function (error) {
@@ -128,7 +128,7 @@ function loadPreviousPageIng() {
   } else {
     currentPage--;
     fetch(
-      "/auth/admin/listIngredients?page=" +
+      "/auth/admin/listIngredient?page=" +
         currentPage +
         "&pageSize=" +
         pageSize
@@ -142,7 +142,7 @@ function loadPreviousPageIng() {
       })
       .then(function (data) {
         var tableContent = extractTableContent(data);
-        document.getElementById("users").innerHTML = tableContent;
+        document.getElementById("ingredients").innerHTML = tableContent;
       })
       .catch(function (error) {
         console.error(error);
