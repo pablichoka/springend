@@ -11,5 +11,4 @@ jobs:
             - uses: "marvinpinto/action-automatic-releases@latest"
               env:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
-              with:
                 prerelease: false
