@@ -23,6 +23,7 @@ public interface UserDBController {
     @GetMapping("auth/admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize, Model model); //these values have lower priority than the JS ones
 
+    //TODO fix pagination: page entity adds the search result to the existing pageable
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("auth/admin/listUser")
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
