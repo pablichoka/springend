@@ -24,6 +24,7 @@ public interface UserDBController {
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize, Model model); //these values have lower priority than the JS ones
 
     //TODO fix pagination: page entity adds the search result to the existing pageable
+    //TODO check parameters of JS functions passed to the server. Probably I have to include searchParams info into requests
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("auth/admin/listUser")
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,

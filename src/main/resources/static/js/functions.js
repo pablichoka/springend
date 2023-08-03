@@ -74,17 +74,14 @@ function loadPreviousPage() {
 
 function loadNextPageIng() {
   currentPage++;
-  fetch(
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    "GET",
     "/auth/admin/listIngredient?page=" + currentPage + "&pageSize=" + pageSize
-  )
-    .then(function (response) {
-      if (response.ok) {
-        return response.text();
-      } else {
-        throw new Error("Error al cargar la siguiente página");
-      }
-    })
-    .then(function (data) {
+  );
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      var data = xhr.responseText;
       if (checkIfTableIsEmpty(data) === true) {
         var alertContainer = document.getElementById("alertContainer");
         let alertDiv = document.createElement("div");
@@ -104,11 +101,53 @@ function loadNextPageIng() {
         var tableContent = extractTableContent(data);
         document.getElementById("ingredients").innerHTML = tableContent;
       }
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+    } else {
+      console.error("Error al cargar la siguiente página");
+    }
+  };
+  xhr.onerror = function () {
+    console.error("Error al realizar la petición");
+  };
+  xhr.send();
 }
+
+// function loadNextPageIng() {
+//   currentPage++;
+//   fetch(
+//     "/auth/admin/listIngredient?page=" + currentPage + "&pageSize=" + pageSize
+//   )
+//     .then(function (response) {
+//       if (response.ok) {
+//         return response.text();
+//       } else {
+//         throw new Error("Error al cargar la siguiente página");
+//       }
+//     })
+//     .then(function (data) {
+//       if (checkIfTableIsEmpty(data) === true) {
+//         var alertContainer = document.getElementById("alertContainer");
+//         let alertDiv = document.createElement("div");
+//         alertDiv.classList.add(
+//           "alert",
+//           "alert-dismissible",
+//           "fade",
+//           "show",
+//           "alert-info"
+//         );
+//         alertDiv.innerHTML =
+//           '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+//           "There is no more users!";
+//         alertContainer.appendChild(alertDiv);
+//         currentPage--;
+//       } else {
+//         var tableContent = extractTableContent(data);
+//         document.getElementById("ingredients").innerHTML = tableContent;
+//       }
+//     })
+//     .catch(function (error) {
+//       console.error(error);
+//     });
+// }
 
 function loadPreviousPageIng() {
   if (currentPage <= 0) {
@@ -127,28 +166,67 @@ function loadPreviousPageIng() {
     alertContainer.appendChild(alertDiv);
   } else {
     currentPage--;
-    fetch(
-      "/auth/admin/listIngredient?page=" +
-        currentPage +
-        "&pageSize=" +
-        pageSize
-    )
-      .then(function (response) {
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw new Error("Error al cargar la siguiente página");
-        }
-      })
-      .then(function (data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(
+      "GET",
+      "/auth/admin/listIngredient?page=" + currentPage + "&pageSize=" + pageSize
+    );
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var data = xhr.responseText;
         var tableContent = extractTableContent(data);
         document.getElementById("ingredients").innerHTML = tableContent;
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+      } else {
+        console.error("Error al cargar la página anterior");
+      }
+    };
+    xhr.onerror = function () {
+      console.error("Error al realizar la petición");
+    };
+    xhr.send();
   }
 }
+
+
+// function loadPreviousPageIng() {
+//   if (currentPage <= 0) {
+//     var alertContainer = document.getElementById("alertContainer");
+//     let alertDiv = document.createElement("div");
+//     alertDiv.classList.add(
+//       "alert",
+//       "alert-dismissible",
+//       "fade",
+//       "show",
+//       "alert-info"
+//     );
+//     alertDiv.innerHTML =
+//       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+//       "There is no previous users!";
+//     alertContainer.appendChild(alertDiv);
+//   } else {
+//     currentPage--;
+//     fetch(
+//       "/auth/admin/listIngredient?page=" +
+//         currentPage +
+//         "&pageSize=" +
+//         pageSize
+//     )
+//       .then(function (response) {
+//         if (response.ok) {
+//           return response.text();
+//         } else {
+//           throw new Error("Error al cargar la siguiente página");
+//         }
+//       })
+//       .then(function (data) {
+//         var tableContent = extractTableContent(data);
+//         document.getElementById("ingredients").innerHTML = tableContent;
+//       })
+//       .catch(function (error) {
+//         console.error(error);
+//       });
+//   }
+// }
 
 function extractTableContent(data) {
   // Crear un nuevo elemento HTML para analizar el código
