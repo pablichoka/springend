@@ -21,7 +21,7 @@ public interface IngredientController {
     @GetMapping("/auth/admin/listIngredient")
     String listIngredients(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize);
 
-    //TODO fix pagination: page entity adds the search result to the existing pageable
+    //TODO make reliable to click navigation pages buttons depending on get or post request
     @PostMapping("/auth/admin/listIngredient")
     String searchIngredients(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
                              SearchParamsDTO dto, Model model, HttpServletResponse response);
