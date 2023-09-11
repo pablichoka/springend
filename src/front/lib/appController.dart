@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front/login.dart';
+import 'package:front/index.dart';
 
 final ThemeData _kCalControlTheme = _buildKCalControlTheme();
 
-ThemeData _buildKCalControlTheme(){
+ThemeData _buildKCalControlTheme() {
   final ThemeData lightTheme = ThemeData.light();
   return lightTheme.copyWith(
     colorScheme: lightTheme.colorScheme.copyWith(
@@ -16,19 +16,22 @@ ThemeData _buildKCalControlTheme(){
   );
 }
 
-TextTheme _buildKCalControlTextTheme(TextTheme base){
+TextTheme _buildKCalControlTextTheme(TextTheme base) {
   return base.copyWith(
     headlineSmall: base.headlineSmall?.copyWith(
-      fontFamily: 'ProductSans',
+        fontFamily: 'ProductSans',
+        fontWeight: FontWeight.w300,
     ),
     headlineMedium: base.headlineMedium?.copyWith(
-      fontFamily: 'ProductSans',
+        fontFamily: 'ProductSans',
+        fontWeight: FontWeight.w400
     ),
     headlineLarge: base.headlineLarge?.copyWith(
-      fontFamily: 'ProductSans',
+        fontFamily: 'ProductSans',
+        fontWeight: FontWeight.w500
     ),
   ).apply(
-   displayColor: Colors.brown,
+    displayColor: Colors.white,
   );
 }
 
@@ -41,7 +44,7 @@ class KCalFront extends StatelessWidget {
       title: 'kCal Control',
       initialRoute: "/login",
       routes: {
-        '/login': (BuildContext context) => const Login(),
+        '/login': (BuildContext context) => const Index(),
         // '/': (BuildContext context) => const
       },
       theme: _kCalControlTheme,

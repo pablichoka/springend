@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Signup extends StatelessWidget {
   final String title = "kCal Control";
 
-  const Login({super.key});
+  const Signup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class Login extends StatelessWidget {
           children: [
             Form(
 
-              child: Text('login'),
+              child: Text('signup'),
             ),
           ],
         ));

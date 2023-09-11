@@ -60,7 +60,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-      - assets/images/index_back.jpg
+    - assets/images/index_back.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -78,6 +78,17 @@ flutter:
    - family: ProductSans
      fonts:
        - asset: assets/fonts/ProductSans-Black.ttf
+         weight: 500
+       - asset: assets/fonts/ProductSans-Bold.ttf
+         weight: 600
+       - asset: assets/fonts/ProductSans-Light.ttf
+         weight: 200
+       - asset: assets/fonts/ProductSans-Medium.ttf
+         weight: 300
+       - asset: assets/fonts/ProductSans-Regular.ttf
+         weight: 400
+       - asset: assets/fonts/ProductSans-Thin.ttf
+         weight: 100
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
