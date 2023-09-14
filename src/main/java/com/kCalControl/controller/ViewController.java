@@ -2,6 +2,7 @@ package com.kCalControl.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,7 @@ import java.security.Principal;
 public interface ViewController {
 
     @GetMapping("/")
-    String index();
+    ResponseEntity<String> index();
     @GetMapping("/auth/views/home")
     String home(Model model);
     @PostMapping("/logout")

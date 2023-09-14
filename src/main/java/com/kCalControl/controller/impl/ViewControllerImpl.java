@@ -9,6 +9,8 @@ import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,8 @@ public class ViewControllerImpl implements ViewController {
     @Autowired
     UserDBService userDBService;
     @Override
-    public String index(){
-        return "index";
+    public ResponseEntity<String> index(){
+        return new ResponseEntity<>("hello world", HttpStatus.OK);
     }
 
     @Override
