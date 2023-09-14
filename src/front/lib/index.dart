@@ -1,12 +1,48 @@
+import 'dart:convert';
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
+import 'package:front/services/globals.dart';
 import 'package:front/signup.dart';
+import 'package:http/http.dart' as http;
 
 import 'login.dart';
 
-class Index extends StatelessWidget {
+class Index extends StatefulWidget {
   const Index({super.key});
 
+  @override
+  State<Index> createState() => _IndexState();
+}
+
+class _IndexState extends State<Index> {
   final String title = "kCal Control";
+
+  late Future<Map<String, dynamic>> message;
+
+  Future<Map<String, dynamic>> _getMessage() async {
+    try {
+      final response = await http.get(Uri.http(baseUrl), headers: headers);
+      if (response.statusCode == 200) {
+        String body = utf8.decode(response.bodyBytes);
+        final jsonData = jsonDecode(body);
+        print(jsonData);
+        return jsonData;
+      } else {
+        throw Exception('Message not received');
+      }
+    } catch (e) {
+      // Manejar la excepción de manera adecuada, como imprimir un mensaje de error o lanzarla nuevamente.
+      print('Error: $e');
+      throw e;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    message = _getMessage();
+  }
 
   @override
   Widget build(BuildContext context) {
