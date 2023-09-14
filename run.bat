@@ -1,0 +1,1 @@
+mvn package -DskipTests && cd target && java -Dspring.data.mongodb.uri=%KCAL_MONGO_REMOTE% -jar --enable-preview tool-0.0.1-SNAPSHOT.jar
