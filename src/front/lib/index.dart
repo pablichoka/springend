@@ -22,7 +22,8 @@ class _IndexState extends State<Index> {
 
   Future<Map<String, dynamic>> _getMessage() async {
     try {
-      final response = await http.get(Uri.http(baseUrl), headers: headers);
+      final response = await http.get(Uri.parse(baseUrl), headers: headers);
+      print('codigo de error: ${response.statusCode}');
       if (response.statusCode == 200) {
         String body = utf8.decode(response.bodyBytes);
         final jsonData = jsonDecode(body);
@@ -32,9 +33,8 @@ class _IndexState extends State<Index> {
         throw Exception('Message not received');
       }
     } catch (e) {
-      // Manejar la excepción de manera adecuada, como imprimir un mensaje de error o lanzarla nuevamente.
       print('Error: $e');
-      throw e;
+      rethrow;
     }
   }
 

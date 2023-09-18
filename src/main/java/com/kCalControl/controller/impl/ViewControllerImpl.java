@@ -27,7 +27,7 @@ public class ViewControllerImpl implements ViewController {
     UserDBService userDBService;
     @Override
     public ResponseEntity<String> index(){
-        return new ResponseEntity<>("hello world", HttpStatus.OK);
+        return new ResponseEntity<String>("hello world", HttpStatus.OK);
     }
 
     @Override
