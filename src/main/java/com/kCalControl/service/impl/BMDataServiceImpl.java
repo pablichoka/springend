@@ -55,7 +55,7 @@ public class BMDataServiceImpl implements BMDataService {
             case "Male" -> ((66 + (13.7 * bmData.getWeight())) + ((5 * bmData.getHeight()) - (6.8 * bmData.getAge())));
             case "Female" ->
                     ((655 + (9.6 * bmData.getWeight())) + ((1.8 * bmData.getHeight()) - (4.7 * bmData.getAge())));
-            case null, default -> 0.0;
+            default -> 0.0;
         };
         bmData.setBaseBM(baseBM);
         BMDataRepository.save(bmData);
@@ -70,7 +70,7 @@ public class BMDataServiceImpl implements BMDataService {
             case "Definition" -> 0.85;
             case "Maintain" -> 1.00;
             case "Gaining" -> 1.15;
-            case null, default -> 0.00;
+            default -> 0.00;
         };
         switch (numDaysEx) {
             case 0 -> exFactor = 1.2;
@@ -102,7 +102,7 @@ public class BMDataServiceImpl implements BMDataService {
                 exFactor = 1.85;
                 ;
             }
-            case null, default -> exFactor = 0.0;
+            default -> exFactor = 0.0;
         }
         totalBM = bmData.getBaseBM() * percentageOfkCal * exFactor;
         bmData.setTotalBM(totalBM);
