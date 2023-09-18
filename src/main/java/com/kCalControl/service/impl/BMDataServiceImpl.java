@@ -23,14 +23,12 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public BMData returnBMDataLoggedUser() {
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
-        return bmData;
+        return BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
     }
 
     @Override
     public BMData returnBMDataByUserDBId(ObjectId id) {
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
-        return bmData;
+        return BMDataRepository.findByUserAssoc_Id(id);
     }
 
     @Override
