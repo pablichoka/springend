@@ -42,7 +42,7 @@ class _IndexState extends State<Index> {
   @override
   void initState() {
     super.initState();
-    message = _getMessage();
+    getSSLPinningClient();
   }
 
   @override
