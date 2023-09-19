@@ -1,0 +1,61 @@
+Para conectar una aplicación frontend Flutter con un backend Spring y asegurar la comunicación entre ellos utilizando HTTPS, necesitarás seguir varios pasos. Aquí te dejo una guía detallada:
+  
+1. **Generación de Certificado SSL**
+   Primero, necesitas generar un certificado SSL. Para eso, puedes utilizar herramientas como OpenSSL o Let's Encrypt. Necesitarás dos archivos tras la generación, normalmente con las extensiones .crt (certificado) y .key (clave privada). 
+
+   Asegúrate de guardar estos archivos en un lugar seguro y recuerda que necesitas renovarlos cada cierto tiempo.
+
+2. **Configuración de SSL en Spring**
+
+   2.1 En el archivo application.properties de tu aplicación Spring, añade las siguientes líneas para especificar la ubicación del certificado y de la clave privada:
+   ```
+   server.ssl.key-store=classpath:keystore.jks 
+   server.ssl.key-store-password=<password_al_guardar_key_store>
+   server.ssl.keyStoreType=JKS
+   server.ssl.keyAlias=<alias_key_store>
+   ```
+   Donde 'keystore.jks' es tu almacén de claves generado, `<password_al_guardar_key_store>` es la contraseña que le pusiste al generar el 'keystore.jks' y `<alias_key_store>` es el nombre del alias que le diste al 'key' en el 'keystore.jks'.
+
+3. **Configuración de CORS en Spring**
+   
+   La manera más sencilla de gestionar CORS en Spring Boot es agregar la anotación *`@CrossOrigin`* a nivel de controlador o de proceso. Sin embargo, para un control más detallado, se puede configurar globalmente:
+   
+   ```java
+   @Configuration
+   public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+          registry.addMapping("/**")
+          .allowedMethods("*")
+          .allowedHeaders("*")
+          .allowedOrigins("http://localhost:port")
+          ...
+      }
+   }
+   ```
+   Cambia "http://localhost:port" a la dirección del servidor Flutter.
+
+4. **Utilizar Bearer Authentication (Spring Security)**
+   Para utilizar autenticación con Bearer puedes usar Spring Security. Necesitas incluir las dependencias correspondientes (spring-boot-starter-security, spring-security-jwt, etc.) y configurar una clase que extiende a WebSecurityConfigurerAdapter para configurar las rutas protegidas y permitidas.
+
+5. **Configuración de Flutter para hacer peticiones HTTPS**
+   
+   Flutter utiliza una librería llamada `http` para realizar peticiones HTTP. Para indicar que confías en el certificado SSL que generaste, necesitas agregarlo como un recurso en tu aplicación Flutter y ajustar el cliente HTTP para que confíe en él.
+   
+   Básicamente necesitas cargar el certificado desde los recursos de la app y utilizarlo para crear un contexto seguro:
+   ```dart
+    ByteData data = await rootBundle.load('assets/certificate.pem');
+    SecurityContext context = SecurityContext.defaultContext;
+    context.setTrustedCertificatesBytes(data.buffer.asUint8List());
+    Client client = HttpClient(context: context);
+   ```
+   Y luego puedes utilizar este cliente para hacer peticiones HTTPS al backend.
+
+Notas importantes: 
+
+- En producción, deberías evitar auto firmar tus certificados SSL.
+- Para aprender más sobre la autenticación Bearer, mira la documentación de Spring Security, ya que es un tema amplio y depende del método exacto de autenticación que desees implementar (Por ejemplo: OAuth2, JWT, etc.).
+- Este es un ejemplo de cómo hacerlo. La implementación real puede variar dependiendo de los detalles de tu aplicación.
+
+
+COMO AUTORIDAD CA USAR MKCERT INSTALLED BY CHOCOLATELY
