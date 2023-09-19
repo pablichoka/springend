@@ -22,7 +22,8 @@ class _IndexState extends State<Index> {
 
   Future<Map<String, dynamic>> _getMessage() async {
     try {
-      final response = await http.get(Uri.parse(baseUrl), headers: headers);
+      final url = Uri.https(baseUrl,'/');
+      final response = await http.get(url);
       print('codigo de error: ${response.statusCode}');
       if (response.statusCode == 200) {
         String body = utf8.decode(response.bodyBytes);
