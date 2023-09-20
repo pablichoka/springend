@@ -23,17 +23,16 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public BMData returnBMDataLoggedUser() {
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
-        return bmData;
-    }
-    @Override
-    public BMData returnBMDataByUserDBId(ObjectId id){
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
-        return bmData;
+        return BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
     }
 
     @Override
-    public BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO){
+    public BMData returnBMDataByUserDBId(ObjectId id) {
+        return BMDataRepository.findByUserAssoc_Id(id);
+    }
+
+    @Override
+    public BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO) {
         BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
         bmData.setAge(personalDataDTO.getAge());
         bmData.setHeight(personalDataDTO.getHeight());
@@ -43,7 +42,7 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public BMData saveCalc(ObjectId id, BMDataDTO dto){
+    public BMData saveCalc(ObjectId id, BMDataDTO dto) {
         BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
         bmData.setDietType(dto.getDietType());
         bmData.setNumDaysEx(dto.getNumDaysEx());
@@ -52,79 +51,62 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public void calculateBaseBM(BMData bmData) {
-        Double baseBM;
-        switch (bmData.getGender()) {
-            case "Male":
-                baseBM = ((66 + (13.7 * bmData.getWeight())) + ((5 * bmData.getHeight()) - (6.8 * bmData.getAge())));
-                break;
-            case "Female":
-                baseBM = ((655 + (9.6 * bmData.getWeight())) + ((1.8 * bmData.getHeight()) - (4.7 * bmData.getAge())));
-                break;
-            case null, default:
-                baseBM = 0.0;
-                break;
-        }
+        double baseBM = switch (bmData.getGender()) {
+            case "Male" -> ((66 + (13.7 * bmData.getWeight())) + ((5 * bmData.getHeight()) - (6.8 * bmData.getAge())));
+            case "Female" ->
+                    ((655 + (9.6 * bmData.getWeight())) + ((1.8 * bmData.getHeight()) - (4.7 * bmData.getAge())));
+            default -> 0.0;
+        };
         bmData.setBaseBM(baseBM);
         BMDataRepository.save(bmData);
     }
+
     @Override
     public void calculateFinalBM(BMData bmData, String dietType, Integer numDaysEx) {
         Double percentageOfkCal;
         Double exFactor;
-        Double totalBM;
-        switch (dietType) {
-            case "Definition":
-                percentageOfkCal = 0.85;
-                break;
-            case "Maintain":
-                percentageOfkCal = 1.00;
-                break;
-            case "Gaining":
-                percentageOfkCal = 1.15;
-                break;
-            case null, default:
-                percentageOfkCal = 0.00;
-                break;
-        }
+        double totalBM;
+        percentageOfkCal = switch (dietType) {
+            case "Definition" -> 0.85;
+            case "Maintain" -> 1.00;
+            case "Gaining" -> 1.15;
+            default -> 0.00;
+        };
         switch (numDaysEx) {
-            case 0:
-                exFactor = 1.2;
-                break;
-            case 1:
+            case 0 -> exFactor = 1.2;
+            case 1 -> {
                 exFactor = 1.26;
                 ;
-                break;
-            case 2:
+            }
+            case 2 -> {
                 exFactor = 1.32;
                 ;
-                break;
-            case 3:
+            }
+            case 3 -> {
                 exFactor = 1.37;
                 ;
-                break;
-            case 4:
+            }
+            case 4 -> {
                 exFactor = 1.46;
                 ;
-                break;
-            case 5:
+            }
+            case 5 -> {
                 exFactor = 1.55;
                 ;
-                break;
-            case 6:
+            }
+            case 6 -> {
                 exFactor = 1.72;
                 ;
-                break;
-            case 7:
+            }
+            case 7 -> {
                 exFactor = 1.85;
                 ;
-                break;
-            case null, default:
-                exFactor = 0.0;
-                break;
+            }
+            default -> exFactor = 0.0;
         }
-        totalBM = bmData.getBaseBM()*percentageOfkCal*exFactor;
+        totalBM = bmData.getBaseBM() * percentageOfkCal * exFactor;
         bmData.setTotalBM(totalBM);
         BMDataRepository.save(bmData);
-        }
+    }
 }
 
