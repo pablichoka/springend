@@ -18,31 +18,9 @@ class Index extends StatefulWidget {
 class _IndexState extends State<Index> {
   final String title = "kCal Control";
 
-  late Future<Map<String, dynamic>> message;
-
-  Future<Map<String, dynamic>> _getMessage() async {
-    try {
-      final url = Uri.https(baseUrl,'/');
-      final response = await http.get(url);
-      print('codigo de error: ${response.statusCode}');
-      if (response.statusCode == 200) {
-        String body = utf8.decode(response.bodyBytes);
-        final jsonData = jsonDecode(body);
-        print(jsonData);
-        return jsonData;
-      } else {
-        throw Exception('Message not received');
-      }
-    } catch (e) {
-      print('Error: $e');
-      rethrow;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    getSSLPinningClient();
   }
 
   @override

@@ -1,0 +1,9 @@
+name: front
+
+environment:
+  sdk: '^3.1.0'
+
+flutter:
+  web:
+    defaultConfig:
+      ssl_certificate_path: assets/certificates/localhost.p12
