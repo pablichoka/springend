@@ -1,13 +1,12 @@
 package com.kCalControl.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -18,20 +17,20 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private JwtFilter filter;
+
     @Bean
     public Checker checker(){return new Checker();};
-
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedHeaders("*")
-                .allowedOrigins("*");
-    }
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception{
 
         http
+                .cors()
+                .and()
+                .csrf()
+                .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/api/**", "/auth/views/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/auth/admin/**").hasRole("ADMIN")
