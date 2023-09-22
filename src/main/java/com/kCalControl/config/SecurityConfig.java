@@ -46,7 +46,7 @@ public class SecurityConfig implements WebMvcConfigurer {
             .authorizeHttpRequests()
                 .requestMatchers("/auth/api/**", "/auth/views/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/auth/admin/**").hasRole("ADMIN")
-                .requestMatchers("/noAuth/**", "/", "/css/**", "/js/**", "/error/**", "/img/**", "/api/authenticate").permitAll()
+                .requestMatchers("/noAuth/**", "/", "/css/**", "/js/**", "/error/**", "/img/**", "/api/**").permitAll()
                 .requestMatchers("/auth/**").authenticated()
                 .and()
             .logout()
