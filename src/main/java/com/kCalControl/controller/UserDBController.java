@@ -3,17 +3,16 @@ package com.kCalControl.controller;
 import com.kCalControl.dto.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-@Controller
+@RestController
+@RequestMapping("api")
 public interface UserDBController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("auth/admin/addUser")
@@ -30,8 +29,8 @@ public interface UserDBController {
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
                        SearchParamsDTO dto, Model model, HttpServletResponse response);
 
-    @PostMapping("noAuth/signUp")
-    String createNormalUser(NewUserDTO dto, Model model);
+    @PostMapping("signup")
+    void createNormalUser(@RequestBody NewUserDTO dto);
 
     @GetMapping("auth/api/myProfile")
     String myProfile(Model model);

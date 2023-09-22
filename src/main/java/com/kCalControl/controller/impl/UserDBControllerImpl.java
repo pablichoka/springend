@@ -13,9 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -51,12 +53,11 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String createNormalUser(NewUserDTO dto, Model model){
+    public void createNormalUser(@RequestBody NewUserDTO dto){
         UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
-        return "index";
     }
 
     @Override
