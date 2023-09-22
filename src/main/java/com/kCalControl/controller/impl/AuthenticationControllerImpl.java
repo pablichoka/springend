@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     UserDBRepository userDBRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    BCryptPasswordEncoder encoder;
 
     @Autowired
     TokenManager tokenManager;
@@ -34,12 +35,13 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     public ResponseEntity<AuthenticateResponseDTO> authenticate(@RequestBody AuthenticateRequestDTO request) {
 
         var username = request.getUsername();
-        var findByEmail = userDBRepository.findByEmail(username);
-        if (findByEmail.isEmpty()) {
+        var findByUsername = userDBRepository.findByUsername(username);
+        if (findByUsername.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
 
         }
-        var userDB = findByEmail.get();
+        var userDB = findByUsername.get();
+
         var matches = encoder.matches(request.getPassword(), userDB.getPassword());
         if (!matches) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");

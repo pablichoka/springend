@@ -30,9 +30,9 @@ public class TokenManager implements Serializable {
     byte[] signingKey;
     SecretKey secretKey;
 
-    // Autowire the JWT secret key from configuration
+    // Autowire the JWT secret key from configuration  ${jwt.base64secret}
     @Autowired
-    public void setJWTBase64Secret(@Value("${jwt.base64secret}") String jwtSecret) {
+    public void setJWTBase64Secret(@Value("uzfY3JON4j/XlCNwo/RVWvQY0PqciQVcK8dRjHpB3Yk=") String jwtSecret) {
         // Decode and set the JWT signing key
         this.signingKey = Decoders.BASE64.decode(jwtSecret);
         this.secretKey = Keys.hmacShaKeyFor(this.signingKey);
