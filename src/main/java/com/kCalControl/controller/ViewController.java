@@ -8,14 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-@Controller
+@RestController
 public interface ViewController {
 
-    @GetMapping("/")
-    ResponseEntity<String> index();
+//    @GetMapping("/")
+//    ResponseEntity<String> index();
     @GetMapping("/auth/views/home")
     String home(Model model);
     @PostMapping("/logout")

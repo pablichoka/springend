@@ -44,7 +44,7 @@ public class UserDBControllerImpl implements UserDBController {
     UserDBService userDBService;
 
     @Override
-    public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response){
+    public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response) {
         UserDB newUserDB = userDBService.newAdminUser(id, dto, role);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
@@ -53,7 +53,7 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public void createNormalUser(@RequestBody NewUserDTO dto){
+    public void createNormalUser(@RequestBody NewUserDTO dto) {
         UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
@@ -61,7 +61,7 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String myProfile(Model model){
+    public String myProfile(Model model) {
         model.addAttribute("user", userDBService.returnLoggedUser());
         model.addAttribute("bmData", bmDataService.returnBMDataLoggedUser());
         return "/auth/api/myProfile";
@@ -83,7 +83,7 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public void deleteUser(ObjectId id, HttpServletResponse response){
+    public void deleteUser(ObjectId id, HttpServletResponse response) {
         userDBService.deleteUserFromAdmin(id);
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
@@ -121,11 +121,11 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public String getUsersList(int page, int pageSize, Model model){
+    public String getUsersList(int page, int pageSize, Model model) {
         Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
         model.addAttribute("users", usersList.getContent());
         model.addAttribute("last", usersList.isLast());
-        model.addAttribute("params",new SearchParamsDTO());
+        model.addAttribute("params", new SearchParamsDTO());
         return "/auth/admin/listUser";
     }
 
@@ -133,7 +133,7 @@ public class UserDBControllerImpl implements UserDBController {
     public String searchUsers(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
         model.addAttribute("users", userSearchList.getContent());
-        model.addAttribute("params",new SearchParamsDTO());
+        model.addAttribute("params", new SearchParamsDTO());
         return "/auth/admin/listUser";
     }
 
