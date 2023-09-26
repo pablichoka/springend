@@ -115,26 +115,29 @@ public class UserDBServiceImpl implements UserDBService {
 
     @Override
     public UserDB returnUserById(ObjectId id){
-        UserDB userDB = userDBRepository.findById(id)
+        return userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
-        return userDB;
     }
 
     @Override
     public UserDB returnLoggedUser(){
-        UserDB userDB = userDBRepository.findByUsername(getUsernameLoggedUser())
+        return userDBRepository.findByUsername(getUsernameLoggedUser())
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
-        return userDB;
     }
 
     @Override
     public String getUsernameLoggedUser(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
+        Optional<UserDB> user;
         if (principal instanceof UserDetails) {
             username = ((UserDetails)principal).getUsername();
+        return username;
         } else {
-            username = principal.toString();
+            user = userDBRepository.findById(new ObjectId(principal.toString()));
+            if(user.isPresent()){
+                username = user.get().getUsername();
+            }else throw new UsernameNotFoundException("Username not found");
         }
         return username;
     }

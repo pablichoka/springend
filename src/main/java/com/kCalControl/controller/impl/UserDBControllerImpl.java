@@ -1,5 +1,7 @@
 package com.kCalControl.controller.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kCalControl.config.Checker;
 import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.*;
@@ -10,6 +12,7 @@ import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.BMDataService;
 import com.kCalControl.service.UserDBService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.bson.json.JsonObject;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,7 +64,11 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> whoIAm() {
-        return ResponseEntity.ok(userDBService.getUsernameLoggedUser());
+        String username = userDBService.getUsernameLoggedUser();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode username2JSON = objectMapper.createObjectNode();
+        username2JSON.put("username", username);
+        return ResponseEntity.ok(username2JSON.toString());
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.*;
 import jakarta.servlet.http.HttpServletResponse;
+import org.bson.json.JsonObject;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +33,7 @@ public interface UserDBController {
 //    void createNormalUser(@RequestBody NewUserDTO dto);
 
     @GetMapping("person/whoiam")
+    @ResponseBody
     ResponseEntity<String> whoIAm();
 
     @GetMapping("auth/api/editUser/{id}")
