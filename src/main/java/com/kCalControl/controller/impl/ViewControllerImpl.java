@@ -25,24 +25,16 @@ public class ViewControllerImpl implements ViewController {
     Checker checker;
     @Autowired
     UserDBService userDBService;
-    @Override
-    public ResponseEntity<String> index(){
-        return new ResponseEntity<String>("hello world", HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<String> index(){
+//        return new ResponseEntity<String>("hello world", HttpStatus.OK);
+//    }
 
     @Override
     public String home(Model model) {
         UserDB userDB = userDBService.returnLoggedUser();
         model.addAttribute("user", userDB);
         return "/auth/views/home";
-    }
-
-    @Override
-    public String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
-        if (authentication != null) {
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        return "redirect:/";
     }
 
     @Override

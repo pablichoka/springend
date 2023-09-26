@@ -15,12 +15,8 @@ import java.security.Principal;
 @RestController
 public interface ViewController {
 
-//    @GetMapping("/")
-//    ResponseEntity<String> index();
     @GetMapping("/auth/views/home")
     String home(Model model);
-    @PostMapping("/logout")
-    String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
     @GetMapping("/auth/admin/addNewUser")
     String addUserFromAdmin(Model model);
     @GetMapping("/auth/views/dashboard")

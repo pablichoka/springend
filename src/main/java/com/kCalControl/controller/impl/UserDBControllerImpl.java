@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -52,19 +51,17 @@ public class UserDBControllerImpl implements UserDBController {
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 
-    @Override
-    public void createNormalUser(@RequestBody NewUserDTO dto) {
-        UserDB newUserDB = userDBService.newNormalUser(dto);
-        bmDataRepository.save(newUserDB.getBmData());
-        assetsRepository.save(newUserDB.getAssets());
-        userDBRepository.save(newUserDB);
-    }
+//    @Override
+//    public void createNormalUser(@RequestBody NewUserDTO dto) {
+//        UserDB newUserDB = userDBService.newNormalUser(dto);
+//        bmDataRepository.save(newUserDB.getBmData());
+//        assetsRepository.save(newUserDB.getAssets());
+//        userDBRepository.save(newUserDB);
+//    }
 
     @Override
-    public String myProfile(Model model) {
-        model.addAttribute("user", userDBService.returnLoggedUser());
-        model.addAttribute("bmData", bmDataService.returnBMDataLoggedUser());
-        return "/auth/api/myProfile";
+    public ResponseEntity<String> whoIAm() {
+        return ResponseEntity.ok(userDBService.getUsernameLoggedUser());
     }
 
     @Override

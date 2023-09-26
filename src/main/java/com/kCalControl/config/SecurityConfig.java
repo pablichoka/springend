@@ -1,12 +1,15 @@
 package com.kCalControl.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,21 +42,26 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         http
-                .cors()
-                .and()
                 .csrf()
                 .disable()
-            .authorizeHttpRequests()
-                .requestMatchers("/auth/api/**", "/auth/views/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/auth/admin/**").hasRole("ADMIN")
-                .requestMatchers("/noAuth/**", "/", "/css/**", "/js/**", "/error/**", "/img/**", "/api/**").permitAll()
-                .requestMatchers("/auth/**").authenticated()
+                .cors()
                 .and()
-            .logout()
+                .authorizeHttpRequests(
+                        c -> c.requestMatchers("/api/authenticate", "/signup").permitAll()
+                                .requestMatchers("/**").authenticated().anyRequest().permitAll())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http
+                .addFilterBefore(this.filter, UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                .permitAll();
 
         return http.build();
     }

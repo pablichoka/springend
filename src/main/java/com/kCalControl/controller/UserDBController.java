@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +28,11 @@ public interface UserDBController {
     String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
                        SearchParamsDTO dto, Model model, HttpServletResponse response);
 
-    @PostMapping("signup")
-    void createNormalUser(@RequestBody NewUserDTO dto);
+//    @PostMapping("signup")
+//    void createNormalUser(@RequestBody NewUserDTO dto);
 
-    @GetMapping("auth/api/myProfile")
-    String myProfile(Model model);
+    @GetMapping("person/whoiam")
+    ResponseEntity<String> whoIAm();
 
     @GetMapping("auth/api/editUser/{id}")
     String editUser(@PathVariable("id") ObjectId id, Model model, Principal principal);

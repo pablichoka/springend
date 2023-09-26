@@ -2,6 +2,7 @@ package com.kCalControl.config;
 
 import java.io.IOException;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +61,9 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        Integer personId;
+        ObjectId personId;
         try {
-            personId = Integer.parseInt(subject);
+            personId = new ObjectId(subject);
         } catch (NumberFormatException e) {
             logger.debug("Token {} not valid", token, e);
             filterChain.doFilter(request, response);

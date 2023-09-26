@@ -59,7 +59,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
         var token = this.tokenManager.generateJwtToken(userDB_id);
         logger.debug("Generating token {} for {}", token, username);
 
-        var response = new AuthenticateResponseDTO(userDB_id, token);
+        var response = new AuthenticateResponseDTO(userDB_id, token, userDB.getRoleName());
         return ResponseEntity.ok(response);
     }
 
