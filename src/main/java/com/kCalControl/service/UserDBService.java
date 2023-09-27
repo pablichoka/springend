@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 
 public interface UserDBService {
-    UserDB newAdminUser(ObjectId creationPersonId, NewUserDTO dto, @RequestParam("role") String role);
+    UserDB newAdminUser(NewUserDTO dto);
 
     UserDB newNormalUser(NewUserDTO dto);
 

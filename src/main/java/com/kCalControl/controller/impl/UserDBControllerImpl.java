@@ -50,20 +50,23 @@ public class UserDBControllerImpl implements UserDBController {
     UserDBService userDBService;
 
     @Override
-    public void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response) {
-        UserDB newUserDB = userDBService.newAdminUser(id, dto, role);
+    public ResponseEntity<Void> createAdminUser(NewUserDTO dto) {
+        UserDB newUserDB = userDBService.newAdminUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public void createNormalUser(@RequestBody NewUserDTO dto){
+    public ResponseEntity<Void> createNormalUser(NewUserDTO dto){
         UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -75,29 +78,29 @@ public class UserDBControllerImpl implements UserDBController {
         return ResponseEntity.ok(username2JSON.toString());
     }
 
-    @Override
-    public String editUser(ObjectId id, Model model, Principal principal) {
-        if (!checker.checkSameUser(principal, id, model)) {
-            if (!checker.checkRoleAdminByPrincipal(principal, model)) {
-                return "/noAuth/error/403";
-            }
-        }
-        UserDB returnedUser = userDBService.returnUserById(id);
-        model.addAttribute("user", returnedUser);
-        model.addAttribute("userData", new UpdateUserDataDTO());
-        model.addAttribute("personalData", new UpdatePersonalDataDTO());
-        model.addAttribute("password", new UpdatePasswordDTO());
-        return "/auth/api/editUser";
-    }
+//    @Override
+//    public String editUser(ObjectId id, Model model, Principal principal) {
+//        if (!checker.checkSameUser(principal, id, model)) {
+//            if (!checker.checkRoleAdminByPrincipal(principal, model)) {
+//                return "/noAuth/error/403";
+//            }
+//        }
+//        UserDB returnedUser = userDBService.returnUserById(id);
+//        model.addAttribute("user", returnedUser);
+//        model.addAttribute("userData", new UpdateUserDataDTO());
+//        model.addAttribute("personalData", new UpdatePersonalDataDTO());
+//        model.addAttribute("password", new UpdatePasswordDTO());
+//        return "/auth/api/editUser";
+//    }
 
     @Override
-    public void deleteUser(ObjectId id, HttpServletResponse response) {
+    public ResponseEntity<Void> deleteUser(ObjectId id) {
         userDBService.deleteUserFromAdmin(id);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public void updateUserData(ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response) {
+    public ResponseEntity<Void> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
         UserDB moddedUser = userDBService.returnUserById(id);
         UserDB modificationUser = userDBService.returnLoggedUser();
 
@@ -110,11 +113,12 @@ public class UserDBControllerImpl implements UserDBController {
 
         assetsRepository.save(moddedUser.getAssets());
         userDBRepository.save(moddedUser);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public void updatePassword(ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response) {
+    public ResponseEntity<Void> updatePassword(ObjectId id, UpdatePasswordDTO dto) {
         UserDB moddedUser = userDBService.returnUserById(id);
         UserDB modificationUser = userDBService.returnLoggedUser();
 
@@ -125,7 +129,7 @@ public class UserDBControllerImpl implements UserDBController {
 
         assetsRepository.save(moddedUser.getAssets());
         userDBRepository.save(moddedUser);
-        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        return ResponseEntity.ok().build();
     }
 
     @Override

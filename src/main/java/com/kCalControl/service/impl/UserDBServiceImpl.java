@@ -44,7 +44,7 @@ public class UserDBServiceImpl implements UserDBService {
     BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDB newAdminUser(ObjectId creationPersonId, NewUserDTO dto, String role){
+    public UserDB newAdminUser(NewUserDTO dto){
 
         UserDB creationPerson;
 
@@ -60,8 +60,8 @@ public class UserDBServiceImpl implements UserDBService {
         LocalDateTime time = LocalDateTime.now();
         Assets assets = new Assets();
 
-        if(userDBRepository.findById(creationPersonId).isPresent()){
-            creationPerson = userDBRepository.findById(creationPersonId).get();
+        if(userDBRepository.findById(returnLoggedUser().getId()).isPresent()){
+            creationPerson = userDBRepository.findById(returnLoggedUser().getId()).get();
         }else{
             creationPerson = null;
         }
@@ -72,7 +72,7 @@ public class UserDBServiceImpl implements UserDBService {
         assets.setModificationPerson(creationPerson);
         assets.setModificationDate(time);
         userDB.setAssets(assets);
-        userDB.setRole(roleRepository.findByRoleName(role).get());
+        userDB.setRole(roleRepository.findByRoleName(dto.getRole()).get());
 
         BMData bmData = new BMData();
         bmData.setUserAssoc(userDB);

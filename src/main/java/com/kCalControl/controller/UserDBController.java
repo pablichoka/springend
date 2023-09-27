@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public interface UserDBController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/addUser")
-    void createAdminUser(@RequestParam("id") ObjectId id, @RequestParam("role") String role, NewUserDTO dto, Model model, HttpServletResponse response);
+    ResponseEntity<Void> createAdminUser(@RequestBody NewUserDTO dto);
 
     //TODO re-evaluate pagination method
     @PreAuthorize("hasRole('ADMIN')")
@@ -31,18 +31,18 @@ public interface UserDBController {
                        SearchParamsDTO dto, Model model, HttpServletResponse response);
 
     @PostMapping("signup")
-    void createNormalUser(@RequestBody NewUserDTO dto);
+    ResponseEntity<Void> createNormalUser(@RequestBody NewUserDTO dto);
 
     @GetMapping("user/whoiam")
     @ResponseBody
     ResponseEntity<String> whoIAm();
 
-    @GetMapping("user/deleteUser/{id}")
-    void deleteUser(@PathVariable("id") ObjectId id, HttpServletResponse response);
+    @DeleteMapping("user/deleteUser/{id}")
+    ResponseEntity<Void> deleteUser(@PathVariable("id") ObjectId id);
 
-    @PostMapping("user/updateUserData")
-    void updateUserData(@PathVariable("id") ObjectId id, UpdateUserDataDTO dto, Model model, HttpServletResponse response);
+    @PutMapping("user/updateUserData/{id}")
+    ResponseEntity<Void> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
 
-    @PostMapping("user/updatePassword")
-    void updatePassword(@PathVariable("id") ObjectId id, UpdatePasswordDTO dto, Model model, HttpServletResponse response);
+    @PutMapping("user/updatePassword/{id}")
+    ResponseEntity<Void> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
 }
