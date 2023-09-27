@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class CategorizeIngredientsDTO {
     String type;
     String category;
-
 }

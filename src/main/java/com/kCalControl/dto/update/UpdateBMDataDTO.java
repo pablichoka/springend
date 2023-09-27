@@ -1,6 +1,5 @@
-package com.kCalControl.dto;
+package com.kCalControl.dto.update;
 
-import com.kCalControl.model.BMData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BMDataDTO {
+public class UpdateBMDataDTO {
 
     private Integer numDaysEx;
     private String dietType;
