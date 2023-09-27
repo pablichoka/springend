@@ -1,8 +1,8 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.dto.NewUserDTO;
-import com.kCalControl.dto.UpdatePasswordDTO;
-import com.kCalControl.dto.UpdateUserDataDTO;
+import com.kCalControl.dto.creation.NewUserDTO;
+import com.kCalControl.dto.update.UpdatePasswordDTO;
+import com.kCalControl.dto.update.UpdateUserDataDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.BMData;
 import com.kCalControl.model.Role;

@@ -1,7 +1,7 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.dto.BMDataDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
+import com.kCalControl.dto.update.UpdateBMDataDTO;
+import com.kCalControl.dto.update.UpdatePersonalDataDTO;
 import com.kCalControl.model.BMData;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.service.BMDataService;
@@ -23,7 +23,7 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public BMData returnBMDataLoggedUser() {
-        return BMDataRepository.findByUserAssoc_Id(userDBService.returnLoggedUser().getId());
+        return userDBService.returnLoggedUser().getBmData();
     }
 
     @Override
@@ -32,8 +32,8 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO) {
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
+    public BMData saveData(UpdatePersonalDataDTO personalDataDTO) {
+        BMData bmData = userDBService.returnLoggedUser().getBmData();
         bmData.setAge(personalDataDTO.getAge());
         bmData.setHeight(personalDataDTO.getHeight());
         bmData.setWeight(personalDataDTO.getWeight());
@@ -42,8 +42,8 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public BMData saveCalc(ObjectId id, BMDataDTO dto) {
-        BMData bmData = BMDataRepository.findByUserAssoc_Id(id);
+    public BMData saveCalc(UpdateBMDataDTO dto) {
+        BMData bmData = userDBService.returnLoggedUser().getBmData();
         bmData.setDietType(dto.getDietType());
         bmData.setNumDaysEx(dto.getNumDaysEx());
         return bmData;
