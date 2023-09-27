@@ -1,23 +1,21 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.BMDataDTO;
-import com.kCalControl.dto.UpdatePersonalDataDTO;
+import com.kCalControl.dto.update.UpdateBMDataDTO;
+import com.kCalControl.dto.update.UpdatePersonalDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
-import org.bson.types.ObjectId;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("api")
 public interface BMDataController {
 
-    @GetMapping("/auth/views/calcBM")
-    String bmCalculator(Model model);
-    @PostMapping("/auth/api/updateBMCalc/{id}")
-    void updateBMCalc(@PathVariable("id")ObjectId id, BMDataDTO dto, HttpServletResponse httpServletResponse);
-    @PostMapping("/auth/api/updateBMData/{id}")
-    void updateBMData(@PathVariable("id")ObjectId id, UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
+    @GetMapping("bmdata/calcBM")
+    @ResponseBody
+    ResponseEntity<String> bmCalculator();
+    @PostMapping("bmdata/updateBMCalc")
+    void updateBMCalc(@RequestBody UpdateBMDataDTO dto, HttpServletResponse httpServletResponse);
+    @PostMapping("bmdata/updateBMData")
+    void updateBMData(@RequestBody UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
 
 }

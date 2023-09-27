@@ -1,28 +1,24 @@
 package com.kCalControl.controller;
 
 import com.kCalControl.dto.CategorizeIngredientsDTO;
-import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.search.SearchParamsDTO;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("api")
 public interface IngredientController {
 
-    @GetMapping("/auth/api/categorizeIngredient")
-    String showCategorizeIngredients(Model model);
+    @PostMapping("/ingredients/categorizeIngredient")
+    void categorizeIngredients(@RequestBody CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse);
 
-    @PostMapping("/auth/api/categorizeIngredient")
-    void categorizeIngredients(CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse);
-
-    @GetMapping("/auth/admin/listIngredient")
+    //TODO re-evaluate pagination method
+    @GetMapping("/ingredients/listIngredient")
     String listIngredients(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize);
 
     //TODO make reliable to click navigation pages buttons depending on get or post request
-    @PostMapping("/auth/admin/listIngredient")
+    @PostMapping("/ingredients/listIngredient")
     String searchIngredients(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
                              SearchParamsDTO dto, Model model, HttpServletResponse response);
 }

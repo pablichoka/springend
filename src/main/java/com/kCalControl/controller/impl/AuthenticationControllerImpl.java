@@ -2,10 +2,8 @@ package com.kCalControl.controller.impl;
 
 import com.kCalControl.config.TokenManager;
 import com.kCalControl.controller.AuthenticationController;
-import com.kCalControl.dto.NewUserDTO;
 import com.kCalControl.dto.auth.AuthenticateRequestDTO;
 import com.kCalControl.dto.auth.AuthenticateResponseDTO;
-import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
@@ -62,13 +59,4 @@ public class AuthenticationControllerImpl implements AuthenticationController {
         var response = new AuthenticateResponseDTO(userDB_id, token, userDB.getRoleName());
         return ResponseEntity.ok(response);
     }
-
-    @Override
-    public void createNormalUser(@RequestBody NewUserDTO dto){
-        UserDB newUserDB = userDBService.newNormalUser(dto);
-        bmDataRepository.save(newUserDB.getBmData());
-        assetsRepository.save(newUserDB.getAssets());
-        userDBRepository.save(newUserDB);
-    }
-
 }

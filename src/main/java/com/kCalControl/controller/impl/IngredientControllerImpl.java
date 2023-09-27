@@ -2,7 +2,7 @@ package com.kCalControl.controller.impl;
 
 import com.kCalControl.controller.IngredientController;
 import com.kCalControl.dto.CategorizeIngredientsDTO;
-import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.search.SearchParamsDTO;
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.IngredientsOld;
 import com.kCalControl.repository.IngredientRepository;
@@ -34,12 +34,6 @@ public class IngredientControllerImpl implements IngredientController {
     IngredientService ingredientService;
 
     @Override
-    public String showCategorizeIngredients(Model model) {
-        model.addAttribute("dto", new CategorizeIngredientsDTO());
-        return "/auth/api/categorizeIngredient";
-    }
-
-    @Override
     public void categorizeIngredients(CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse) {
         boolean ingredientExistingList = ingredientRepository.existsByCategoryLike(dto.getCategory());
         if(ingredientExistingList){
@@ -53,7 +47,7 @@ public class IngredientControllerImpl implements IngredientController {
             ingredientList.forEach(i -> nutrientsRepository.save(i.getNutrients()));
             ingredientRepository.saveAll(ingredientList);
             ingredientsOldRepository.deleteAll(ingredientsOldList);
-            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         }
     }
     @Override
