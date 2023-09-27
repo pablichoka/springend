@@ -1,5 +1,7 @@
 package com.kCalControl.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,4 +58,19 @@ public class BMData {
         this.dietType = dietType;
         this.totalBM = totalBM;
     }
+
+    public String toJSON(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode object2JSON = objectMapper.createObjectNode();
+        object2JSON.put("age", this.age);
+        object2JSON.put("weight", this.weight);
+        object2JSON.put("height", this.height);
+        object2JSON.put("gender", this.gender);
+        object2JSON.put("baseBM", this.baseBM);
+        object2JSON.put("numDaysEx", this.numDaysEx);
+        object2JSON.put("dietType", this.dietType);
+        object2JSON.put("totalBM", this.totalBM);
+        return object2JSON.toString();
+    }
+
 }

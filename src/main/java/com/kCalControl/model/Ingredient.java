@@ -1,5 +1,7 @@
 package com.kCalControl.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +30,14 @@ public class Ingredient {
     @DBRef
     @Field("nutrients")
     Nutrients nutrients;
+
+    public String toJSON(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode object2JSON = objectMapper.createObjectNode();
+        object2JSON.put("type", this.type);
+        object2JSON.put("category", this.category);
+        object2JSON.put("description", this.description);
+        return object2JSON.toString();
+    }
 
 }
