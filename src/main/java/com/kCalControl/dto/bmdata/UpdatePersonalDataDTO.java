@@ -1,4 +1,4 @@
-package com.kCalControl.dto.update;
+package com.kCalControl.dto.bmdata;
 
 import com.kCalControl.model.BMData;
 import lombok.AllArgsConstructor;

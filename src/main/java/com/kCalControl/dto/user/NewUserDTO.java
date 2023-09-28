@@ -1,4 +1,4 @@
-package com.kCalControl.dto.creation;
+package com.kCalControl.dto.user;
 
 import com.kCalControl.model.Role;
 import lombok.AllArgsConstructor;

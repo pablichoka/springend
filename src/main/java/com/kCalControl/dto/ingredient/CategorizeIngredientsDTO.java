@@ -1,4 +1,4 @@
-package com.kCalControl.dto.update;
+package com.kCalControl.dto.ingredient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateBMDataDTO {
-
-    private Integer numDaysEx;
-    private String dietType;
+public class CategorizeIngredientsDTO {
+    String type;
+    String category;
 }

@@ -1,4 +1,4 @@
-package com.kCalControl.dto.search;
+package com.kCalControl.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

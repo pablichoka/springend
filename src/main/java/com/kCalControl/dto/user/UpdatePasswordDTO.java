@@ -1,4 +1,4 @@
-package com.kCalControl.dto.update;
+package com.kCalControl.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
