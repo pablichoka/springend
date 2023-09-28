@@ -1,5 +1,6 @@
 package com.kCalControl.service;
 
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
@@ -22,7 +23,7 @@ public interface UserDBService {
 
     Page<UserDB> getUsers(int page, int pageSize);
 
-    Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort);
+    Page<UserDB> getUsersFromSearch(SearchParamsDTO dto);
 
     UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal);
 

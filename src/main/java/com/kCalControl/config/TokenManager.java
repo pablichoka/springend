@@ -25,7 +25,7 @@ public class TokenManager implements Serializable {
 
     // Define the JWT algorithm and token validity duration
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-    public static final long TOKEN_VALIDITY = 10 * 60 * 60;
+    public static final long TOKEN_VALIDITY = 864_000_000;
 
     byte[] signingKey;
     SecretKey secretKey;
@@ -39,13 +39,15 @@ public class TokenManager implements Serializable {
     }
 
     // Generate a JWT token with the provided subject
-    public String generateJwtToken(String subject) {
+    public String generateJwtToken(String subject, String roleName) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("ROLE", roleName);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
                 .signWith(this.secretKey)
                 .compact();
     }

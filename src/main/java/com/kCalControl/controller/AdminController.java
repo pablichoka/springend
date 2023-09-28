@@ -2,6 +2,7 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.user.RetrieveUsersDTO;
 import jakarta.annotation.security.RolesAllowed;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("api")
-@RolesAllowed("ADMIN")
 public interface AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -34,6 +34,5 @@ public interface AdminController {
     //TODO check parameters of JS functions passed to the server. Probably I have to include searchParams info into requests
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/listUser")
-    String searchUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
-                       SearchParamsDTO dto);
+    ResponseEntity<RetrieveUsersDTO> searchUsers(@RequestBody SearchParamsDTO dto);
 }

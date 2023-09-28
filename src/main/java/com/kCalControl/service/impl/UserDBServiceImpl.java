@@ -1,5 +1,6 @@
 package com.kCalControl.service.impl;
 
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
@@ -151,45 +152,19 @@ public class UserDBServiceImpl implements UserDBService {
 
     //TODO find a solution to implement sorting by date
     @Override
-    public Page<UserDB> getUsersFromSearch(int page, int pageSize, String query, String filter, String sort) {
+    public Page<UserDB> getUsersFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
-        if (filter.isEmpty()){filter = "username";}//In case not filtering, target will be username
-
-        sorted = switch (sort) {
-            case "az" -> Sort.by(Sort.Direction.ASC, filter);
-            case "za" -> Sort.by(Sort.Direction.DESC, filter);
+        sorted = switch (dto.getSort()) {
+            case "az" -> Sort.by(Sort.Direction.ASC);
+            case "za" -> Sort.by(Sort.Direction.DESC);
 //            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
 //            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
 //            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
 //            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
             default -> Sort.unsorted();
         };
-        PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
-        switch (filter) {
-            case "username" -> {
-                return userDBRepository.findByUsernameLike(query, pageRequest);
-            }
-            case "email" -> {
-                return userDBRepository.findByEmailLike(query, pageRequest);
-            }
-            case "role" -> {
-                Optional<Role> role = roleRepository.findByRoleNameLike(query);
-                if (role.isPresent()) {
-                    Role roleQ = role.get();
-                    return userDBRepository.findByRole_Id(roleQ.getId(), pageRequest);
-                }
-            }
-            case "firstName" -> {
-                return userDBRepository.findByFirstNameLike(query, pageRequest);
-            }
-            case "lastName" -> {
-                return userDBRepository.findByLastNameLike(query, pageRequest);
-            }
-            default -> {
-                return userDBRepository.findAll(pageRequest);
-            }
-        }
-        return null;
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
+        return userDBRepository.findByUsernameLikeIgnoreCaseOrEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(dto.getQuery(), dto.getQuery(), pageRequest);
     }
 
     @Override

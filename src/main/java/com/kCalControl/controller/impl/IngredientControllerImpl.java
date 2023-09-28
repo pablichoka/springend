@@ -60,11 +60,8 @@ public class IngredientControllerImpl implements IngredientController {
     }
 
     @Override
-    public String searchIngredients(int page, int pageSize, SearchParamsDTO dto, Model model, HttpServletResponse response) {
-        Page<Ingredient> ingredientsSearchList = ingredientService.getIngredientsFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
-        model.addAttribute("ingredient", ingredientsSearchList.getContent());
-        model.addAttribute("last", ingredientsSearchList.isLast());
-        model.addAttribute("params",new SearchParamsDTO());
+    public String searchIngredients(SearchParamsDTO dto) {
+        Page<Ingredient> ingredientsSearchList = ingredientService.getIngredientsFromSearch(dto);
         return "/auth/admin/listIngredient";
     }
 

@@ -1,11 +1,13 @@
 package com.kCalControl.service.impl;
 
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.model.*;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -67,34 +69,20 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Page<Ingredient> getIngredientsFromSearch(int page, int pageSize, String query, String filter, String sort) {
+    public Page<Ingredient> getIngredientsFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
-        if (filter.isEmpty()){filter = "category";}//In case not filtering, target will be category
 
-        sorted = switch (sort) {
-            case "az" -> Sort.by(Sort.Direction.ASC, filter);
-            case "za" -> Sort.by(Sort.Direction.DESC, filter);
+        sorted = switch (dto.getSort()) {
+            case "az" -> Sort.by(Sort.Direction.ASC);
+            case "za" -> Sort.by(Sort.Direction.DESC);
 //            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
 //            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
 //            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
 //            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
             default -> Sort.unsorted();
         };
-        PageRequest pageRequest = PageRequest.of(page, pageSize, sorted);
-        switch (filter) {
-            case "category" -> {
-                return ingredientRepository.findByCategoryLike(query, pageRequest);
-            }
-            case "description" -> {
-                return ingredientRepository.findByDescriptionLike(query, pageRequest);
-            }
-            case "type" -> {
-                return ingredientRepository.findByTypeLike(query, pageRequest);
-            }
-            default -> {
-                return ingredientRepository.findAll(pageRequest);
-            }
-        }
+        PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
+        return ingredientRepository.findByTypeLike(dto.getQuery(), pageRequest);
     }
 
 }

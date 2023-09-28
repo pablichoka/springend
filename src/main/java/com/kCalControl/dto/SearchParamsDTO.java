@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SearchParamsDTO {
 
+    int page;
+    int pageSize;
     String query;
-    String filter;
     String sort;
 
 }

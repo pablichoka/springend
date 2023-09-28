@@ -20,6 +20,5 @@ public interface IngredientController {
 
     //TODO make reliable to click navigation pages buttons depending on get or post request
     @PostMapping("/ingredients/listIngredient")
-    String searchIngredients(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize,
-                             SearchParamsDTO dto, Model model, HttpServletResponse response);
+    String searchIngredients(@RequestBody SearchParamsDTO dto);
 }
