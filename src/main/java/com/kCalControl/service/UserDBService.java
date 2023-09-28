@@ -1,12 +1,11 @@
 package com.kCalControl.service;
 
-import com.kCalControl.dto.creation.NewUserDTO;
-import com.kCalControl.dto.update.UpdatePasswordDTO;
-import com.kCalControl.dto.update.UpdateUserDataDTO;
+import com.kCalControl.dto.user.NewUserDTO;
+import com.kCalControl.dto.user.UpdatePasswordDTO;
+import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.model.UserDB;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 

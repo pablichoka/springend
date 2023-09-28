@@ -1,7 +1,7 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.dto.update.UpdateBMDataDTO;
-import com.kCalControl.dto.update.UpdatePersonalDataDTO;
+import com.kCalControl.dto.bmdata.UpdateBMDataDTO;
+import com.kCalControl.dto.bmdata.UpdatePersonalDataDTO;
 import com.kCalControl.model.BMData;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.service.BMDataService;
