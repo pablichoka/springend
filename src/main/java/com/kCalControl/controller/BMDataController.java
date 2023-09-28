@@ -1,7 +1,7 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.update.UpdateBMDataDTO;
-import com.kCalControl.dto.update.UpdatePersonalDataDTO;
+import com.kCalControl.dto.bmdata.UpdateBMDataDTO;
+import com.kCalControl.dto.bmdata.UpdatePersonalDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,8 @@ public interface BMDataController {
     @ResponseBody
     ResponseEntity<String> bmCalculator();
     @PostMapping("bmdata/updateBMCalc")
-    void updateBMCalc(@RequestBody UpdateBMDataDTO dto, HttpServletResponse httpServletResponse);
+    ResponseEntity<Void> updateBMCalc(@RequestBody UpdateBMDataDTO dto, HttpServletResponse httpServletResponse);
     @PostMapping("bmdata/updateBMData")
-    void updateBMData(@RequestBody UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
+    ResponseEntity<Void> updateBMData(@RequestBody UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
 
 }

@@ -1,8 +1,8 @@
 package com.kCalControl.controller.impl;
 
 import com.kCalControl.controller.IngredientController;
-import com.kCalControl.dto.CategorizeIngredientsDTO;
-import com.kCalControl.dto.search.SearchParamsDTO;
+import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.IngredientsOld;
 import com.kCalControl.repository.IngredientRepository;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -34,10 +35,10 @@ public class IngredientControllerImpl implements IngredientController {
     IngredientService ingredientService;
 
     @Override
-    public void categorizeIngredients(CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Void> categorizeIngredients(CategorizeIngredientsDTO dto) {
         boolean ingredientExistingList = ingredientRepository.existsByCategoryLike(dto.getCategory());
         if(ingredientExistingList){
-            httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+            return ResponseEntity.badRequest().build();
         }else {
             List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());
             List<Ingredient> ingredientList = ingredientsOldList.stream()
@@ -47,8 +48,7 @@ public class IngredientControllerImpl implements IngredientController {
             ingredientList.forEach(i -> nutrientsRepository.save(i.getNutrients()));
             ingredientRepository.saveAll(ingredientList);
             ingredientsOldRepository.deleteAll(ingredientsOldList);
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        }
+            return ResponseEntity.ok().build();        }
     }
     @Override
     public String listIngredients(Model model, int page, int pageSize) {

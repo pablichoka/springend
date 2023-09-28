@@ -1,20 +1,18 @@
 package com.kCalControl.controller.impl;
 
 import com.kCalControl.controller.AdminController;
-import com.kCalControl.dto.creation.NewUserDTO;
-import com.kCalControl.dto.search.SearchParamsDTO;
+import com.kCalControl.dto.user.NewUserDTO;
+import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.user.RetrieveUserDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.catalina.Store;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public class AdminControllerImpl implements AdminController {
 
@@ -35,6 +33,14 @@ public class AdminControllerImpl implements AdminController {
         userDBRepository.save(newUserDB);
 
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<String> getUserData(ObjectId id) {
+        UserDB userDB = userDBService.returnUserById(id);
+        RetrieveUserDTO retrieveUserDTO = new RetrieveUserDTO(userDB.getUsername(),
+                userDB.getFirstName(), userDB.getLastName(), userDB.getMobile(), userDB.getEmail());
+        return ResponseEntity.ok(retrieveUserDTO.toJSON());
     }
 
     @Override

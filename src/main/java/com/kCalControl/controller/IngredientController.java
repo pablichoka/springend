@@ -1,8 +1,9 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.CategorizeIngredientsDTO;
-import com.kCalControl.dto.search.SearchParamsDTO;
+import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
+import com.kCalControl.dto.SearchParamsDTO;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public interface IngredientController {
 
     @PostMapping("/ingredients/categorizeIngredient")
-    void categorizeIngredients(@RequestBody CategorizeIngredientsDTO dto, HttpServletResponse httpServletResponse);
+    ResponseEntity<Void> categorizeIngredients(@RequestBody CategorizeIngredientsDTO dto);
 
     //TODO re-evaluate pagination method
     @GetMapping("/ingredients/listIngredient")

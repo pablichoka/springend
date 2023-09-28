@@ -1,15 +1,14 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.creation.NewUserDTO;
-import com.kCalControl.dto.search.SearchParamsDTO;
-import com.kCalControl.model.Role;
+import com.kCalControl.dto.user.NewUserDTO;
+import com.kCalControl.dto.SearchParamsDTO;
 import jakarta.annotation.security.RolesAllowed;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static com.kCalControl.model.Role.ADMIN_ID;
+import java.security.Principal;
 
 
 @RestController
@@ -20,6 +19,11 @@ public interface AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("admin/addUser")
     ResponseEntity<Void> createAdminUser(@RequestBody NewUserDTO dto);
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("admin/userData/{id}")
+    @ResponseBody
+    ResponseEntity<String> getUserData(@PathVariable ObjectId id);
 
     //TODO re-evaluate pagination method
     @PreAuthorize("hasRole('ADMIN')")
