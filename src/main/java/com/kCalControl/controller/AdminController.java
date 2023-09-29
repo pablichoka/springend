@@ -26,7 +26,7 @@ public interface AdminController {
     ResponseEntity<String> getUserData(@PathVariable ObjectId id);
 
     //TODO re-evaluate pagination method
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("admin/listUser")
     String getUsersList(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int pageSize); //these values have lower priority than the JS ones
 
