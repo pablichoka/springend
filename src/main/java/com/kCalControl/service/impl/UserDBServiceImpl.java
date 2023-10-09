@@ -201,7 +201,7 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public void deleteUserFromAdmin(ObjectId id){
+    public void deleteUser(ObjectId id){
         UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to delete does not exist"));
         assetsRepository.delete(userDB.getAssets());

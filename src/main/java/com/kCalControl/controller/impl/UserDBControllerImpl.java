@@ -61,7 +61,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> getLoggedUserData(ObjectId id, Principal principal) {
-        if(!checker.checkSameUser(principal,id)){
+        if(!checker.checkSameUser(id, principal)){
             return ResponseEntity.status(403).build();
         }
         UserDB userDB = userDBService.returnUserById(id);
@@ -71,8 +71,9 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUser(ObjectId id) {
-        userDBService.deleteUserFromAdmin(id);
+    public ResponseEntity<Void> deleteUser(ObjectId id, Principal principal) {
+        checker.checkSameUser(id, principal);
+        userDBService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 

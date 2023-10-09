@@ -29,5 +29,5 @@ public interface UserDBService {
 
     UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal);
 
-    void deleteUserFromAdmin(ObjectId id);
+    void deleteUser(ObjectId id);
 }

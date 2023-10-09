@@ -24,7 +24,7 @@ public interface UserDBController {
     ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id, Principal principal);
 
     @DeleteMapping("user/deleteUser/{id}")
-    ResponseEntity<Void> deleteUser(@PathVariable("id") ObjectId id);
+    ResponseEntity<Void> deleteUser(@PathVariable("id") ObjectId id, Principal principal);
 
     @PutMapping("user/updateUserData/{id}")
     ResponseEntity<Void> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
