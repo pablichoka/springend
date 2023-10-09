@@ -4,6 +4,7 @@ import com.kCalControl.controller.AdminController;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.RetrieveUserDTO;
+import com.kCalControl.dto.user.RetrieveUsersDTO;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
@@ -50,8 +51,9 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public String searchUsers(int page, int pageSize, SearchParamsDTO dto) {
-        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(page, pageSize, dto.getQuery(), dto.getFilter(), dto.getSort());
-        return "/auth/admin/listUser";
+    public ResponseEntity<RetrieveUsersDTO> searchUsers(SearchParamsDTO dto) {
+        Page<UserDB> userSearchList = userDBService.getUsersFromSearch(dto);
+        RetrieveUsersDTO responseDto = new RetrieveUsersDTO(userSearchList.getNumberOfElements(),userSearchList.getContent().stream().map(RetrieveUserDTO::new).toList());
+        return ResponseEntity.ok(responseDto);
     }
 }

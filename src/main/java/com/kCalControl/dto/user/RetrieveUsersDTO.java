@@ -1,19 +1,19 @@
-package com.kCalControl.dto;
+package com.kCalControl.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SearchParamsDTO {
+public class RetrieveUsersDTO {
 
-    int page;
-    int pageSize;
-    String query;
-    String sort;
+    private long numOfResults;
+    private List<RetrieveUserDTO> users;
 
 }
