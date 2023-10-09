@@ -39,23 +39,24 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
-    public ResponseEntity<String> getUserData(ObjectId id) {
+    public ResponseEntity<RetrieveUserDTO> getUserData(ObjectId id) {
         UserDB userDB = userDBService.returnUserById(id);
         RetrieveUserDTO retrieveUserDTO = new RetrieveUserDTO(userDB.getUsername(),
                 userDB.getFirstName(), userDB.getLastName(), userDB.getMobile(), userDB.getEmail());
-        return ResponseEntity.ok(retrieveUserDTO.toJSON());
+        return ResponseEntity.ok(retrieveUserDTO);
     }
 
-//    @Override
-//    public String getUsersList(int page, int pageSize) {
-//        Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
-//        return "/auth/admin/listUser";
-//    }
+    @Override
+    public ResponseEntity<RetrieveUsersDTO> getUsersList(SearchParamsDTO dto) {
+        Page<UserDB> usersList = userDBService.getUsers(dto.getPage(), dto.getPageSize());
+        RetrieveUsersDTO response = new RetrieveUsersDTO(usersList.getNumberOfElements(), usersList.getContent().stream().map(RetrieveUserDTO::new).toList());
+        return ResponseEntity.ok(response);
+    }
 
     @Override
-    public ResponseEntity<RetrieveUsersDTO> searchUsers(SearchParamsDTO dto) {
+    public ResponseEntity<RetrieveUsersDTO> getUsersFromSearch(SearchParamsDTO dto) {
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(dto);
-        RetrieveUsersDTO responseDto = new RetrieveUsersDTO(userSearchList.getNumberOfElements(),userSearchList.getContent().stream().map(RetrieveUserDTO::new).toList());
-        return ResponseEntity.ok(responseDto);
+        RetrieveUsersDTO response = new RetrieveUsersDTO(userSearchList.getNumberOfElements(),userSearchList.getContent().stream().map(RetrieveUserDTO::new).toList());
+        return ResponseEntity.ok(response);
     }
 }

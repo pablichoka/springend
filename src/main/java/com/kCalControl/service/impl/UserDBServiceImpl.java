@@ -17,6 +17,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -155,8 +156,8 @@ public class UserDBServiceImpl implements UserDBService {
     public Page<UserDB> getUsersFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
         sorted = switch (dto.getSort()) {
-            case "az" -> Sort.by(Sort.Direction.ASC);
-            case "za" -> Sort.by(Sort.Direction.DESC);
+            case "az" -> Sort.by(Sort.Direction.ASC, "username", "email", "firstName", "lastName");
+            case "za" -> Sort.by(Sort.Direction.DESC, "username", "email", "firstName", "lastName");
 //            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
 //            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
 //            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
@@ -164,7 +165,7 @@ public class UserDBServiceImpl implements UserDBService {
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
-        return userDBRepository.findByUsernameLikeIgnoreCaseOrEmailLikeIgnoreCaseOrFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(dto.getQuery(), dto.getQuery(), pageRequest);
+        return userDBRepository.findByUsernameLikeIgnoreCaseOrEmailIgnoreCaseOrFirstNameLikeIgnoreCase(dto.getQuery(), dto.getQuery(), dto.getQuery(), pageRequest);
     }
 
     @Override
