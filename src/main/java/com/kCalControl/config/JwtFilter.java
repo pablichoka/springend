@@ -91,28 +91,23 @@ public class JwtFilter extends OncePerRequestFilter {
 
         List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
 
-//        AbstractAuthenticationToken authentication = new AbstractAuthenticationToken(authorities) {
-//
-//            private static final long serialVersionUID = 1L;
-//
-//            @Override
-//            public Object getCredentials() {
-//                return null;
-//            }
-//
-//            @Override
-//            public Object getPrincipal() {
-//                return personId;
-//            }
-//
-//        };
+        AbstractAuthenticationToken authentication = new AbstractAuthenticationToken(authorities) {
 
-        AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(),
-                userDetails.getPassword(),
-                authorities);
+            private static final long serialVersionUID = 1L;
 
-//        authentication.setAuthenticated(true);
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return personId;
+            }
+
+        };
+
+        authentication.setAuthenticated(true);
         logger.debug("Estas son la autorities: " + authorities.toString());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
