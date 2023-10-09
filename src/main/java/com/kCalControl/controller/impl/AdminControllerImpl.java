@@ -14,7 +14,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AdminControllerImpl implements AdminController {
 
     @Autowired
@@ -44,11 +46,11 @@ public class AdminControllerImpl implements AdminController {
         return ResponseEntity.ok(retrieveUserDTO.toJSON());
     }
 
-    @Override
-    public String getUsersList(int page, int pageSize) {
-        Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
-        return "/auth/admin/listUser";
-    }
+//    @Override
+//    public String getUsersList(int page, int pageSize) {
+//        Page<UserDB> usersList = userDBService.getUsers(page, pageSize);
+//        return "/auth/admin/listUser";
+//    }
 
     @Override
     public ResponseEntity<RetrieveUsersDTO> searchUsers(SearchParamsDTO dto) {
