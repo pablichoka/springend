@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
@@ -41,13 +40,13 @@ public class UserDBControllerImpl implements UserDBController {
     UserDBService userDBService;
 
     @Override
-    public ResponseEntity<Void> createNormalUser(NewUserDTO dto) {
+    public ResponseEntity<String> createNormalUser(NewUserDTO dto) {
         UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("User created successfully");
     }
 
     @Override
@@ -61,7 +60,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> getLoggedUserData(ObjectId id) {
-        if(!checker.checkSameUser(id)){
+        if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
         UserDB userDB = userDBService.returnUserById(id);
@@ -72,7 +71,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> deleteUser(ObjectId id) {
-        if(!checker.checkSameUser(id)){
+        if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
         userDBService.deleteUser(id);
@@ -81,7 +80,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
-        if(!checker.checkSameUser(id)){
+        if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
         UserDB moddedUser = userDBService.returnUserById(id);
@@ -102,7 +101,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updatePassword(ObjectId id, UpdatePasswordDTO dto) {
-        if(!checker.checkSameUser(id)){
+        if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
         UserDB moddedUser = userDBService.returnUserById(id);

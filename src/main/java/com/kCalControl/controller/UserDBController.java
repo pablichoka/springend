@@ -13,7 +13,7 @@ import java.security.Principal;
 @RequestMapping("api")
 public interface UserDBController {
     @PostMapping("signup")
-    ResponseEntity<Void> createNormalUser(@RequestBody NewUserDTO dto);
+    ResponseEntity<String> createNormalUser(@RequestBody NewUserDTO dto);
 
     @GetMapping("user/whoiam")
     @ResponseBody
