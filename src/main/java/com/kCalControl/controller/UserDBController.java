@@ -21,14 +21,14 @@ public interface UserDBController {
 
     @GetMapping("user/userData/{id}")
     @ResponseBody
-    ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id, Principal principal);
+    ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id);
 
     @DeleteMapping("user/deleteUser/{id}")
-    ResponseEntity<Void> deleteUser(@PathVariable("id") ObjectId id, Principal principal);
+    ResponseEntity<String> deleteUser(@PathVariable("id") ObjectId id);
 
     @PutMapping("user/updateUserData/{id}")
-    ResponseEntity<Void> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
+    ResponseEntity<String> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
 
     @PutMapping("user/updatePassword/{id}")
-    ResponseEntity<Void> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
+    ResponseEntity<String> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
 }

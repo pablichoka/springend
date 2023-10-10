@@ -14,8 +14,8 @@ public interface BMDataController {
     @ResponseBody
     ResponseEntity<String> bmCalculator();
     @PostMapping("bmdata/updateBMCalc")
-    ResponseEntity<Void> updateBMCalc(@RequestBody UpdateBMDataDTO dto, HttpServletResponse httpServletResponse);
+    ResponseEntity<Void> updateBMCalc(@RequestBody UpdateBMDataDTO dto);
     @PostMapping("bmdata/updateBMData")
-    ResponseEntity<Void> updateBMData(@RequestBody UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse);
+    ResponseEntity<Void> updateBMData(@RequestBody UpdatePersonalDataDTO dto);
 
 }

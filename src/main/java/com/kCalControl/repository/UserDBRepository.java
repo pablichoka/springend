@@ -16,12 +16,5 @@ import java.util.Optional;
 public interface UserDBRepository extends MongoRepository<UserDB, ObjectId> {
     @Query(value = "{'userDB.username': ?0}")
     Optional<UserDB> findByUsername(String name);
-    Optional<UserDB> findByEmail(String email);
-    List<UserDB> findAllByRole(Role role);
-    Page<UserDB> findByUsernameLike(String name, Pageable pageable);
-    Page<UserDB> findByEmailLike(String name, Pageable pageable);
-    Page<UserDB> findByRole_Id(ObjectId id, Pageable pageable);
-    Page<UserDB> findByFirstNameLike(String name, Pageable pageable);
-    Page<UserDB> findByLastNameLike(String name, Pageable pageable);
     Page<UserDB> findByUsernameLikeIgnoreCaseOrEmailIgnoreCaseOrFirstNameLikeIgnoreCase(String username, String email, String firstName, Pageable pageable);
 }

@@ -27,7 +27,7 @@ public class BMDataControllerImpl implements BMDataController {
     }
 
     @Override
-    public ResponseEntity<Void> updateBMCalc(UpdateBMDataDTO dto, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Void> updateBMCalc(UpdateBMDataDTO dto) {
         BMData bmData = BMDataService.saveCalc(dto);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx());
@@ -36,7 +36,7 @@ public class BMDataControllerImpl implements BMDataController {
     }
 
     @Override
-    public ResponseEntity<Void> updateBMData(UpdatePersonalDataDTO dto, HttpServletResponse httpServletResponse) {
+    public ResponseEntity<Void> updateBMData(UpdatePersonalDataDTO dto) {
         BMData bmData = BMDataService.saveData(dto);
         BMDataRepository.save(bmData);
         return ResponseEntity.ok().build();

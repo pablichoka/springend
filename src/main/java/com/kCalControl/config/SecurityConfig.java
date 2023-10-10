@@ -22,15 +22,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Autowired
     private JwtFilter filter;
-
-    @Bean
-    public Checker checker() {
-        return new Checker();
-    }
-
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
