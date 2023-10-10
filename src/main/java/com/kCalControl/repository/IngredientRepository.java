@@ -13,6 +13,6 @@ public interface IngredientRepository extends MongoRepository<Ingredient, Object
     boolean existsByCategoryLike(String category);
     Page<Ingredient> findByCategoryLike(String category, Pageable pageable);
     Page<Ingredient> findByDescriptionLike(String description, Pageable pageable);
-    Page<Ingredient> findByTypeLike(String type, Pageable pageable);
+    Page<Ingredient> findByTypeIgnoreCaseOrCategoryIgnoreCaseOrDescriptionLikeIgnoreCase(String type, String category, String description,Pageable pageable);
 
 }

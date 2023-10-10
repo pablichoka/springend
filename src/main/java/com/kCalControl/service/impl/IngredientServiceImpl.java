@@ -63,7 +63,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Page<Ingredient> getIngredient(int page, int pageSize) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "category");
+        Sort sort = Sort.by(Sort.Direction.ASC, "type");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
         return ingredientRepository.findAll(pageRequest);
     }
@@ -71,10 +71,9 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Page<Ingredient> getIngredientsFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
-
         sorted = switch (dto.getSort()) {
-            case "az" -> Sort.by(Sort.Direction.ASC);
-            case "za" -> Sort.by(Sort.Direction.DESC);
+            case "az" -> Sort.by(Sort.Direction.ASC, "type");
+            case "za" -> Sort.by(Sort.Direction.DESC, "type");
 //            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
 //            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
 //            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
@@ -82,7 +81,8 @@ public class IngredientServiceImpl implements IngredientService {
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
-        return ingredientRepository.findByTypeLike(dto.getQuery(), pageRequest);
+        return ingredientRepository.findByTypeIgnoreCaseOrCategoryIgnoreCaseOrDescriptionLikeIgnoreCase
+                (dto.getQuery(), dto.getQuery(), dto.getQuery(),pageRequest);
     }
 
 }
