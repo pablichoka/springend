@@ -1,2 +1,10 @@
-package com.kCalControl.service;public interface NutrientService {
+package com.kCalControl.service;
+
+import com.kCalControl.model.Nutrients;
+import org.bson.types.ObjectId;
+
+public interface NutrientService {
+
+    public Nutrients getNutrientsFromIngredient(ObjectId id);
+
 }

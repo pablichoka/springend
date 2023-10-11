@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RetrieveFullNutrientsDTO {
+public class RetrieveMineralsDTO {
 }
