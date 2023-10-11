@@ -1,6 +1,7 @@
 package com.kCalControl.controller.impl;
 
 import com.kCalControl.controller.BMDataController;
+import com.kCalControl.dto.bmdata.RetrieveBMDataDTO;
 import com.kCalControl.dto.bmdata.UpdateBMDataDTO;
 import com.kCalControl.dto.bmdata.UpdatePersonalDataDTO;
 import com.kCalControl.model.BMData;
@@ -19,26 +20,26 @@ public class BMDataControllerImpl implements BMDataController {
     BMDataRepository BMDataRepository;
 
     @Override
-    public ResponseEntity<String> bmCalculator(){
+    public ResponseEntity<RetrieveBMDataDTO> bmCalculator(){
         BMData bmData = BMDataService.returnBMDataLoggedUser();
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, bmData.getDietType(), bmData.getNumDaysEx());
-        return ResponseEntity.ok(bmData.toJSON());
+        return ResponseEntity.ok(new RetrieveBMDataDTO(bmData));
     }
 
     @Override
-    public ResponseEntity<Void> updateBMCalc(UpdateBMDataDTO dto) {
+    public ResponseEntity<String> updateBMCalc(UpdateBMDataDTO dto) {
         BMData bmData = BMDataService.saveCalc(dto);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx());
         BMDataRepository.save(bmData);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("BM calculation updated successfully");
     }
 
     @Override
-    public ResponseEntity<Void> updateBMData(UpdatePersonalDataDTO dto) {
+    public ResponseEntity<String> updateBMData(UpdatePersonalDataDTO dto) {
         BMData bmData = BMDataService.saveData(dto);
         BMDataRepository.save(bmData);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("BM data updated successfully");
     }
 }

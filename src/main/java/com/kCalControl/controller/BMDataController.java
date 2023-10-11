@@ -1,5 +1,6 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.dto.bmdata.RetrieveBMDataDTO;
 import com.kCalControl.dto.bmdata.UpdateBMDataDTO;
 import com.kCalControl.dto.bmdata.UpdatePersonalDataDTO;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/bm-data")
 public interface BMDataController {
-
-    @GetMapping("bmdata/calcBM")
+//TODO test these endpoints
+    @GetMapping("calcBM")
     @ResponseBody
-    ResponseEntity<String> bmCalculator();
-    @PostMapping("bmdata/updateBMCalc")
-    ResponseEntity<Void> updateBMCalc(@RequestBody UpdateBMDataDTO dto);
-    @PostMapping("bmdata/updateBMData")
-    ResponseEntity<Void> updateBMData(@RequestBody UpdatePersonalDataDTO dto);
+    ResponseEntity<RetrieveBMDataDTO> bmCalculator();
+    @PutMapping("updateBMCalc")
+    ResponseEntity<String> updateBMCalc(@RequestBody UpdateBMDataDTO dto);
+    @PutMapping("updateBMData")
+    ResponseEntity<String> updateBMData(@RequestBody UpdatePersonalDataDTO dto);
 
 }
