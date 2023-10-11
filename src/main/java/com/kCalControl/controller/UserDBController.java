@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/user")
 public interface UserDBController {
     @PostMapping("signup")
     ResponseEntity<String> createNormalUser(@RequestBody NewUserDTO dto);
 
-    @GetMapping("user/whoiam")
+    @GetMapping("who-i-am")
     @ResponseBody
     ResponseEntity<String> whoIAm();
 
-    @GetMapping("user/userData/{id}")
+    @GetMapping("get-data/{id}")
     @ResponseBody
     ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id);
 
-    @DeleteMapping("user/deleteUser/{id}")
+    @DeleteMapping("delete-user/{id}")
     ResponseEntity<String> deleteUser(@PathVariable("id") ObjectId id);
 
-    @PutMapping("user/updateUserData/{id}")
+    @PutMapping("update-user-data/{id}")
     ResponseEntity<String> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
 
-    @PutMapping("user/updatePassword/{id}")
+    @PutMapping("update-password/{id}")
     ResponseEntity<String> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
 }

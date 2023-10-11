@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/nutrients")
 public interface NutrientController {
 
-    @GetMapping("getBasicNutrients/{id}")
+    @GetMapping("get-basic-nutrients/{id}")
     @ResponseBody
     ResponseEntity<RetrieveBasicNutrientsDTO> getBasicNutrients(@PathVariable ObjectId id);
 
-    @GetMapping("getFullNutrients/{id}")
+    @GetMapping("get-full-nutrients/{id}")
     @ResponseBody
     ResponseEntity<RetrieveFullNutrientsDTO> getFullNutrients(@PathVariable ObjectId id);
 
-    @GetMapping("getVitamins/{id}")
+    @GetMapping("get-vitamins/{id}")
     @ResponseBody
     ResponseEntity<RetrieveVitaminsDTO> getVitamins(@PathVariable ObjectId id);
 

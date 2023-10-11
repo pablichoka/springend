@@ -14,9 +14,9 @@ public interface BMDataController {
     @GetMapping("calcBM")
     @ResponseBody
     ResponseEntity<RetrieveBMDataDTO> bmCalculator();
-    @PostMapping("saveBMCalc")
+    @PostMapping("save-bm-calc")
     ResponseEntity<String> updateBMCalc(@RequestBody UpdateBMDataDTO dto);
-    @PostMapping("saveBMData")
+    @PostMapping("save-bm-data")
     ResponseEntity<String> updateBMData(@RequestBody UpdatePersonalDataDTO dto);
 
 }
