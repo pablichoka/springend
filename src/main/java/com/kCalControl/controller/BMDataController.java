@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/bm-data")
 public interface BMDataController {
-//TODO test these endpoints
+//TODO specify an ID, otherwise it only would work for one user
     @GetMapping("calcBM")
     @ResponseBody
     ResponseEntity<RetrieveBMDataDTO> bmCalculator();
-    @PutMapping("updateBMCalc")
+    @PostMapping("saveBMCalc")
     ResponseEntity<String> updateBMCalc(@RequestBody UpdateBMDataDTO dto);
-    @PutMapping("updateBMData")
+    @PostMapping("saveBMData")
     ResponseEntity<String> updateBMData(@RequestBody UpdatePersonalDataDTO dto);
 
 }
