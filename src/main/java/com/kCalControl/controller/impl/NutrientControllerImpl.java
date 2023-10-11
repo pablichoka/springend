@@ -3,6 +3,7 @@ package com.kCalControl.controller.impl;
 import com.kCalControl.controller.NutrientController;
 import com.kCalControl.dto.nutrients.RetrieveBasicNutrientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveFullNutrientsDTO;
+import com.kCalControl.dto.nutrients.RetrieveMineralsDTO;
 import com.kCalControl.dto.nutrients.RetrieveVitaminsDTO;
 import com.kCalControl.model.Nutrients;
 import com.kCalControl.service.NutrientService;
@@ -34,4 +35,9 @@ public class NutrientControllerImpl implements NutrientController {
         Nutrients nutrients = nutrientService.getNutrientsFromIngredient(id);
         return ResponseEntity.ok(new RetrieveVitaminsDTO(nutrients));
     }
+
+    @Override
+    public ResponseEntity<RetrieveMineralsDTO> getMinerals(ObjectId id) {
+        Nutrients nutrients = nutrientService.getNutrientsFromIngredient(id);
+        return ResponseEntity.ok(new RetrieveMineralsDTO(nutrients));    }
 }

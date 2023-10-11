@@ -2,6 +2,7 @@ package com.kCalControl.controller;
 
 import com.kCalControl.dto.nutrients.RetrieveBasicNutrientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveFullNutrientsDTO;
+import com.kCalControl.dto.nutrients.RetrieveMineralsDTO;
 import com.kCalControl.dto.nutrients.RetrieveVitaminsDTO;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +23,9 @@ public interface NutrientController {
     @GetMapping("getVitamins/{id}")
     @ResponseBody
     ResponseEntity<RetrieveVitaminsDTO> getVitamins(@PathVariable ObjectId id);
+
+    @GetMapping("get-minerals/{id}")
+    @ResponseBody
+    ResponseEntity<RetrieveMineralsDTO> getMinerals(@PathVariable ObjectId id);
 
 }
