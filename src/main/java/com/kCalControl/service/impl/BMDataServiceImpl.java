@@ -22,18 +22,13 @@ public class BMDataServiceImpl implements BMDataService {
     UserDBService userDBService;
 
     @Override
-    public BMData returnBMDataLoggedUser() {
-        return userDBService.returnLoggedUser().getBmData();
-    }
-
-    @Override
     public BMData returnBMDataByUserDBId(ObjectId id) {
         return BMDataRepository.findByUserAssoc_Id(id);
     }
 
     @Override
-    public BMData saveData(UpdatePersonalDataDTO personalDataDTO) {
-        BMData bmData = userDBService.returnLoggedUser().getBmData();
+    public BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO) {
+        BMData bmData = userDBService.returnUserById(id).getBmData();
         bmData.setAge(personalDataDTO.getAge());
         bmData.setHeight(personalDataDTO.getHeight());
         bmData.setWeight(personalDataDTO.getWeight());
@@ -42,8 +37,8 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public BMData saveCalc(UpdateBMDataDTO dto) {
-        BMData bmData = userDBService.returnLoggedUser().getBmData();
+    public BMData saveCalc(ObjectId id, UpdateBMDataDTO dto) {
+        BMData bmData = userDBService.returnUserById(id).getBmData();
         bmData.setDietType(dto.getDietType());
         bmData.setNumDaysEx(dto.getNumDaysEx());
         return bmData;

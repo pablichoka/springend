@@ -6,13 +6,11 @@ import com.kCalControl.model.BMData;
 import org.bson.types.ObjectId;
 
 public interface BMDataService {
-    BMData returnBMDataLoggedUser();
-
     BMData returnBMDataByUserDBId(ObjectId id);
 
-    BMData saveData(UpdatePersonalDataDTO personalDataDTO);
+    BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO);
 
-    BMData saveCalc(UpdateBMDataDTO dto);
+    BMData saveCalc(ObjectId id, UpdateBMDataDTO dto);
 
     void calculateBaseBM(BMData bmData);
 

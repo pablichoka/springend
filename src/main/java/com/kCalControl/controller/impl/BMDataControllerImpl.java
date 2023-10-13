@@ -8,9 +8,11 @@ import com.kCalControl.model.BMData;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.service.BMDataService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class BMDataControllerImpl implements BMDataController {
@@ -20,16 +22,16 @@ public class BMDataControllerImpl implements BMDataController {
     BMDataRepository BMDataRepository;
 
     @Override
-    public ResponseEntity<RetrieveBMDataDTO> bmCalculator(){
-        BMData bmData = BMDataService.returnBMDataLoggedUser();
+    public ResponseEntity<RetrieveBMDataDTO> bmCalculator(ObjectId id){
+        BMData bmData = BMDataService.returnBMDataByUserDBId(id);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, bmData.getDietType(), bmData.getNumDaysEx());
         return ResponseEntity.ok(new RetrieveBMDataDTO(bmData));
     }
 
     @Override
-    public ResponseEntity<String> updateBMCalc(UpdateBMDataDTO dto) {
-        BMData bmData = BMDataService.saveCalc(dto);
+    public ResponseEntity<String> updateBMCalc(ObjectId id, UpdateBMDataDTO dto) {
+        BMData bmData = BMDataService.saveCalc(id, dto);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx());
         BMDataRepository.save(bmData);
@@ -37,8 +39,8 @@ public class BMDataControllerImpl implements BMDataController {
     }
 
     @Override
-    public ResponseEntity<String> updateBMData(UpdatePersonalDataDTO dto) {
-        BMData bmData = BMDataService.saveData(dto);
+    public ResponseEntity<String> updateBMData(ObjectId id, UpdatePersonalDataDTO dto) {
+        BMData bmData = BMDataService.saveData(id, dto);
         BMDataRepository.save(bmData);
         return ResponseEntity.ok("BM data updated successfully");
     }
