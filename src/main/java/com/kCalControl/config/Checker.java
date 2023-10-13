@@ -3,6 +3,7 @@ package com.kCalControl.config;
 import com.kCalControl.repository.UserDBRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,10 @@ public class Checker {
         return userDBRepository.findById(id).isPresent();
     }
 
-    //TODO implement a method which identifies the user by jwt
-    public boolean checkSameUser(ObjectId id, ObjectId id2) {
-        return userDBRepository.findById(id2)
+    //TODO check if authentication.getName() returns username or ObjectId
+    public boolean checkSameUser(ObjectId id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userDBRepository.findByUsername(authentication.getName())
                 .map(user -> user.getId().equals(id))
                 .orElse(false);
     }

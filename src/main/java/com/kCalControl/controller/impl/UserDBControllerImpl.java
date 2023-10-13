@@ -71,7 +71,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
-        if(checker.checkSameUser(id, dto.getUpdaterId())){
+        if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
         UserDB updatedUser = userDBService.updateUserData(id, dto);
