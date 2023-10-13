@@ -12,6 +12,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,6 @@ import java.time.LocalDateTime;
 @Service
 public class AdminControllerImpl implements AdminController {
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
     @Autowired
     UserDBRepository userDBRepository;
     @Autowired
@@ -33,7 +33,7 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     public ResponseEntity<String> createAdminUser(NewUserDTO dto) {
-        UserDB newUserDB = userDBService.newAdminUser(dto);
+        UserDB newUserDB = userDBService.newAdminUser(new ObjectId(), dto);
         bmDataRepository.save(newUserDB.getBmData());
         assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
@@ -51,34 +51,17 @@ public class AdminControllerImpl implements AdminController {
 
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setFirstName(dto.getFirstName());
-        moddedUser.setLastName(dto.getLastName());
-        moddedUser.setMobile(dto.getMobile());
-        moddedUser.setEmail(dto.getEmail());
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userDBRepository.save(moddedUser);
-
+        UserDB updatedUser = userDBService.updateUserData(id, dto);
+        assetsRepository.save(updatedUser.getAssets());
+        userDBRepository.save(updatedUser);
         return ResponseEntity.ok("User data updated successfully from ADMIN");
     }
 
     @Override
     public ResponseEntity<String> updatePassword(ObjectId id, UpdatePasswordDTO dto) {
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userDBRepository.save(moddedUser);
+        UserDB updatedUser = userDBService.updatePassword(id, dto);
+        assetsRepository.save(updatedUser.getAssets());
+        userDBRepository.save(updatedUser);
         return ResponseEntity.ok("Password updated successfully from ADMIN");
     }
 

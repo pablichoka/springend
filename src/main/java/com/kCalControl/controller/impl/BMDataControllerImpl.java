@@ -1,5 +1,6 @@
 package com.kCalControl.controller.impl;
 
+import com.kCalControl.config.Checker;
 import com.kCalControl.controller.BMDataController;
 import com.kCalControl.dto.bmdata.RetrieveBMDataDTO;
 import com.kCalControl.dto.bmdata.UpdateBMDataDTO;
@@ -20,9 +21,12 @@ public class BMDataControllerImpl implements BMDataController {
     BMDataService BMDataService;
     @Autowired
     BMDataRepository BMDataRepository;
+    @Autowired
+    Checker checker;
 
     @Override
     public ResponseEntity<RetrieveBMDataDTO> bmCalculator(ObjectId id){
+        checker.checkValidUser(id);
         BMData bmData = BMDataService.returnBMDataByUserDBId(id);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, bmData.getDietType(), bmData.getNumDaysEx());
@@ -31,6 +35,7 @@ public class BMDataControllerImpl implements BMDataController {
 
     @Override
     public ResponseEntity<String> updateBMCalc(ObjectId id, UpdateBMDataDTO dto) {
+        checker.checkValidUser(id);
         BMData bmData = BMDataService.saveCalc(id, dto);
         BMDataService.calculateBaseBM(bmData);
         BMDataService.calculateFinalBM(bmData, dto.getDietType(), dto.getNumDaysEx());
@@ -40,6 +45,7 @@ public class BMDataControllerImpl implements BMDataController {
 
     @Override
     public ResponseEntity<String> updateBMData(ObjectId id, UpdatePersonalDataDTO dto) {
+        checker.checkValidUser(id);
         BMData bmData = BMDataService.saveData(id, dto);
         BMDataRepository.save(bmData);
         return ResponseEntity.ok("BM data updated successfully");

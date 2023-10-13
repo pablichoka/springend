@@ -23,7 +23,6 @@ public class NutrientControllerImpl implements NutrientController {
         return ResponseEntity.ok(new RetrieveBasicNutrientsDTO(nutrients));
     }
 
-    //TODO test this one deeply
     @Override
     public ResponseEntity<RetrieveFullNutrientsDTO> getFullNutrients(ObjectId id) {
         Nutrients nutrients = nutrientService.getNutrientsFromIngredient(id);

@@ -1,22 +1,24 @@
 package com.kCalControl.config;
 
 import com.kCalControl.repository.UserDBRepository;
+import com.kCalControl.service.WhoIAm;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.security.Principal;
 
 @Service
 public class Checker {
 
+    private final static Logger logger = LoggerFactory.getLogger(Checker.class);
     @Autowired
     UserDBRepository userDBRepository;
+    @Autowired
+    WhoIAm whoIAm;
 
-    public boolean checkRoleAdminById(ObjectId id) {
-        return userDBRepository.findById(id)
+    public boolean checkRoleAdminById() {
+        return userDBRepository.findById(whoIAm.whoIAm())
                 .map(user -> user.getRoleName().equals("ADMIN"))
                 .orElse(false);
     }
@@ -25,11 +27,13 @@ public class Checker {
         return userDBRepository.findById(id).isPresent();
     }
 
-    //TODO check if authentication.getName() returns username or ObjectId
-    public boolean checkSameUser(ObjectId id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return userDBRepository.findByUsername(authentication.getName())
-                .map(user -> user.getId().equals(id))
-                .orElse(false);
+    public boolean checkValidUser(ObjectId id) {
+        if(checkRoleAdminById()){
+            return true;
+        }else{
+            return userDBRepository.findById(whoIAm.whoIAm())
+                    .map(user -> user.getId().equals(id))
+                    .orElse(false);
+        }
     }
 }

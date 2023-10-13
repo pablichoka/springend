@@ -1,9 +1,15 @@
 package com.kCalControl.service.impl;
 
-import com.kCalControl.service.ViewService;
+import com.kCalControl.service.WhoIAm;
+import org.bson.types.ObjectId;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ViewServiceImpl implements ViewService {
+public class WhoIAmImpl implements WhoIAm {
 
+    @Override
+    public ObjectId whoIAm() {
+        return new ObjectId(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
 }
