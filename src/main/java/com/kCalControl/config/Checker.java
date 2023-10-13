@@ -14,31 +14,19 @@ public class Checker {
     @Autowired
     UserDBRepository userDBRepository;
 
-    public boolean checkRoleAdminByPrincipal() {
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userDBRepository.findByUsername(currentUser)
-                .map(user -> user.getRoleName().equals("ADMIN"))
-                .orElse(false);
-    }
-
     public boolean checkRoleAdminById(ObjectId id) {
         return userDBRepository.findById(id)
                 .map(user -> user.getRoleName().equals("ADMIN"))
                 .orElse(false);
     }
 
-    public boolean checkUserExistsByPrincipal() {
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userDBRepository.findByUsername(currentUser).isPresent();
-    }
-
     public boolean checkUserExistsById(ObjectId id) {
         return userDBRepository.findById(id).isPresent();
     }
 
-    public boolean checkSameUser(ObjectId id) {
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userDBRepository.findById(new ObjectId(currentUser))
+    //TODO implement a method which identifies the user by jwt
+    public boolean checkSameUser(ObjectId id, ObjectId id2) {
+        return userDBRepository.findById(id2)
                 .map(user -> user.getId().equals(id))
                 .orElse(false);
     }

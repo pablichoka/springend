@@ -50,15 +50,6 @@ public class UserDBControllerImpl implements UserDBController {
     }
 
     @Override
-    public ResponseEntity<String> whoIAm() {
-        String username = userDBService.getUsernameLoggedUser();
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode username2JSON = objectMapper.createObjectNode();
-        username2JSON.put("username", username);
-        return ResponseEntity.ok(username2JSON.toString());
-    }
-
-    @Override
     public ResponseEntity<String> getLoggedUserData(ObjectId id) {
         if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
@@ -80,21 +71,12 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
-        if(checker.checkSameUser(id)){
+        if(checker.checkSameUser(id, dto.getUpdaterId())){
             return ResponseEntity.status(403).build();
         }
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setFirstName(dto.getFirstName());
-        moddedUser.setLastName(dto.getLastName());
-        moddedUser.setMobile(dto.getMobile());
-        moddedUser.setEmail(dto.getEmail());
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userDBRepository.save(moddedUser);
+        UserDB updatedUser = userDBService.updateUserData(id, dto);
+        assetsRepository.save(updatedUser.getAssets());
+        userDBRepository.save(updatedUser);
 
         return ResponseEntity.ok("User data updated successfully");
     }
@@ -104,16 +86,9 @@ public class UserDBControllerImpl implements UserDBController {
         if(checker.checkSameUser(id)){
             return ResponseEntity.status(403).build();
         }
-        UserDB moddedUser = userDBService.returnUserById(id);
-        UserDB modificationUser = userDBService.returnLoggedUser();
-
-        moddedUser.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-        moddedUser.setModificationPerson(modificationUser);
-        moddedUser.setModificationDate(LocalDateTime.now());
-
-        assetsRepository.save(moddedUser.getAssets());
-        userDBRepository.save(moddedUser);
+        UserDB updatedUser = userDBService.updatePassword(id, dto);
+        assetsRepository.save(updatedUser.getAssets());
+        userDBRepository.save(updatedUser);
         return ResponseEntity.ok("Password updated successfully");
     }
 }

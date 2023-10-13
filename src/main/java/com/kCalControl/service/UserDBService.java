@@ -8,26 +8,24 @@ import com.kCalControl.model.UserDB;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
-import java.security.Principal;
-
 public interface UserDBService {
-    UserDB newAdminUser(NewUserDTO dto);
+    UserDB newAdminUser(ObjectId id, NewUserDTO dto);
 
     UserDB newNormalUser(NewUserDTO dto);
 
     UserDB returnUserById(ObjectId id);
 
-    UserDB returnLoggedUser();
+//    UserDB returnLoggedUser();
 
-    String getUsernameLoggedUser();
+//    String getUsernameLoggedUser();
 
     Page<UserDB> getUsers(int page, int pageSize);
 
     Page<UserDB> getUsersFromSearch(SearchParamsDTO dto);
 
-    UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal);
+    UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto);
 
-    UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal);
+    UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto);
 
     void deleteUser(ObjectId id);
 }

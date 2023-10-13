@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
@@ -12,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class UpdatePasswordDTO {
 
     private String password;
+    private ObjectId updaterId;
 
 }

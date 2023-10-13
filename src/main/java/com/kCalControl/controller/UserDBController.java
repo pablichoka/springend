@@ -15,10 +15,6 @@ public interface UserDBController {
     @PostMapping("signup")
     ResponseEntity<String> createNormalUser(@RequestBody NewUserDTO dto);
 
-    @GetMapping("who-i-am")
-    @ResponseBody
-    ResponseEntity<String> whoIAm();
-
     @GetMapping("get-data/{id}")
     @ResponseBody
     ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id);

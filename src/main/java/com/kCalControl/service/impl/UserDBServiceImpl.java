@@ -6,7 +6,6 @@ import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.BMData;
-import com.kCalControl.model.Role;
 import com.kCalControl.model.UserDB;
 import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
@@ -17,17 +16,12 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -46,7 +40,7 @@ public class UserDBServiceImpl implements UserDBService {
     BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public UserDB newAdminUser(NewUserDTO dto){
+    public UserDB newAdminUser(ObjectId id, NewUserDTO dto){
 
         UserDB creationPerson;
 
@@ -62,8 +56,8 @@ public class UserDBServiceImpl implements UserDBService {
         LocalDateTime time = LocalDateTime.now();
         Assets assets = new Assets();
 
-        if(userDBRepository.findById(returnLoggedUser().getId()).isPresent()){
-            creationPerson = userDBRepository.findById(returnLoggedUser().getId()).get();
+        if(userDBRepository.findById(returnUserById(id).getId()).isPresent()){
+            creationPerson = userDBRepository.findById(returnUserById(id).getId()).get();
         }else{
             creationPerson = null;
         }
@@ -121,28 +115,28 @@ public class UserDBServiceImpl implements UserDBService {
                 .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
     }
 
-    @Override
-    public UserDB returnLoggedUser(){
-        return userDBRepository.findByUsername(getUsernameLoggedUser())
-                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
-    }
+//    @Override
+//    public UserDB returnLoggedUser(ObjectId id){
+//        return userDBRepository.findByUsername(returnUserById(id))
+//                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
+//    }
 
-    @Override
-    public String getUsernameLoggedUser(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        Optional<UserDB> user;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        return username;
-        } else {
-            user = userDBRepository.findById(new ObjectId(principal.toString()));
-            if(user.isPresent()){
-                username = user.get().getUsername();
-            }else throw new UsernameNotFoundException("Username not found");
-        }
-        return username;
-    }
+//    @Override
+//    public String getUsernameLoggedUser(){
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String username;
+//        Optional<UserDB> user;
+//        if (principal instanceof UserDetails) {
+//            username = ((UserDetails)principal).getUsername();
+//        return username;
+//        } else {
+//            user = userDBRepository.findById(new ObjectId(principal.toString()));
+//            if(user.isPresent()){
+//                username = user.get().getUsername();
+//            }else throw new UsernameNotFoundException("Username not found");
+//        }
+//        return username;
+//    }
 
     @Override
     public Page<UserDB> getUsers(int page, int pageSize) {
@@ -169,10 +163,11 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto, Principal principal){
+    public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto){
         UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
+        UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
+                .orElseThrow(() -> new UsernameNotFoundException("The updater user does not exist"));
 
         userDB.setFirstName(dto.getFirstName());
         userDB.setLastName(dto.getLastName());
@@ -185,10 +180,11 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto, Principal principal){
+    public UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto){
         UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
-        UserDB modificationPerson = userDBRepository.findByUsername(principal.getName()).get();
+        UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
+                .orElseThrow(() -> new UsernameNotFoundException("The updater user does not exist"));
 
         LocalDateTime time = LocalDateTime.now();
 
@@ -196,7 +192,6 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setPasswordDate(time);
         userDB.setModificationPerson(modificationPerson);
         userDB.setModificationDate(time);
-
         return userDB;
     }
 
