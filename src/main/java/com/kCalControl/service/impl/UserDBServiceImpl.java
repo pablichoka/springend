@@ -152,10 +152,10 @@ public class UserDBServiceImpl implements UserDBService {
         sorted = switch (dto.getSort()) {
             case "az" -> Sort.by(Sort.Direction.ASC, "username", "email", "firstName", "lastName");
             case "za" -> Sort.by(Sort.Direction.DESC, "username", "email", "firstName", "lastName");
-//            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
-//            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
-//            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
-//            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
+            case "newer" -> Sort.by(Sort.Direction.DESC, "userDB.assets.creationDate");
+            case "older" -> Sort.by(Sort.Direction.ASC, "userDB.assets.creationDate");
+            case "newerM" -> Sort.by(Sort.Direction.DESC, "userDB.assets.modificationDate");
+            case "olderM"-> Sort.by(Sort.Direction.ASC, "userDB.assets.modificationDate");
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
