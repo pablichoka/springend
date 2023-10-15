@@ -51,7 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
         var token = authorizationHeader.substring(7);
 
         if(tokenRevocationService.isTokenRevoked(token)){
-            response.sendError(401, "Token expired, please login to create a new one");
+            response.sendError(403, "Non valid token, please login to create a new one");
             return;
         }
 
