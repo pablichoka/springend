@@ -25,7 +25,7 @@ public class TokenManager implements Serializable {
 
     // Define the JWT algorithm and token validity duration
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-    public static final long TOKEN_VALIDITY = 864_000_000;
+    public static final long TOKEN_VALIDITY = 60000L * 60000L * 24 * 7; //one week
 
     byte[] signingKey;
     SecretKey secretKey;
@@ -61,7 +61,7 @@ public class TokenManager implements Serializable {
     }
 
     // Validate if the token's claims have expired
-    public boolean validateClaims(@NotNull Claims claims) {
+    public boolean validateClaims(Claims claims) {
         var isTokenExpired = claims.getExpiration().before(new Date());
         return !isTokenExpired;
     }
