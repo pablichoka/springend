@@ -72,12 +72,8 @@ public class IngredientServiceImpl implements IngredientService {
     public Page<Ingredient> getIngredientsFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
         sorted = switch (dto.getSort()) {
-            case "az" -> Sort.by(Sort.Direction.ASC, "type");
-            case "za" -> Sort.by(Sort.Direction.DESC, "type");
-//            case "newer": sorted = Sort.by(Sort.Direction.DESC, "getCreationDate()"); break;
-//            case "older": sorted = Sort.by(Sort.Direction.ASC, "getCreationDate()"); break;
-//            case "newerM": sorted = Sort.by(Sort.Direction.DESC, "getModificationDate()"); break;
-//            case "olderM": sorted = Sort.by(Sort.Direction.ASC, "getModificationDate()"); break;
+            case "az" -> Sort.by(Sort.Direction.ASC, "type", "category");
+            case "za" -> Sort.by(Sort.Direction.DESC, "type", "category");
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);

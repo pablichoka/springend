@@ -1,5 +1,6 @@
 package com.kCalControl.service.impl;
 
+import com.kCalControl.exceptions.CustomException;
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.Nutrients;
 import com.kCalControl.repository.IngredientRepository;
@@ -8,6 +9,7 @@ import com.kCalControl.service.IngredientService;
 import com.kCalControl.service.NutrientService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,11 +27,11 @@ public class NutrientServiceImpl implements NutrientService {
         Nutrients nutrients;
         Optional<Ingredient> ingredientOptional= ingredientRepository.findById(id);
         if(ingredientOptional.isEmpty()){
-            throw new RuntimeException("Could not find that element");
+            throw new CustomException("Nutrients not found. Ingredient " + id + " does not exists.", HttpStatus.NOT_FOUND);
         }
         Optional<Nutrients> nutrientsOptional = nutrientsRepository.findById(ingredientOptional.get().getId());
         if(nutrientsOptional.isEmpty()){
-            throw new RuntimeException("Could not find that element");
+            throw new CustomException("Nutrients not found. Ingredient " + id + " does not exists.", HttpStatus.NOT_FOUND);
         }else{
             nutrients = nutrientsOptional.get();
         }

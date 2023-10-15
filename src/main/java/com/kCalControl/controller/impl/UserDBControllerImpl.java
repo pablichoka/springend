@@ -50,7 +50,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public ResponseEntity<String> getUserData(ObjectId id) {
         if(!checker.checkValidUser(id)){
-            return ResponseEntity.status(403).body("Valid user check failed");
+            throw new CustomException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB userDB = userDBService.returnUserById(id);
         RetrieveUserDTO retrieveUserDTO = new RetrieveUserDTO(userDB.getUsername(),
@@ -61,7 +61,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public ResponseEntity<String> deleteUser(ObjectId id) {
         if(!checker.checkValidUser(id)){
-            return ResponseEntity.status(403).body("Valid user check failed");
+            throw new CustomException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         userDBService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
@@ -70,7 +70,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
         if(!checker.checkValidUser(id)){
-            return ResponseEntity.status(403).body("Valid user check failed");
+            throw new CustomException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB updatedUser = userDBService.updateUserData(id, dto);
         assetsRepository.save(updatedUser.getAssets());
@@ -82,7 +82,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public ResponseEntity<String> updatePassword(ObjectId id, UpdatePasswordDTO dto) {
         if(!checker.checkValidUser(id)){
-            return ResponseEntity.status(403).body("Valid user check failed");
+            throw new CustomException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB updatedUser = userDBService.updatePassword(id, dto);
         assetsRepository.save(updatedUser.getAssets());
@@ -103,7 +103,7 @@ public class UserDBControllerImpl implements UserDBController {
     @Override
     public ResponseEntity<RetrieveUsersDTO> getUsersFromSearch(SearchParamsDTO dto) {
         if(!checker.checkRoleAdmin()){
-            return ResponseEntity.status(403).build();
+            throw new CustomException("Missing ADMIN role", HttpStatus.FORBIDDEN);
         }
         Page<UserDB> userSearchList = userDBService.getUsersFromSearch(dto);
         RetrieveUsersDTO response = new RetrieveUsersDTO(userSearchList.getNumberOfElements(),userSearchList.getContent().stream().map(RetrieveUserDTO::new).toList());

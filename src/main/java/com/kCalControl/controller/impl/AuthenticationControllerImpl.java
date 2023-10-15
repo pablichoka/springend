@@ -26,12 +26,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     @Autowired
     UserDBRepository userDBRepository;
     @Autowired
-    AssetsRepository assetsRepository;
-    @Autowired
-    BMDataRepository bmDataRepository;
-    @Autowired
-    UserDBService userDBService;
-    @Autowired
     BCryptPasswordEncoder encoder;
     @Autowired
     TokenManager tokenManager;

@@ -4,6 +4,7 @@ import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
+import com.kCalControl.exceptions.CustomException;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.BMData;
 import com.kCalControl.model.UserDB;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -112,32 +114,8 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB returnUserById(ObjectId id){
         return userDBRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
+                .orElseThrow(() -> new CustomException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
     }
-
-//    @Override
-//    public UserDB returnLoggedUser(ObjectId id){
-//        return userDBRepository.findByUsername(returnUserById(id))
-//                .orElseThrow(() -> new UsernameNotFoundException("The user does not exist"));
-//    }
-
-//    @Override
-//    public String getUsernameLoggedUser(){
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String username;
-//        Optional<UserDB> user;
-//        if (principal instanceof UserDetails) {
-//            username = ((UserDetails)principal).getUsername();
-//        return username;
-//        } else {
-//            user = userDBRepository.findById(new ObjectId(principal.toString()));
-//            if(user.isPresent()){
-//                username = user.get().getUsername();
-//            }else throw new UsernameNotFoundException("Username not found");
-//        }
-//        return username;
-//    }
-
     @Override
     public Page<UserDB> getUsers(int page, int pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "username");
@@ -165,9 +143,9 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
+                .orElseThrow(() -> new CustomException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
         UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new UsernameNotFoundException("The updater user does not exist"));
+                .orElseThrow(() -> new CustomException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         userDB.setFirstName(dto.getFirstName());
         userDB.setLastName(dto.getLastName());
@@ -182,9 +160,9 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to update does not exist"));
+                .orElseThrow(() -> new CustomException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
         UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new UsernameNotFoundException("The updater user does not exist"));
+                .orElseThrow(() -> new CustomException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         LocalDateTime time = LocalDateTime.now();
 
@@ -198,7 +176,7 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public void deleteUser(ObjectId id){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("The user that you want to delete does not exist"));
+                .orElseThrow(() -> new CustomException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
         assetsRepository.delete(userDB.getAssets());
         bmDataRepository.delete(userDB.getBmData());
         userDBRepository.deleteById(id);

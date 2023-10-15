@@ -5,6 +5,7 @@ import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
 import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.ingredient.RetrieveIngredientDTO;
 import com.kCalControl.dto.ingredient.RetrieveIngredientsDTO;
+import com.kCalControl.exceptions.CustomException;
 import com.kCalControl.model.Ingredient;
 import com.kCalControl.model.IngredientsOld;
 import com.kCalControl.repository.IngredientRepository;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -41,7 +43,7 @@ public class IngredientControllerImpl implements IngredientController {
     public ResponseEntity<String> categorizeIngredients(CategorizeIngredientsDTO dto) {
         boolean ingredientExistingList = ingredientRepository.existsByCategoryLike(dto.getCategory());
         if (ingredientExistingList) {
-            return ResponseEntity.badRequest().build();
+            throw new CustomException("Requested ingredient category does not exists.", HttpStatus.NOT_FOUND);
         } else {
             List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());
             List<Ingredient> ingredientList = ingredientsOldList.stream()
