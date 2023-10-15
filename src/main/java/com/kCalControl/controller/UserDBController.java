@@ -1,13 +1,13 @@
 package com.kCalControl.controller;
 
+import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
+import com.kCalControl.dto.user.RetrieveUsersDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,7 +17,7 @@ public interface UserDBController {
 
     @GetMapping("get-data/{id}")
     @ResponseBody
-    ResponseEntity<String> getLoggedUserData(@PathVariable ObjectId id);
+    ResponseEntity<String> getUserData(@PathVariable ObjectId id);
 
     @DeleteMapping("delete-user/{id}")
     ResponseEntity<String> deleteUser(@PathVariable("id") ObjectId id);
@@ -27,4 +27,13 @@ public interface UserDBController {
 
     @PutMapping("update-password/{id}")
     ResponseEntity<String> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
+
+    @PostMapping("list-user")
+    @ResponseBody
+    ResponseEntity<RetrieveUsersDTO> getUsersList(@RequestBody SearchParamsDTO dto);
+
+    //TODO fix pagination: page entity adds the search result to the existing pageable
+    @PostMapping("search-users")
+    @ResponseBody
+    ResponseEntity<RetrieveUsersDTO> getUsersFromSearch(@RequestBody SearchParamsDTO dto);
 }

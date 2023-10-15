@@ -17,7 +17,7 @@ public class Checker {
     @Autowired
     WhoIAm whoIAm;
 
-    public boolean checkRoleAdminById() {
+    public boolean checkRoleAdmin() {
         return userDBRepository.findById(whoIAm.whoIAm())
                 .map(user -> user.getRoleName().equals("ADMIN"))
                 .orElse(false);
@@ -28,7 +28,7 @@ public class Checker {
     }
 
     public boolean checkValidUser(ObjectId id) {
-        if(checkRoleAdminById()){
+        if(checkRoleAdmin()){
             return true;
         }else{
             return userDBRepository.findById(whoIAm.whoIAm())
