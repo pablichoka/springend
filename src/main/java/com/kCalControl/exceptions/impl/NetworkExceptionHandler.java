@@ -1,5 +1,6 @@
-package com.kCalControl.exceptions;
+package com.kCalControl.exceptions.impl;
 
+import com.kCalControl.exceptions.NetworkException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,10 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class NetworkExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<Object> handleConflict(CustomException ex, WebRequest request) {
+    @ExceptionHandler(NetworkException.class)
+    protected ResponseEntity<Object> handleConflict(NetworkException ex, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", ex.getHttpStatus());
         body.put("code", ex.getHttpStatus().value());
