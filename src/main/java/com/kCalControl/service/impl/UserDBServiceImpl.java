@@ -4,7 +4,7 @@ import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
-import com.kCalControl.exceptions.CustomException;
+import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.Assets;
 import com.kCalControl.model.BMData;
 import com.kCalControl.model.UserDB;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +113,7 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB returnUserById(ObjectId id){
         return userDBRepository.findById(id)
-                .orElseThrow(() -> new CustomException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
     }
     @Override
     public Page<UserDB> getUsers(int page, int pageSize) {
@@ -143,9 +142,9 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new CustomException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
         UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new CustomException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         userDB.setFirstName(dto.getFirstName());
         userDB.setLastName(dto.getLastName());
@@ -160,9 +159,9 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new CustomException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
         UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new CustomException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         LocalDateTime time = LocalDateTime.now();
 
@@ -176,7 +175,7 @@ public class UserDBServiceImpl implements UserDBService {
     @Override
     public void deleteUser(ObjectId id){
         UserDB userDB = userDBRepository.findById(id)
-                .orElseThrow(() -> new CustomException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
         assetsRepository.delete(userDB.getAssets());
         bmDataRepository.delete(userDB.getBmData());
         userDBRepository.deleteById(id);
