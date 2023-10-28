@@ -2,6 +2,7 @@ package com.kCalControl.repository;
 
 import com.kCalControl.model.Assets;
 import org.bson.types.ObjectId;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +13,5 @@ import java.util.Optional;
 public interface AssetsRepository extends MongoRepository<Assets, ObjectId> {
     Optional<Assets> findByCreationDate(LocalDateTime localDateTime);
     Optional<Assets> findByCreationPerson(ObjectId objectId);
-    void deleteById(ObjectId objectId);
+    void deleteById(@NotNull ObjectId objectId);
 }
