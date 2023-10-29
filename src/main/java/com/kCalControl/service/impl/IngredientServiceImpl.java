@@ -1,23 +1,29 @@
 package com.kCalControl.service.impl;
 
 import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.*;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.service.IngredientService;
+import com.kCalControl.service.WhoIAm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    WhoIAm whoIAm;
 
     @Override
     public void addTypeToIngredient(String type, Ingredient ingredient) {
@@ -26,10 +32,16 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient convertIngredientOld2Ingredient(IngredientsOld ingredientsOld) {
+        LocalDateTime date = LocalDateTime.now();
+
         Ingredient ingredient = new Ingredient();
         ingredient.setId(ingredientsOld.getId());
         ingredient.setCategory(ingredientsOld.getCategory());
         ingredient.setDescription(ingredientsOld.getDescription());
+        ingredient.setCreationDate(date);
+        ingredient.setModificationDate(date);
+        ingredient.setCreationPerson(whoIAm.whoIAm());
+        ingredient.setModificationPerson(whoIAm.whoIAm());
 
         Nutrients nutrients = new Nutrients();
 
@@ -74,6 +86,10 @@ public class IngredientServiceImpl implements IngredientService {
         sorted = switch (dto.getSort()) {
             case "az" -> Sort.by(Sort.Direction.ASC, "type", "category");
             case "za" -> Sort.by(Sort.Direction.DESC, "type", "category");
+            case "newer" -> Sort.by(Sort.Direction.DESC, "creationDate");
+            case "older" -> Sort.by(Sort.Direction.ASC, "creationDate");
+            case "newerM" -> Sort.by(Sort.Direction.DESC, "modificationDate");
+            case "olderM"-> Sort.by(Sort.Direction.ASC, "modificationDate");
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);

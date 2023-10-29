@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +32,16 @@ public class Ingredient {
     @DBRef
     @Field("nutrients")
     Nutrients nutrients;
+
+    @Field("ingredients.assets.creationPerson")
+    private ObjectId creationPerson;
+    @Field("ingredients.assets.creationDate")
+    private LocalDateTime creationDate;
+    @Field("ingredients.assets.modificationPerson")
+    private ObjectId modificationPerson;
+    @Field("ingredients.assets.modificationDate")
+    private LocalDateTime modificationDate;
+
 
     public String toJSON(){
         ObjectMapper objectMapper = new ObjectMapper();

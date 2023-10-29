@@ -38,8 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<Role> roles = new ArrayList<>();
         roles.add(userDB.getRole());
         for (Role role : roles){
-            logger.debug("Este es el role que se añade: " + role.getRoleName());
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+            logger.debug("Este es el role que se añade: " + role.getId());
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getId()));
         }
         return new User(userDB.getUsername(), userDB.getPassword(), grantedAuthorities);
     }

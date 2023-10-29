@@ -43,8 +43,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .cors()
                 .and()
                 .authorizeHttpRequests(
-                        c -> c.requestMatchers("/api/authenticate", "/api/signup", "/error").permitAll()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                        c -> c.requestMatchers("/api/authenticate", "/api/user/signup", "/error").permitAll()
                                 .requestMatchers("/api/**").authenticated())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

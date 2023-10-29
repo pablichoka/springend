@@ -5,7 +5,6 @@ import com.kCalControl.controller.UserDBController;
 import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.*;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.exceptions.NetworkException;
@@ -29,8 +28,6 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     UserDBRepository userDBRepository;
     @Autowired
-    AssetsRepository assetsRepository;
-    @Autowired
     Checker checker;
     @Autowired
     BMDataRepository bmDataRepository;
@@ -41,7 +38,6 @@ public class UserDBControllerImpl implements UserDBController {
     public ResponseEntity<String> createNormalUser(NewUserDTO dto) {
         UserDB newUserDB = userDBService.newNormalUser(dto);
         bmDataRepository.save(newUserDB.getBmData());
-        assetsRepository.save(newUserDB.getAssets());
         userDBRepository.save(newUserDB);
 
         return ResponseEntity.ok("User created successfully");
@@ -49,7 +45,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> getUserData(ObjectId id) {
-        if(!checker.checkValidUser(id)){
+        if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB userDB = userDBService.returnUserById(id);
@@ -60,7 +56,7 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> deleteUser(ObjectId id) {
-        if(!checker.checkValidUser(id)){
+        if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         userDBService.deleteUser(id);
@@ -69,11 +65,10 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updateUserData(ObjectId id, UpdateUserDataDTO dto) {
-        if(!checker.checkValidUser(id)){
+        if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB updatedUser = userDBService.updateUserData(id, dto);
-        assetsRepository.save(updatedUser.getAssets());
         userDBRepository.save(updatedUser);
 
         return ResponseEntity.ok("User data updated successfully");
@@ -81,11 +76,10 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updatePassword(ObjectId id, UpdatePasswordDTO dto) {
-        if(!checker.checkValidUser(id)){
+        if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         UserDB updatedUser = userDBService.updatePassword(id, dto);
-        assetsRepository.save(updatedUser.getAssets());
         userDBRepository.save(updatedUser);
         return ResponseEntity.ok("Password updated successfully");
     }

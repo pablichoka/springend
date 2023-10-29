@@ -38,13 +38,19 @@ public class UserDB {
     @Field("userDB.passwordDate")
     private LocalDateTime passwordDate;
 
+    @Field("userDB.assets.creationPerson")
+    private ObjectId creationPerson;
+    @Field("userDB.assets.creationDate")
+    private LocalDateTime creationDate;
+    @Field("userDB.assets.modificationPerson")
+    private ObjectId modificationPerson;
+    @Field("userDB.assets.modificationDate")
+    private LocalDateTime modificationDate;
+
     @DBRef
     @Field("userDB.role")
     private Role role;
 
-    @DBRef
-    @Field("userDB.assets")
-    private Assets assets;
 
     @DBRef
     @Field("userDB.bmData")
@@ -71,42 +77,11 @@ public class UserDB {
     }
 
     public String getRoleName() {
-        return getRole().getRoleName();
+        return getRole().getId();
     }
 
     public void setRoleName(String roleName) {
-        getRole().setRoleName(roleName);
+        getRole().setId(roleName);
     }
 
-    public UserDB getCreationPerson() {
-        return getAssets().getCreationPerson();
-    }
-
-    public LocalDateTime getCreationDate() {
-        return getAssets().getCreationDate();
-    }
-
-    public UserDB getModificationPerson() {
-        return getAssets().getModificationPerson();
-    }
-
-    public LocalDateTime getModificationDate() {
-        return getAssets().getModificationDate();
-    }
-
-    public void setCreationPerson(UserDB creationPerson) {
-        getAssets().setCreationPerson(creationPerson);
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        getAssets().setCreationDate(creationDate);
-    }
-
-    public void setModificationPerson(UserDB modificationPerson) {
-        getAssets().setModificationPerson(modificationPerson);
-    }
-
-    public void setModificationDate(LocalDateTime modificationDate) {
-        getAssets().setModificationDate(modificationDate);
-    }
 }

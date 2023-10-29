@@ -1,5 +1,6 @@
 package com.kCalControl.config;
 
+import com.kCalControl.model.Role;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.WhoIAm;
 import org.bson.types.ObjectId;
@@ -18,8 +19,8 @@ public class Checker {
     WhoIAm whoIAm;
 
     public boolean checkRoleAdmin() {
-        return userDBRepository.findById(whoIAm.whoIAm())
-                .map(user -> user.getRoleName().equals("ADMIN"))
+        return whoIAm.currentUser()
+                .map(user -> user.getRole().equals(new Role("ADMIN")))
                 .orElse(false);
     }
 
@@ -31,7 +32,7 @@ public class Checker {
         if(checkRoleAdmin()){
             return true;
         }else{
-            return userDBRepository.findById(whoIAm.whoIAm())
+            return whoIAm.currentUser()
                     .map(user -> user.getId().equals(id))
                     .orElse(false);
         }
