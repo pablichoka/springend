@@ -5,14 +5,13 @@ import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.exceptions.NetworkException;
-import com.kCalControl.model.Assets;
 import com.kCalControl.model.BMData;
 import com.kCalControl.model.UserDB;
-import com.kCalControl.repository.AssetsRepository;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
+import com.kCalControl.service.WhoIAm;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,13 +31,13 @@ public class UserDBServiceImpl implements UserDBService {
     @Autowired
     UserDBRepository userDBRepository;
     @Autowired
-    AssetsRepository assetsRepository;
-    @Autowired
     RoleRepository roleRepository;
     @Autowired
     BMDataRepository bmDataRepository;
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    WhoIAm whoIAm;
 
     @Override
     public UserDB newAdminUser(ObjectId id, NewUserDTO dto){
@@ -55,21 +54,13 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         LocalDateTime time = LocalDateTime.now();
-        Assets assets = new Assets();
-
-        if(userDBRepository.findById(returnUserById(id).getId()).isPresent()){
-            creationPerson = userDBRepository.findById(returnUserById(id).getId()).get();
-        }else{
-            creationPerson = null;
-        }
 
         userDB.setPasswordDate(time);
-        assets.setCreationPerson(creationPerson);
-        assets.setCreationDate(time);
-        assets.setModificationPerson(creationPerson);
-        assets.setModificationDate(time);
-        userDB.setAssets(assets);
-        userDB.setRole(roleRepository.findByRoleName(dto.getRole()).get());
+        userDB.setCreationPerson(whoIAm.whoIAm());
+        userDB.setCreationDate(time);
+        userDB.setModificationPerson(whoIAm.whoIAm());
+        userDB.setModificationDate(time);
+        userDB.setRole(roleRepository.findById(dto.getRole()).get());
 
         BMData bmData = new BMData();
         bmData.setUserAssoc(userDB);
@@ -92,15 +83,13 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         LocalDateTime time = LocalDateTime.now();
-        Assets assets = new Assets();
 
         userDB.setPasswordDate(time);
-        assets.setCreationPerson(userDB);
-        assets.setCreationDate(time);
-        assets.setModificationPerson(userDB);
-        assets.setModificationDate(time);
-        userDB.setAssets(assets);
-        userDB.setRole(roleRepository.findByRoleName("USER").get());
+        userDB.setCreationPerson(userDB.getId());
+        userDB.setCreationDate(time);
+        userDB.setModificationPerson(userDB.getId());
+        userDB.setModificationDate(time);
+        userDB.setRole(roleRepository.findById("USER").get());
 
         BMData bmData = new BMData();
         bmData.setUserAssoc(userDB);
@@ -129,10 +118,10 @@ public class UserDBServiceImpl implements UserDBService {
         sorted = switch (dto.getSort()) {
             case "az" -> Sort.by(Sort.Direction.ASC, "username", "email", "firstName", "lastName");
             case "za" -> Sort.by(Sort.Direction.DESC, "username", "email", "firstName", "lastName");
-            case "newer" -> Sort.by(Sort.Direction.DESC, "userDB.assets.creationDate");
-            case "older" -> Sort.by(Sort.Direction.ASC, "userDB.assets.creationDate");
-            case "newerM" -> Sort.by(Sort.Direction.DESC, "userDB.assets.modificationDate");
-            case "olderM"-> Sort.by(Sort.Direction.ASC, "userDB.assets.modificationDate");
+            case "newer" -> Sort.by(Sort.Direction.DESC, "creationDate");
+            case "older" -> Sort.by(Sort.Direction.ASC, "creationDate");
+            case "newerM" -> Sort.by(Sort.Direction.DESC, "modificationDate");
+            case "olderM"-> Sort.by(Sort.Direction.ASC, "modificationDate");
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
@@ -150,7 +139,7 @@ public class UserDBServiceImpl implements UserDBService {
         userDB.setLastName(dto.getLastName());
         userDB.setMobile(dto.getMobile());
         userDB.setEmail(dto.getEmail());
-        userDB.setModificationPerson(modificationPerson);
+        userDB.setModificationPerson(whoIAm.whoIAm());
         userDB.setModificationDate(LocalDateTime.now());
 
         return userDB;
@@ -167,7 +156,7 @@ public class UserDBServiceImpl implements UserDBService {
 
         userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
         userDB.setPasswordDate(time);
-        userDB.setModificationPerson(modificationPerson);
+        userDB.setModificationPerson(whoIAm.whoIAm());
         userDB.setModificationDate(time);
         return userDB;
     }
@@ -176,7 +165,6 @@ public class UserDBServiceImpl implements UserDBService {
     public void deleteUser(ObjectId id){
         UserDB userDB = userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        assetsRepository.delete(userDB.getAssets());
         bmDataRepository.delete(userDB.getBmData());
         userDBRepository.deleteById(id);
     }
