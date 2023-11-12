@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         logger.debug("He pasado por aqui");
-        Optional<UserDB> userDBOptional = userDBRepository.findById(new ObjectId(id));
+        Optional<UserDB> userDBOptional = userDBRepository.findById(Integer.parseInt(id));
         UserDB userDB;
         if(userDBOptional.isPresent()){
             userDB = userDBOptional.get();
@@ -35,8 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        List<Role> roles = new ArrayList<>();
-        roles.add(userDB.getRole());
+        List<Role> roles = userDB.getRoles().stream().toList();
         for (Role role : roles){
             logger.debug("Este es el role que se añade: " + role.getId());
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getId()));

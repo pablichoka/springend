@@ -2,12 +2,12 @@ package com.kCalControl.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -18,29 +18,30 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "ingredients")
+@Entity
+@Table(name = "Ingredients")
 public class Ingredient {
 
     @Id
-    ObjectId id;
-    @Field("type")
-    String type;
-    @Field("category")
-    String category;
-    @Field("description")
-    String description;
-    @DBRef
-    @Field("nutrients")
-    Nutrients nutrients;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-    @Field("ingredients.assets.creationPerson")
-    private ObjectId creationPerson;
-    @Field("ingredients.assets.creationDate")
-    private LocalDateTime creationDate;
-    @Field("ingredients.assets.modificationPerson")
-    private ObjectId modificationPerson;
-    @Field("ingredients.assets.modificationDate")
-    private LocalDateTime modificationDate;
+    private String type;
+
+    private String category;
+
+    private String description;
+
+    @OneToOne(mappedBy = "ingredient")
+    private Assets assets;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    private Nutrients nutrients;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "vitamins_id", referencedColumnName = "id")
+    private Vitamins vitamins;
 
 
     public String toJSON(){

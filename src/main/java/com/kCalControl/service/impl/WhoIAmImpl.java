@@ -17,8 +17,8 @@ public class WhoIAmImpl implements WhoIAm {
     UserDBRepository userDBRepository;
 
     @Override
-    public ObjectId whoIAm() {
-        return new ObjectId(SecurityContextHolder.getContext().getAuthentication().getName());
+    public Integer whoIAm() {
+        return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override

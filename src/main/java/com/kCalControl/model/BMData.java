@@ -2,50 +2,42 @@ package com.kCalControl.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(collection = "basalMet")
+@Entity
+@Table(name = "BM_Data")
 public class BMData {
 
     @Id
-    private ObjectId id;
-    @Field("bmData.age")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private Integer age;
-    @Field("bmData.weight")
     private Double weight;
-    @Field("bmData.height")
     private Integer height;
-    @Field("bmData.gender")
     private String gender;
-    @Field("bmData.baseBM")
-    private Double baseBM;
-    @Field("bmData.numDaysEx")
+    @Column(name = "base_bm")
+    private Double baseBm;
+    @Column(name = "num_days_ex")
     private Integer numDaysEx;
-    @Field("bmData.dietType")
+    @Column(name = "diet_type")
     private String dietType;
-    @Field("bmData.totalBM")
-    private Double totalBM;
-    @DBRef
-    @Field("bmData.userAssoc")
+    @Column(name = "total_bm")
+    private Double totalBm;
+
+    @OneToOne(mappedBy = "bmData", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private UserDB userAssoc;
 
     public String getUsername() {
         return getUserAssoc().getUsername();
-    }
-    public ObjectId getUserId() {
-        return getUserAssoc().getId();
     }
 
     public BMData(Integer age, Double weight, Integer height, String gender, Double baseBM, Integer numDaysEx, String dietType, Double totalBM) {
@@ -53,23 +45,23 @@ public class BMData {
         this.weight = weight;
         this.height = height;
         this.gender = gender;
-        this.baseBM = baseBM;
+        this.baseBm = baseBM;
         this.numDaysEx = numDaysEx;
         this.dietType = dietType;
-        this.totalBM = totalBM;
+        this.totalBm = totalBM;
     }
 
-    public String toJSON(){
+    public String toJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode object2JSON = objectMapper.createObjectNode();
         object2JSON.put("age", this.age);
         object2JSON.put("weight", this.weight);
         object2JSON.put("height", this.height);
         object2JSON.put("gender", this.gender);
-        object2JSON.put("baseBM", this.baseBM);
+        object2JSON.put("baseBM", this.baseBm);
         object2JSON.put("numDaysEx", this.numDaysEx);
         object2JSON.put("dietType", this.dietType);
-        object2JSON.put("totalBM", this.totalBM);
+        object2JSON.put("totalBM", this.totalBm);
         return object2JSON.toString();
     }
 

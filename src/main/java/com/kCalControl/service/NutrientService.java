@@ -5,6 +5,6 @@ import org.bson.types.ObjectId;
 
 public interface NutrientService {
 
-    public Nutrients getNutrientsFromIngredient(ObjectId id);
+    public Nutrients getNutrientsFromIngredient(Integer id);
 
 }

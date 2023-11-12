@@ -35,7 +35,6 @@ public class RetrieveBasicNutrientsDTO {
         polyFat = nutrients.getPolyFat();
         saturatedFat = nutrients.getSaturatedFat();
         totalLipid = nutrients.getTotalLipid();
-        sodium = nutrients.getSodium();
     }
 
 }

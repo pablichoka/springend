@@ -13,7 +13,7 @@ public interface UserDBService {
 
     UserDB newNormalUser(NewUserDTO dto);
 
-    UserDB returnUserById(ObjectId id);
+    UserDB returnUserById(Integer id);
 
 //    UserDB returnLoggedUser();
 
@@ -23,9 +23,9 @@ public interface UserDBService {
 
     Page<UserDB> getUsersFromSearch(SearchParamsDTO dto);
 
-    UserDB updateUserData(ObjectId id, UpdateUserDataDTO dto);
+    UserDB updateUserData(Integer id, UpdateUserDataDTO dto);
 
-    UserDB updatePassword(ObjectId id, UpdatePasswordDTO dto);
+    UserDB updatePassword(Integer id, UpdatePasswordDTO dto);
 
-    void deleteUser(ObjectId id);
+    void deleteUser(Integer id);
 }

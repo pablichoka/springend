@@ -1,8 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model Roles {
+  id         String      @id
+  user_roles User_Role[]
+}
+
+model Users {
+  id            Int         @id
+  asset         Assets      @relation(fields: [assetsId], references: [id])
+  bm_data       BM_Data     @relation(fields: [bm_data_id], references: [id], onDelete: Cascade)
+  bm_data_id    Int         @unique
+  username      String      @unique
+  email         String      @unique
+  name          String
+  mobile        String      @unique
+  password      String
+  password_date DateTime    @db.Date
+  user_role     User_Role[]
+  assetsId      Int
+}
+
+model Assets {
+  id                  Int           @id @default(autoincrement())
+  creation_date       DateTime
+  creation_person     Int
+  modification_date   DateTime
+  modification_person Int
+  Users               Users[]
+  Ingredients         Ingredients[]
+  BMData              BM_Data[]
+}
+
+model Ingredients {
+  id           Int       @id
+  nutrients    Nutrients @relation(fields: [nutrients_id], references: [id], onDelete: Cascade)
+  nutrients_id Int       @unique
+  minerals     Minerals  @relation(fields: [minerals_id], references: [id], onDelete: Cascade)
+  minerals_id  Int       @unique
+  vitamins     Vitamins  @relation(fields: [vitamins_id], references: [id], onDelete: Cascade)
+  vitamins_id  Int       @unique
+  assets       Assets    @relation(fields: [assets_id], references: [id])
+  assets_id    Int
+  name         String
+  category     String
+  description  String
+}
+
+model BM_Data {
+  id          Int     @id
+  assets      Assets  @relation(fields: [assets_id], references: [id])
+  assets_id   Int
+  age         Int?
+  height      Int?
+  num_days_ex Int?
+  diet_type   String?
+  gender      String?
+  weight      Float?
+  total_bm    Float?
+  base_bm     Float?
+  user        Users?
+}
+
+model Nutrients {
+  id                Int          @id
+  ingredients_id    Int
+  carbohydrate      Float
+  cholesterol       Float
+  monosaturated_fat Float
+  polysaturated_fat Float
+  saturated_fat     Float
+  total_lipid       Float
+  fiber             Float
+  protein           Float
+  sugar_total       Float
+  water             Float
+  Ingredients       Ingredients?
+}
+
+model Minerals {
+  id             Int          @id
+  ingredients_id Int
+  calcium        Float
+  copper         Float
+  iron           Float
+  magnesium      Float
+  phosphorus     Float
+  potassium      Float
+  sodium         Float
+  zinc           Float
+  Ingredients    Ingredients?
+}
+
+model Vitamins {
+  id             Int          @id
+  ingredients_id Int
+  vitamin_a      Float
+  vitamin_b12    Float
+  vitamin_b6     Float
+  vitamin_c      Float
+  vitamin_e      Float
+  vitamin_k      Float
+  niacin         Float
+  riboflavin     Float
+  thiamin        Float
+  Ingredients    Ingredients?
+}
+
+model IngredientsOld {
+  id                    Int    @id
+  name                  String
+  category              String
+  description           String
+  alpha_carotene        Float
+  beta_carotene         Float
+  beta_cryptoxanthin    Float
+  carbohydrate          Float
+  cholesterol           Float
+  choline               Float
+  monosaturated_fat     Float
+  polysaturated_fat     Float
+  saturated_fat         Float
+  total_lipid           Float
+  fiber                 Float
+  lutein_and_zeaxanthin Float
+  lycopene              Float
+  calcium               Float
+  copper                Float
+  iron                  Float
+  magnesium             Float
+  phosphorus            Float
+  potassium             Float
+  sodium                Float
+  zinc                  Float
+  niacin                Float
+  protein               Float
+  retinol               Float
+  riboflavin            Float
+  selenium              Float
+  sugar_total           Float
+  thiamin               Float
+  vitamin_a             Float
+  vitamin_b12           Float
+  vitamin_b6            Float
+  vitamin_c             Float
+  vitamin_e             Float
+  vitamin_k             Float
+  water                 Float
+}
+
+model User_Role {
+  user_id Int
+  role_id String
+  Roles   Roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
+  Users   Users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+
+  @@id([user_id, role_id])
 }

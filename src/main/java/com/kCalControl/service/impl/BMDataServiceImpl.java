@@ -22,12 +22,12 @@ public class BMDataServiceImpl implements BMDataService {
     UserDBService userDBService;
 
     @Override
-    public BMData returnBMDataByUserDBId(ObjectId id) {
+    public BMData returnBMDataByUserDBId(Integer id) {
         return BMDataRepository.findByUserAssoc_Id(id);
     }
 
     @Override
-    public BMData saveData(ObjectId id, UpdatePersonalDataDTO personalDataDTO) {
+    public BMData saveData(Integer id, UpdatePersonalDataDTO personalDataDTO) {
         BMData bmData = userDBService.returnUserById(id).getBmData();
         bmData.setAge(personalDataDTO.getAge());
         bmData.setHeight(personalDataDTO.getHeight());
@@ -37,7 +37,7 @@ public class BMDataServiceImpl implements BMDataService {
     }
 
     @Override
-    public BMData saveCalc(ObjectId id, UpdateBMDataDTO dto) {
+    public BMData saveCalc(Integer id, UpdateBMDataDTO dto) {
         BMData bmData = userDBService.returnUserById(id).getBmData();
         bmData.setDietType(dto.getDietType());
         bmData.setNumDaysEx(dto.getNumDaysEx());
@@ -52,7 +52,7 @@ public class BMDataServiceImpl implements BMDataService {
                     ((655 + (9.6 * bmData.getWeight())) + ((1.8 * bmData.getHeight()) - (4.7 * bmData.getAge())));
             default -> 0.0;
         };
-        bmData.setBaseBM(baseBM);
+        bmData.setBaseBm(baseBM);
         BMDataRepository.save(bmData);
     }
 
@@ -99,8 +99,8 @@ public class BMDataServiceImpl implements BMDataService {
             }
             default -> exFactor = 0.0;
         }
-        totalBM = bmData.getBaseBM() * percentageOfkCal * exFactor;
-        bmData.setTotalBM(totalBM);
+        totalBM = bmData.getBaseBm() * percentageOfkCal * exFactor;
+        bmData.setTotalBm(totalBM);
         BMDataRepository.save(bmData);
     }
 }

@@ -38,10 +38,13 @@ public class IngredientServiceImpl implements IngredientService {
         ingredient.setId(ingredientsOld.getId());
         ingredient.setCategory(ingredientsOld.getCategory());
         ingredient.setDescription(ingredientsOld.getDescription());
-        ingredient.setCreationDate(date);
-        ingredient.setModificationDate(date);
-        ingredient.setCreationPerson(whoIAm.whoIAm());
-        ingredient.setModificationPerson(whoIAm.whoIAm());
+
+        Assets assets = new Assets();
+        assets.setCreationDate(date);
+        assets.setModificationDate(date);
+        UserDB godUser = whoIAm.currentUser().orElseThrow(()-> new NetworkException("User who performed the conversion not found", HttpStatus.NOT_FOUND));
+        assets.setCreationPerson(godUser);
+        assets.setModificationPerson(godUser);
 
         Nutrients nutrients = new Nutrients();
 

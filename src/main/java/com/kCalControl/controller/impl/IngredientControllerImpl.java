@@ -5,13 +5,16 @@ import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
 import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.ingredient.RetrieveIngredientDTO;
 import com.kCalControl.dto.ingredient.RetrieveIngredientsDTO;
+import com.kCalControl.dto.nutrients.RetrieveBasicNutrientsDTO;
+import com.kCalControl.dto.nutrients.RetrieveMineralsDTO;
+import com.kCalControl.dto.nutrients.RetrieveVitaminsDTO;
 import com.kCalControl.exceptions.NetworkException;
-import com.kCalControl.model.Ingredient;
-import com.kCalControl.model.IngredientsOld;
+import com.kCalControl.model.*;
 import com.kCalControl.repository.IngredientRepository;
 import com.kCalControl.repository.IngredientsOldRepository;
 import com.kCalControl.repository.NutrientsRepository;
 import com.kCalControl.service.IngredientService;
+import com.kCalControl.service.NutrientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ public class IngredientControllerImpl implements IngredientController {
     NutrientsRepository nutrientsRepository;
     @Autowired
     IngredientService ingredientService;
+    @Autowired
+    NutrientService nutrientService;
 
     //TODO finish with this as soon as possible so that it would be possible to delete the method
     @Override
@@ -70,5 +75,22 @@ public class IngredientControllerImpl implements IngredientController {
                 ingredientsSearchList.getContent().stream().map(RetrieveIngredientDTO::new).toList());
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<RetrieveBasicNutrientsDTO> getNutrients(Integer id) {
+        Nutrients nutrients = nutrientService.getNutrientsFromIngredient(id);
+        return ResponseEntity.ok(new RetrieveBasicNutrientsDTO(nutrients));
+    }
+
+    @Override
+    public ResponseEntity<RetrieveVitaminsDTO> getVitamins(Integer id) {
+        Vitamins vitamins = nutrientService.getNutrientsFromIngredient(id);
+        return ResponseEntity.ok(new RetrieveVitaminsDTO(vitamins));
+    }
+
+    @Override
+    public ResponseEntity<RetrieveMineralsDTO> getMinerals(Integer id) {
+        Minerals minerals = nutrientService.getNutrientsFromIngredient(id);
+        return ResponseEntity.ok(new RetrieveMineralsDTO(minerals));    }
 
 }

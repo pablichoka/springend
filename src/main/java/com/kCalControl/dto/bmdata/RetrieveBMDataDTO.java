@@ -26,10 +26,10 @@ public class RetrieveBMDataDTO {
         weight = bmData.getWeight();
         height = bmData.getHeight();
         gender = bmData.getGender();
-        baseBM = bmData.getBaseBM();
+        baseBM = bmData.getBaseBm();
         numDaysEx = bmData.getNumDaysEx();
         dietType = bmData.getDietType();
-        totalBM = bmData.getTotalBM();
+        totalBM = bmData.getTotalBm();
     }
 
 }

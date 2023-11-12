@@ -14,15 +14,13 @@ import lombok.NoArgsConstructor;
 public class RetrieveUserDTO {
 
     private String username;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String mobile;
     private String email;
 
     public RetrieveUserDTO(UserDB userDB){
         username = userDB.getUsername();
-        firstName = userDB.getFirstName();
-        lastName = userDB.getLastName();
+        name = userDB.getName();
         mobile = userDB.getMobile();
         email = userDB.getEmail();
     }
@@ -31,8 +29,7 @@ public class RetrieveUserDTO {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode object2JSON = objectMapper.createObjectNode();
         object2JSON.put("username", this.username);
-        object2JSON.put("firstName", this.firstName);
-        object2JSON.put("lastName", this.lastName);
+        object2JSON.put("name", this.name);
         object2JSON.put("mobile", this.mobile);
         object2JSON.put("email", this.email);
         return object2JSON.toString();

@@ -22,7 +22,7 @@ public class NutrientServiceImpl implements NutrientService {
     @Autowired
     IngredientRepository ingredientRepository;
     @Override
-    public Nutrients getNutrientsFromIngredient(ObjectId id) {
+    public Nutrients getNutrientsFromIngredient(Integer id) {
         Nutrients nutrients;
         Optional<Ingredient> ingredientOptional= ingredientRepository.findById(id);
         if(ingredientOptional.isEmpty()){

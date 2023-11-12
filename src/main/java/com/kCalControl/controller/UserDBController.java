@@ -5,7 +5,6 @@ import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.RetrieveUsersDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
-import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +16,16 @@ public interface UserDBController {
 
     @GetMapping("get-data/{id}")
     @ResponseBody
-    ResponseEntity<String> getUserData(@PathVariable ObjectId id);
+    ResponseEntity<String> getUserData(@PathVariable Integer id);
 
     @DeleteMapping("delete-user/{id}")
-    ResponseEntity<String> deleteUser(@PathVariable("id") ObjectId id);
+    ResponseEntity<String> deleteUser(@PathVariable("id") Integer id);
 
     @PutMapping("update-user-data/{id}")
-    ResponseEntity<String> updateUserData(@PathVariable("id") ObjectId id, @RequestBody UpdateUserDataDTO dto);
+    ResponseEntity<String> updateUserData(@PathVariable("id") Integer id, @RequestBody UpdateUserDataDTO dto);
 
     @PutMapping("update-password/{id}")
-    ResponseEntity<String> updatePassword(@PathVariable("id") ObjectId id, @RequestBody UpdatePasswordDTO dto);
+    ResponseEntity<String> updatePassword(@PathVariable("id") Integer id, @RequestBody UpdatePasswordDTO dto);
 
     @PostMapping("list-user")
     @ResponseBody

@@ -6,7 +6,7 @@ import org.bson.types.ObjectId;
 import java.util.Optional;
 
 public interface WhoIAm {
-    ObjectId whoIAm();
+    Integer whoIAm();
 
     Optional<UserDB> currentUser();
 }

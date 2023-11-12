@@ -4,7 +4,6 @@ import com.kCalControl.dto.nutrients.RetrieveBasicNutrientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveFullNutrientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveMineralsDTO;
 import com.kCalControl.dto.nutrients.RetrieveVitaminsDTO;
-import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,20 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/nutrients")
 public interface NutrientController {
 
-    @GetMapping("get-basic-nutrients/{id}")
+    @GetMapping("get-nutrients/{id}")
     @ResponseBody
-    ResponseEntity<RetrieveBasicNutrientsDTO> getBasicNutrients(@PathVariable ObjectId id);
-
-    @GetMapping("get-full-nutrients/{id}")
-    @ResponseBody
-    ResponseEntity<RetrieveFullNutrientsDTO> getFullNutrients(@PathVariable ObjectId id);
+    ResponseEntity<RetrieveBasicNutrientsDTO> getNutrients(@PathVariable Integer id);
 
     @GetMapping("get-vitamins/{id}")
     @ResponseBody
-    ResponseEntity<RetrieveVitaminsDTO> getVitamins(@PathVariable ObjectId id);
+    ResponseEntity<RetrieveVitaminsDTO> getVitamins(@PathVariable Integer id);
 
     @GetMapping("get-minerals/{id}")
     @ResponseBody
-    ResponseEntity<RetrieveMineralsDTO> getMinerals(@PathVariable ObjectId id);
+    ResponseEntity<RetrieveMineralsDTO> getMinerals(@PathVariable Integer id);
 
 }

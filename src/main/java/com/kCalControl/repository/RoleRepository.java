@@ -1,13 +1,8 @@
 package com.kCalControl.repository;
 
 import com.kCalControl.model.Role;
-import com.kCalControl.model.UserDB;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
-
-public interface RoleRepository extends MongoRepository<Role, String> {
+public interface RoleRepository extends CrudRepository<Role, String> {
 
 }
