@@ -34,7 +34,7 @@ public class BMData {
     private Double totalBm;
 
     @OneToOne(mappedBy = "bmData", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private UserDB userAssoc;
+    private User userAssoc;
 
     public String getUsername() {
         return getUserAssoc().getUsername();

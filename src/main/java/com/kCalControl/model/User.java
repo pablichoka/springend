@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,24 +20,18 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Users")
-public class UserDB {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false, unique = true)
     private String mobile;
-    @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false, unique = true)
-    private String username;
-
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String password;
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime passwordDate;
+    @OneToOne(mappedBy = "users")
+    private Credentials credentials;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "User_Role",
@@ -51,12 +46,25 @@ public class UserDB {
     @OneToOne(mappedBy = "users")
     private Assets assets;
 
-    public UserDB(String username, String name, String mobile, String email, String password) {
-        this.username = username;
+    public User(String name, String mobile) {
         this.name = name;
         this.mobile = mobile;
-        this.email = email;
-        this.password = password;
+    }
+
+    public String getUsername() {
+        return getCredentials().getUsername();
+    }
+
+    public String getEmail() {
+        return getCredentials().getEmail();
+    }
+
+    public String getPassword() {
+        return getCredentials().getPassword();
+    }
+
+    public Date getPasswordDate() {
+        return getCredentials().getPasswordDate();
     }
 
     public Integer getCreationPerson() {
@@ -91,25 +99,27 @@ public class UserDB {
         getAssets().setCreationPerson(creationPerson);
     }
 
-    public String toJSON(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode object2JSON = objectMapper.createObjectNode();
-        object2JSON.put("username", this.username);
-        object2JSON.put("name", this.name);
-        object2JSON.put("mobile", this.mobile);
-        object2JSON.put("email", this.email);
-        return object2JSON.toString();
+    public ObjectNode toJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode userJson = mapper.createObjectNode();
+        userJson.put("id", getId());
+        userJson.put("name", getName());
+        userJson.put("mobile", getMobile());
+        userJson.put("creationPerson", getCreationPerson());
+        userJson.put("creationDate", getCreationDate().toString());
+        userJson.put("modificationPerson", getModificationPerson());
+        userJson.put("modificationDate", getModificationDate().toString());
+        return userJson;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserDB userDB)) return false;
-        return Objects.equals(id, userDB.id) && Objects.equals(mobile, userDB.mobile) && Objects.equals(email, userDB.email) && Objects.equals(username, userDB.username) && Objects.equals(name, userDB.name) && Objects.equals(password, userDB.password) && Objects.equals(passwordDate, userDB.passwordDate) && Objects.equals(roles, userDB.roles) && Objects.equals(bmData, userDB.bmData) && Objects.equals(assets, userDB.assets);
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(id, user.id) && Objects.equals(mobile, user.mobile) && Objects.equals(name, user.name) && Objects.equals(credentials, user.credentials) && Objects.equals(roles, user.roles) && Objects.equals(bmData, user.bmData) && Objects.equals(assets, user.assets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mobile, email, username, name, password, passwordDate, roles, bmData, assets);
+        return Objects.hash(id, mobile, name, credentials, roles, bmData, assets);
     }
 }

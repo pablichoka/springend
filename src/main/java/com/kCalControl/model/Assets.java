@@ -1,5 +1,7 @@
 package com.kCalControl.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,4 +28,15 @@ public class Assets {
     private Integer modificationPerson;
 
     private LocalDateTime modificationDate;
+
+    public ObjectNode toJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode node = mapper.createObjectNode();
+        node.put("id", this.getId());
+        node.put("creationPerson", this.getCreationPerson());
+        node.put("creationDate", this.getCreationDate().toString());
+        node.put("modificationPerson", this.getModificationPerson());
+        node.put("modificationDate", this.getModificationDate().toString());
+        return node;
+    }
 }

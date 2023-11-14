@@ -1,5 +1,7 @@
 package com.kCalControl.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +42,19 @@ public class Vitamins {
     @OneToOne(mappedBy = "vitaminsAssoc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
+    public ObjectNode toJson(){
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode node = mapper.createObjectNode();
+        node.put("vitaminA", this.getVitaminA());
+        node.put("vitaminB12", this.getVitaminB12());
+        node.put("vitaminB6", this.getVitaminB6());
+        node.put("vitaminC", this.getVitaminC());
+        node.put("vitaminE", this.getVitaminE());
+        node.put("vitaminK", this.getVitaminK());
+        node.put("niacin", this.getNiacin());
+        node.put("thiamin", this.getThiamin());
+        node.put("riboflavin", this.getRiboflavin());
+        return node;
+    }
 
 }

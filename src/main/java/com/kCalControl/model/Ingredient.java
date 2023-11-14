@@ -7,12 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -43,14 +37,33 @@ public class Ingredient {
     @JoinColumn(name = "vitamins_id", referencedColumnName = "id")
     private Vitamins vitamins;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "minerals_id", referencedColumnName = "id")
+    private Minerals minerals;
 
-    public String toJSON(){
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode object2JSON = objectMapper.createObjectNode();
-        object2JSON.put("type", this.type);
-        object2JSON.put("category", this.category);
-        object2JSON.put("description", this.description);
-        return object2JSON.toString();
+    public Integer getNutrientsId() {
+        return getNutrients().getId();
+    }
+
+    public Integer getVitaminsId() {
+        return getVitamins().getId();
+    }
+
+    public Integer getMineralsId() {
+        return getMinerals().getId();
+    }
+
+    public ObjectNode toJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode node = mapper.createObjectNode();
+        node.put("id", this.getId());
+        node.put("type", this.getType());
+        node.put("category", this.getCategory());
+        node.put("description", this.getDescription());
+        node.put("assets", this.getAssets().toJson());
+        node.put("nutrients", this.getNutrients().toJson());
+        node.put("vitamins", this.getVitamins().toJson());
+        return node;
     }
 
 }
