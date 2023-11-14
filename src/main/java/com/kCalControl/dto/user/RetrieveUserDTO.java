@@ -2,9 +2,8 @@ package com.kCalControl.dto.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.kCalControl.model.UserDB;
+import com.kCalControl.model.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,11 +17,11 @@ public class RetrieveUserDTO {
     private String mobile;
     private String email;
 
-    public RetrieveUserDTO(UserDB userDB){
-        username = userDB.getUsername();
-        name = userDB.getName();
-        mobile = userDB.getMobile();
-        email = userDB.getEmail();
+    public RetrieveUserDTO(User user){
+        username = user.getUsername();
+        name = user.getName();
+        mobile = user.getMobile();
+        email = user.getEmail();
     }
 
     public String toJSON(){
