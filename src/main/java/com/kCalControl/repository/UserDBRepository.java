@@ -1,20 +1,17 @@
 package com.kCalControl.repository;
 
-import com.kCalControl.model.Role;
-import com.kCalControl.model.UserDB;
-import org.bson.types.ObjectId;
+import com.kCalControl.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserDBRepository extends MongoRepository<UserDB, ObjectId> {
-    @Query(value = "{'userDB.username': ?0}")
-    Optional<UserDB> findByUsername(String name);
-    Page<UserDB> findByUsernameLikeIgnoreCaseOrEmailIgnoreCaseOrFirstNameLikeIgnoreCase(String username, String email, String firstName, Pageable pageable);
+public interface UserDBRepository extends CrudRepository<User, Integer> {
+    Optional<User> findByUsername(String name);
+    Page<User> findByUsernameLikeIgnoreCaseOrEmailIgnoreCaseOrNameLikeIgnoreCase(String username, String email, String firstName, Pageable pageable);
+    Page<User> findAll(PageRequest pageRequest);
 }

@@ -1,5 +1,6 @@
 package com.kCalControl.dto.nutrients;
 
+import com.kCalControl.model.Minerals;
 import com.kCalControl.model.Nutrients;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,15 +22,15 @@ public class RetrieveMineralsDTO {
     Double sodium;
     Double zinc;
 
-    public RetrieveMineralsDTO(Nutrients nutrients){
-        calcium = nutrients.getCalcium();
-        copper = nutrients.getCopper();
-        iron = nutrients.getIron();
-        magnesium = nutrients.getMagnesium();
-        phosphorus = nutrients.getPhosphorus();
-        potassium = nutrients.getPotassium();
-        sodium = nutrients.getSodium();
-        zinc = nutrients.getZinc();
+    public RetrieveMineralsDTO(Minerals minerals){
+        calcium = minerals.getCalcium();
+        copper = minerals.getCopper();
+        iron = minerals.getIron();
+        magnesium = minerals.getMagnesium();
+        phosphorus = minerals.getPhosphorus();
+        potassium = minerals.getPotassium();
+        sodium = minerals.getSodium();
+        zinc = minerals.getZinc();
     }
 
 }

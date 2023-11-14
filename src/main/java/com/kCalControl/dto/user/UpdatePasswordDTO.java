@@ -13,6 +13,6 @@ import org.bson.types.ObjectId;
 public class UpdatePasswordDTO {
 
     private String password;
-    private ObjectId updaterId;
+    private Integer updaterId;
 
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
@@ -12,10 +11,9 @@ import org.bson.types.ObjectId;
 @Builder
 public class UpdateUserDataDTO {
 
-    private String firstName;
-    private String lastName;
+    private String name;
     private String mobile;
     private String email;
-    private ObjectId updaterId;
+    private Integer updaterId;
 
 }

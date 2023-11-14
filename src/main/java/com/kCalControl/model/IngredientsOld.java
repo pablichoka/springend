@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class IngredientsOld {
 
     @Id
-    ObjectId id;
+    Integer id;
     @Field("category")
     String category;
     @Field("description")

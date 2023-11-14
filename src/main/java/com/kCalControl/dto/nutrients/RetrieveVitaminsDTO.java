@@ -1,11 +1,10 @@
 package com.kCalControl.dto.nutrients;
 
-import com.kCalControl.model.Nutrients;
+import com.kCalControl.model.Vitamins;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @AllArgsConstructor
@@ -19,14 +18,20 @@ public class RetrieveVitaminsDTO {
     Double vitaminC;
     Double vitaminE;
     Double vitaminK;
+    Double thiamin;
+    Double niacin;
+    Double riboflavin;
 
-    public RetrieveVitaminsDTO(Nutrients nutrients){
-        vitaminA = nutrients.getVitaminA();
-        vitaminB12 = nutrients.getVitaminB12();
-        vitaminB6 = nutrients.getVitaminB6();
-        vitaminC = nutrients.getVitaminC();
-        vitaminE = nutrients.getVitaminE();
-        vitaminK = nutrients.getVitaminK();
+    public RetrieveVitaminsDTO(Vitamins vitamins){
+        vitaminA = vitamins.getVitaminA();
+        vitaminB12 = vitamins.getVitaminB12();
+        vitaminB6 = vitamins.getVitaminB6();
+        vitaminC = vitamins.getVitaminC();
+        vitaminE = vitamins.getVitaminE();
+        vitaminK = vitamins.getVitaminK();
+        thiamin = vitamins.getThiamin();
+        niacin = vitamins.getNiacin();
+        riboflavin = vitamins.getRiboflavin();
     }
 
 }

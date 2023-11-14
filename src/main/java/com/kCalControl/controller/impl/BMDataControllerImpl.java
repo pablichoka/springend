@@ -25,7 +25,7 @@ public class BMDataControllerImpl implements BMDataController {
     Checker checker;
 
     @Override
-    public ResponseEntity<RetrieveBMDataDTO> bmCalculator(ObjectId id){
+    public ResponseEntity<RetrieveBMDataDTO> bmCalculator(Integer id){
         if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
@@ -36,7 +36,7 @@ public class BMDataControllerImpl implements BMDataController {
     }
 
     @Override
-    public ResponseEntity<String> updateBMCalc(ObjectId id, UpdateBMDataDTO dto) {
+    public ResponseEntity<String> updateBMCalc(Integer id, UpdateBMDataDTO dto) {
         if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
@@ -48,7 +48,7 @@ public class BMDataControllerImpl implements BMDataController {
     }
 
     @Override
-    public ResponseEntity<String> updateBMData(ObjectId id, UpdatePersonalDataDTO dto) {
+    public ResponseEntity<String> updateBMData(Integer id, UpdatePersonalDataDTO dto) {
         if(checker.checkValidUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }

@@ -1,6 +1,8 @@
 package com.kCalControl.config;
 
+import com.kCalControl.model.Assets;
 import com.kCalControl.model.Role;
+import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.WhoIAm;
 import org.bson.types.ObjectId;
@@ -16,25 +18,27 @@ public class Checker {
     @Autowired
     UserDBRepository userDBRepository;
     @Autowired
+    RoleRepository roleRepository;
+    @Autowired
     WhoIAm whoIAm;
 
     public boolean checkRoleAdmin() {
         return whoIAm.currentUser()
-                .map(user -> user.getRole().equals(new Role("ADMIN")))
+                .map(user -> user.getRoles().contains(roleRepository.findById("ADMIN").get()))
                 .orElse(false);
     }
 
-    public boolean checkUserExistsById(ObjectId id) {
+    public boolean checkUserExistsById(Integer id) {
         return userDBRepository.findById(id).isPresent();
     }
 
-    public boolean checkValidUser(ObjectId id) {
+    public boolean checkValidUser(Integer id) {
         if(checkRoleAdmin()){
             return true;
         }else{
-            return whoIAm.currentUser()
-                    .map(user -> user.getId().equals(id))
-                    .orElse(false);
+            whoIAm.currentUser()
+                    .map(user -> user.getId().equals(id));
+            return false;
         }
     }
 }
