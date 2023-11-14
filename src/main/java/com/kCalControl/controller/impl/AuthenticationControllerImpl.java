@@ -36,19 +36,19 @@ public class AuthenticationControllerImpl implements AuthenticationController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
 
         }
-        var userDB = findByUsername.get();
+        var user = findByUsername.get();
 
-        var matches = encoder.matches(request.getPassword(), userDB.getPassword());
+        var matches = encoder.matches(request.getPassword(), user.getPassword());
         if (!matches) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        var userDB_id = userDB.getId().toString();
-        var roleName = userDB.getRoleName();
-        var token = this.tokenManager.generateJwtToken(userDB_id, roleName);
+        var userDB_id = user.getId().toString();
+        var roleName = user.getRoles();
+        var token = this.tokenManager.generateJwtToken(userDB_id, roleName.toString());
         logger.debug("Generating token {} for {}", token, username);
 
-        var response = new AuthenticateResponseDTO(userDB_id, token, userDB.getRoleName());
+        var response = new AuthenticateResponseDTO(userDB_id, token, user.getRoles().toString());
         return ResponseEntity.ok(response);
     }
 }

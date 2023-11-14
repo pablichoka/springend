@@ -18,9 +18,9 @@ public interface IngredientController {
     @PostMapping("categorize-ingredients")
     ResponseEntity<String> categorizeIngredients(@RequestBody CategorizeIngredientsDTO dto);
 
-    @PostMapping("list-ingredients")
+    @GetMapping("list-ingredients")
     @ResponseBody
-    ResponseEntity<RetrieveIngredientsDTO> listIngredients(@RequestBody SearchParamsDTO dto);
+    ResponseEntity<RetrieveIngredientsDTO> listIngredients(@RequestParam Integer page, @RequestParam Integer size);
 
     @PostMapping("search-ingredients")
     @ResponseBody
