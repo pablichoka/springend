@@ -1,12 +1,11 @@
 package com.kCalControl.service;
 
-import com.kCalControl.model.UserDB;
-import org.bson.types.ObjectId;
+import com.kCalControl.model.User;
 
 import java.util.Optional;
 
 public interface WhoIAm {
     Integer whoIAm();
 
-    Optional<UserDB> currentUser();
+    Optional<User> currentUser();
 }

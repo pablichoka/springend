@@ -4,28 +4,28 @@ import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
-import com.kCalControl.model.UserDB;
+import com.kCalControl.model.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
 public interface UserDBService {
-    UserDB newAdminUser(ObjectId id, NewUserDTO dto);
+    User newAdminUser(ObjectId id, NewUserDTO dto);
 
-    UserDB newNormalUser(NewUserDTO dto);
+    User newNormalUser(NewUserDTO dto);
 
-    UserDB returnUserById(Integer id);
+    User returnUserById(Integer id);
 
 //    UserDB returnLoggedUser();
 
 //    String getUsernameLoggedUser();
 
-    Page<UserDB> getUsers(int page, int pageSize);
+    Page<User> getUsers(int page, int pageSize);
 
-    Page<UserDB> getUsersFromSearch(SearchParamsDTO dto);
+    Page<User> getUsersFromSearch(SearchParamsDTO dto);
 
-    UserDB updateUserData(Integer id, UpdateUserDataDTO dto);
+    User updateUserData(Integer id, UpdateUserDataDTO dto);
 
-    UserDB updatePassword(Integer id, UpdatePasswordDTO dto);
+    User updatePassword(Integer id, UpdatePasswordDTO dto);
 
     void deleteUser(Integer id);
 }

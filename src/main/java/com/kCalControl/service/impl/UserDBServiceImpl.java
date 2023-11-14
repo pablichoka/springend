@@ -7,7 +7,7 @@ import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.BMData;
 import com.kCalControl.model.Role;
-import com.kCalControl.model.UserDB;
+import com.kCalControl.model.User;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserDBRepository;
@@ -43,73 +43,73 @@ public class UserDBServiceImpl implements UserDBService {
     WhoIAm whoIAm;
 
     @Override
-    public UserDB newAdminUser(ObjectId id, NewUserDTO dto) {
+    public User newAdminUser(ObjectId id, NewUserDTO dto) {
 
-        UserDB creationPerson;
+        User creationPerson;
 
-        UserDB userDB = new UserDB();
-        userDB.setUsername(dto.getUsername());
-        userDB.setName(dto.getName());
-        userDB.setEmail(dto.getEmail());
-        userDB.setMobile(dto.getMobile());
-        userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setMobile(dto.getMobile());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         LocalDateTime time = LocalDateTime.now();
 
-        userDB.setPasswordDate(time);
-        userDB.setCreationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
-        userDB.setCreationDate(time);
-        userDB.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
-        userDB.setModificationDate(time);
+        user.setPasswordDate(time);
+        user.setCreationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
+        user.setCreationDate(time);
+        user.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
+        user.setModificationDate(time);
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findById(dto.getRole()).orElseThrow(()-> new NetworkException("Role not found", HttpStatus.NOT_FOUND)));
-        userDB.setRoles(roles);
+        user.setRoles(roles);
 
         BMData bmData = new BMData();
-        bmData.setUserAssoc(userDB);
+        bmData.setUserAssoc(user);
 
-        userDB.setBmData(bmData);
+        user.setBmData(bmData);
 
-        return userDB;
+        return user;
     }
 
     @Override
-    public UserDB newNormalUser(NewUserDTO dto) {
+    public User newNormalUser(NewUserDTO dto) {
 
-        UserDB userDB = new UserDB();
-        userDB.setUsername(dto.getUsername());
-        userDB.setName(dto.getName());
-        userDB.setEmail(dto.getEmail());
-        userDB.setMobile(dto.getMobile());
-        userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setMobile(dto.getMobile());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         LocalDateTime time = LocalDateTime.now();
 
-        userDB.setPasswordDate(time);
-        userDB.setCreationPerson(userDB);
-        userDB.setCreationDate(time);
-        userDB.setModificationPerson(userDB);
-        userDB.setModificationDate(time);
+        user.setPasswordDate(time);
+        user.setCreationPerson(user);
+        user.setCreationDate(time);
+        user.setModificationPerson(user);
+        user.setModificationDate(time);
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findById("USER").orElseThrow(() -> new NetworkException("Role not found", HttpStatus.NOT_FOUND)));
-        userDB.setRoles(roles);
+        user.setRoles(roles);
 
         BMData bmData = new BMData();
-        bmData.setUserAssoc(userDB);
+        bmData.setUserAssoc(user);
 
-        userDB.setBmData(bmData);
+        user.setBmData(bmData);
 
-        return userDB;
+        return user;
     }
 
     @Override
-    public UserDB returnUserById(Integer id) {
+    public User returnUserById(Integer id) {
         return userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public Page<UserDB> getUsers(int page, int pageSize) {
+    public Page<User> getUsers(int page, int pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "username");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
         return userDBRepository.findAll(pageRequest);
@@ -117,7 +117,7 @@ public class UserDBServiceImpl implements UserDBService {
 
     //TODO find a solution to implement sorting by date
     @Override
-    public Page<UserDB> getUsersFromSearch(SearchParamsDTO dto) {
+    public Page<User> getUsersFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
         sorted = switch (dto.getSort()) {
             case "az" -> Sort.by(Sort.Direction.ASC, "username", "email", "firstName", "lastName");
@@ -133,42 +133,42 @@ public class UserDBServiceImpl implements UserDBService {
     }
 
     @Override
-    public UserDB updateUserData(Integer id, UpdateUserDataDTO dto) {
-        UserDB userDB = userDBRepository.findById(id)
+    public User updateUserData(Integer id, UpdateUserDataDTO dto) {
+        User user = userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
+        User modificationPerson = userDBRepository.findById(dto.getUpdaterId())
                 .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
-        userDB.setName(dto.getName());
-        userDB.setMobile(dto.getMobile());
-        userDB.setEmail(dto.getEmail());
-        userDB.setModificationPerson(whoIAm.currentUser().orElseThrow());
-        userDB.setModificationDate(LocalDateTime.now());
+        user.setName(dto.getName());
+        user.setMobile(dto.getMobile());
+        user.setEmail(dto.getEmail());
+        user.setModificationPerson(whoIAm.currentUser().orElseThrow());
+        user.setModificationDate(LocalDateTime.now());
 
-        return userDB;
+        return user;
     }
 
     @Override
-    public UserDB updatePassword(Integer id, UpdatePasswordDTO dto) {
-        UserDB userDB = userDBRepository.findById(id)
+    public User updatePassword(Integer id, UpdatePasswordDTO dto) {
+        User user = userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        UserDB modificationPerson = userDBRepository.findById(dto.getUpdaterId())
+        User modificationPerson = userDBRepository.findById(dto.getUpdaterId())
                 .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         LocalDateTime time = LocalDateTime.now();
 
-        userDB.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userDB.setPasswordDate(time);
-        userDB.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("Missing modification person id, did you log in?", HttpStatus.NOT_FOUND)));
-        userDB.setModificationDate(time);
-        return userDB;
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setPasswordDate(time);
+        user.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("Missing modification person id, did you log in?", HttpStatus.NOT_FOUND)));
+        user.setModificationDate(time);
+        return user;
     }
 
     @Override
     public void deleteUser(Integer id) {
-        UserDB userDB = userDBRepository.findById(id)
+        User user = userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        bmDataRepository.delete(userDB.getBmData());
+        bmDataRepository.delete(user.getBmData());
         userDBRepository.deleteById(id);
     }
 
