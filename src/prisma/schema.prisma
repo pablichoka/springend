@@ -12,19 +12,35 @@ model Roles {
   user_roles User_Role[]
 }
 
+model User_Role {
+  user_id Int
+  role_id String
+  Roles   Roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
+  Users   Users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+
+  @@id([user_id, role_id])
+}
+
 model Users {
-  id            Int         @id
-  asset         Assets      @relation(fields: [assetsId], references: [id])
-  bm_data       BM_Data     @relation(fields: [bm_data_id], references: [id], onDelete: Cascade)
-  bm_data_id    Int         @unique
-  username      String      @unique
-  email         String      @unique
-  name          String
-  mobile        String      @unique
+  id          Int          @id
+  asset       Assets       @relation(fields: [assets_id], references: [id])
+  bm_data     BM_Data      @relation(fields: [bm_data_id], references: [id], onDelete: Cascade)
+  bm_data_id  Int          @unique
+  name        String
+  mobile      String       @unique
+  assets_id   Int
+  user_role   User_Role[]
+  credentials Credentials?
+}
+
+model Credentials {
+  id            Int      @id
+  user          Users    @relation(fields: [user_id], references: [id])
+  user_id       Int      @unique
+  username      String   @unique
+  email         String   @unique
   password      String
-  password_date DateTime    @db.Date
-  user_role     User_Role[]
-  assetsId      Int
+  password_date DateTime @db.Date
 }
 
 model Assets {
@@ -153,13 +169,4 @@ model IngredientsOld {
   vitamin_e             Float
   vitamin_k             Float
   water                 Float
-}
-
-model User_Role {
-  user_id Int
-  role_id String
-  Roles   Roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
-  Users   Users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
-
-  @@id([user_id, role_id])
 }
