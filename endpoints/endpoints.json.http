@@ -35,13 +35,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "username": "testAdmin",
-    "firstName": "admin",
-    "lastName": "testeo",
-    "mobile": "+4536258759",
-    "email": "admin@test.com",
-    "password": "123",
-    "role": "USER"
+  "username": "testAdmin",
+  "firstName": "admin",
+  "lastName": "testeo",
+  "mobile": "+4536258759",
+  "email": "admin@test.com",
+  "password": "123",
+  "role": "USER"
 }
 
 ###
@@ -76,10 +76,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "firstName":"Fulanazo",
-    "lastName": "Martinez Perez",
-    "mobile": "+34657890345",
-    "email": "fulanazo@fatburn.com"
+  "firstName": "Fulanazo",
+  "lastName": "Martinez Perez",
+  "mobile": "+34657890345",
+  "email": "fulanazo@fatburn.com"
 }
 
 ###
@@ -90,7 +90,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "password": "123"
+  "password": "123"
 }
 
 ###
@@ -104,10 +104,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "page": "1",
-    "pageSize": "2",
-    "query": "",
-    "sort" : "az"
+  "page": "1",
+  "pageSize": "2",
+  "query": "",
+  "sort": "az"
 }
 
 ###
@@ -121,10 +121,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "page": "0",
-    "pageSize": "20",
-    "query": "fu",
-    "sort" : "az"
+  "page": "0",
+  "pageSize": "20",
+  "query": "fu",
+  "sort": "az"
 }
 
 ###
@@ -135,10 +135,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1N
 Content-Type: application/json
 
 {
-    "page": "0",
-    "pageSize": "20",
-    "query": "",
-    "sort" : "az"
+  "page": "0",
+  "pageSize": "20",
+  "query": "",
+  "sort": "az"
 }
 
 ###
@@ -149,10 +149,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1N
 Content-Type: application/json
 
 {
-    "page": "0",
-    "pageSize": "20",
-    "query": "butter",
-    "sort" : "az"
+  "page": "0",
+  "pageSize": "20",
+  "query": "butter",
+  "sort": "az"
 }
 
 ###
@@ -193,8 +193,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "numDaysEx":"4",
-    "dietType":"Definition"
+  "numDaysEx": "4",
+  "dietType": "Definition"
 }
 
 ###
@@ -205,8 +205,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlN
 Content-Type: application/json
 
 {
-    "weigth":"71.2",
-    "age":"25",
-    "height":"174",
-    "gender":"Male"
+  "weigth": "71.2",
+  "age": "25",
+  "height": "174",
+  "gender": "Male"
 }

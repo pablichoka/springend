@@ -1,3 +1,3 @@
-DELETE *
+DELETE
 FROM "users"
-WHERE 1=1;
+WHERE 1 = 1;
