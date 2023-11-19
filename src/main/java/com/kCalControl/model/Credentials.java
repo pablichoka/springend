@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Builder
@@ -30,11 +31,38 @@ public class Credentials {
     @Column(name = "password_date", nullable = false)
     Date passwordDate;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "assets_id", referencedColumnName = "id")
+    private Assets assets;
+
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User users;
 
     public Set<Role> getRoles() {
         return getUsers().getRoles();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Credentials that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(passwordDate, that.passwordDate) && Objects.equals(assets, that.assets) && Objects.equals(users, that.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, password, passwordDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", passwordDate=" + passwordDate +
+                '}';
     }
 }

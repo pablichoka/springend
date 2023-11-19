@@ -1,6 +1,5 @@
 package com.kCalControl.dto.user;
 
-import com.kCalControl.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +13,7 @@ public class NewUserDTO {
     private String name;
     private String mobile;
     private String role; //format should be (ROLENAME1, ROLENAME2, ROLENAME3)
+    private String username;
+    private String password;
+    private String email;
 }

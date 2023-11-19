@@ -63,4 +63,15 @@ public class Assets {
     public int hashCode() {
         return Objects.hash(creationDate, modificationDate);
     }
+
+    @Override
+    public String toString() {
+        return "Assets{" +
+                "id=" + id +
+                ", creationPerson=" + creationPerson.getId() +
+                ", creationDate=" + creationDate +
+                ", modificationPerson=" + modificationPerson.getId() +
+                ", modificationDate=" + modificationDate +
+                '}';
+    }
 }

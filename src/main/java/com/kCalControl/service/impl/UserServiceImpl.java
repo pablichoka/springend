@@ -2,7 +2,6 @@ package com.kCalControl.service.impl;
 
 import com.kCalControl.config.Checker;
 import com.kCalControl.dto.SearchParamsDTO;
-import com.kCalControl.dto.credentials.NewCredentialsDTO;
 import com.kCalControl.dto.credentials.UpdateCredentialsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
@@ -50,13 +48,14 @@ public class UserServiceImpl implements UserService {
     public User newUser(NewUserDTO dto) {
 
         User user = new User(dto.getName(), dto.getMobile());
-        Assets assets = new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now()));
-        user.setAssets(assets);
         BMData bmData = new BMData();
-        bmData.setUserAssoc(user);
-        Assets assets1 = new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now()));
-        bmData.setAssets(assets1);
         user.setBmData(bmData);
+        Credentials credentials = newCredentials(dto);
+        user.setCredentials(credentials);
+        
+        user.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
+        bmData.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
+        credentials.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
 
         Set<Role> roles = new HashSet<>();
         String rolesString = dto.getRole();
@@ -82,12 +81,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Credentials newCredentials(NewCredentialsDTO dto) {
+    public Credentials newCredentials(NewUserDTO dto) {
         Credentials credentials = new Credentials();
         credentials.setUsername(dto.getUsername());
         credentials.setEmail(dto.getEmail());
         credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
-        credentials.setPasswordDate((java.sql.Date) Time.from(Instant.now()));
+        credentials.setPasswordDate(Date.from(Instant.now()));
         return credentials;
     }
 

@@ -1,7 +1,6 @@
 package com.kCalControl.service;
 
 import com.kCalControl.dto.SearchParamsDTO;
-import com.kCalControl.dto.credentials.NewCredentialsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.credentials.UpdateCredentialsDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
@@ -12,7 +11,7 @@ import org.springframework.data.domain.Page;
 public interface UserService {
     User newUser(NewUserDTO dto);
 
-    Credentials newCredentials(NewCredentialsDTO dto);
+    Credentials newCredentials(NewUserDTO dto);
 
     User returnUserById(Integer id);
 

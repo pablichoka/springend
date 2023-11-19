@@ -36,7 +36,7 @@ public class Nutrients {
     @Column(name = "saturated_fat")
     private Double saturatedFat;
 
-    @OneToOne(mappedBy = "nutrients", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "nutrients", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
     public ObjectNode toJson(){

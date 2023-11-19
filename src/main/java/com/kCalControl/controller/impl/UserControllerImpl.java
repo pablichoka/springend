@@ -10,6 +10,7 @@ import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.service.UserService;
+import com.kCalControl.service.WhoAmI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -33,19 +34,20 @@ public class UserControllerImpl implements UserController {
     BMDataRepository bmDataRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    WhoAmI whoAmI;
 
     //TODO test if it saves the bmData
     @Override
     public ResponseEntity<String> createUser(NewUserDTO dto) {
         User newUser = userService.newUser(dto);
         userRepository.save(newUser);
-//        bmDataRepository.save(newUser.getBmData());
         return ResponseEntity.ok("User created successfully %d".formatted(newUser.getId()));
     }
 
     @Override
     public ResponseEntity<RetrieveUserDTO> getUserData(Integer id) {
-        if (checker.checkGrantedUser(id)) {
+        if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User user = userService.returnUserById(id);
@@ -56,7 +58,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {
-        if (checker.checkGrantedUser(id)) {
+        if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         userService.deleteUser(id);
@@ -65,7 +67,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updateUserData(Integer id, UpdateUserDataDTO dto) {
-        if (checker.checkGrantedUser(id)) {
+        if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateUserData(id, dto);
@@ -76,7 +78,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updatePassword(Integer id, UpdateCredentialsDTO dto) {
-        if (checker.checkGrantedUser(id)) {
+        if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateCredentials(id, dto);

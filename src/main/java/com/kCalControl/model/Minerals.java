@@ -35,7 +35,7 @@ public class Minerals {
     @Column(name = "zinc")
     private Double zinc;
 
-    @OneToOne(mappedBy = "minerals", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "minerals", fetch = FetchType.EAGER)
     private Ingredient ingredientAssoc;
 
 }

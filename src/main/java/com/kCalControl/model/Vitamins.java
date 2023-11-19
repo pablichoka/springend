@@ -39,7 +39,7 @@ public class Vitamins {
     @Column(name = "riboflavin")
     private Double riboflavin;
 
-    @OneToOne(mappedBy = "vitamins", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "vitamins", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
     public ObjectNode toJson(){
