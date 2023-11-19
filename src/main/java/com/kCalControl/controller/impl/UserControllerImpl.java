@@ -8,7 +8,7 @@ import com.kCalControl.model.User;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.exceptions.NetworkException;
-import com.kCalControl.service.UserDBService;
+import com.kCalControl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -31,11 +31,11 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     BMDataRepository bmDataRepository;
     @Autowired
-    UserDBService userDBService;
+    UserService userService;
 
     @Override
     public ResponseEntity<String> createNormalUser(NewUserDTO dto) {
-        User newUser = userDBService.newNormalUser(dto);
+        User newUser = userService.newUser(dto);
         bmDataRepository.save(newUser.getBmData());
         userDBRepository.save(newUser);
 
@@ -47,7 +47,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (checker.checkValidUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
-        User user = userDBService.returnUserById(id);
+        User user = userService.returnUserById(id);
         RetrieveUserDTO retrieveUserDTO = new RetrieveUserDTO(user.getUsername(),
                 user.getName(), user.getMobile(), user.getEmail());
         return ResponseEntity.ok(retrieveUserDTO.toJSON());
@@ -58,7 +58,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (checker.checkValidUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
-        userDBService.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
 
@@ -67,7 +67,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (checker.checkValidUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
-        User updatedUser = userDBService.updateUserData(id, dto);
+        User updatedUser = userService.updateUserData(id, dto);
         userDBRepository.save(updatedUser);
 
         return ResponseEntity.ok("User data updated successfully");
@@ -78,7 +78,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (checker.checkValidUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
-        User updatedUser = userDBService.updatePassword(id, dto);
+        User updatedUser = userService.updateCredentials(id, dto);
         userDBRepository.save(updatedUser);
         return ResponseEntity.ok("Password updated successfully");
     }
@@ -88,7 +88,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (!checker.checkRoleAdmin()) {
             throw new NetworkException("Missing ADMIN role", HttpStatus.FORBIDDEN);
         }
-        Page<User> usersList = userDBService.getUsers(dto.getPage(), dto.getPageSize());
+        Page<User> usersList = userService.getUsers(dto.getPage(), dto.getPageSize());
         RetrieveUsersDTO response = new RetrieveUsersDTO(usersList.getNumberOfElements(), usersList.getContent().stream().map(RetrieveUserDTO::new).toList());
         return ResponseEntity.ok(response);
     }
@@ -98,7 +98,7 @@ public class UserDBControllerImpl implements UserDBController {
         if (!checker.checkRoleAdmin()) {
             throw new NetworkException("Missing ADMIN role", HttpStatus.FORBIDDEN);
         }
-        Page<User> userSearchList = userDBService.getUsersFromSearch(dto);
+        Page<User> userSearchList = userService.getUsersFromSearch(dto);
         RetrieveUsersDTO response = new RetrieveUsersDTO(userSearchList.getNumberOfElements(), userSearchList.getContent().stream().map(RetrieveUserDTO::new).toList());
         return ResponseEntity.ok(response);
     }

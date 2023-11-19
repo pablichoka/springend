@@ -1,0 +1,839 @@
+{
+	"info": {
+		"_postman_id": "ef5e7b84-458a-4eb3-8854-07a6d6a719a1",
+		"name": "views",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29853446"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTBkODhlOTkyZjdlMzQ2MzNjYjUwNzkiLCJpYXQiOjE2OTU3MjA1NjUsImV4cCI6MTY5NTc1NjU2NX0.bRnNJZVPCMOtnYYPcyzr1MA14VgqqRarBG3mwxYMG0k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "boundary=<calculated when request is sent>;application/json; charset=UTF-8",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fulano\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/authenticate",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NDZhNTU4YTViM2E3NmU0OGIyZiIsImlhdCI6MTY5NzMwNjQ1MiwiZXhwIjoxNjk4MTcwNDUyfQ.ThSkTlUdbzWccUW3TgNZcLSyyvH6jco5glE1pfC4EbU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/logout",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Retrieve any user (ADMIN)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzM0NTUsImV4cCI6MTY5NzczNzQ1NX0.-Y7iiqXQ8eNDJj-8qRwDpsOyr_0LvsW_jsMUxmB-voU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/admin/userData/6524399dd74a6b7daf6b7a02",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"admin",
+								"userData",
+								"6524399dd74a6b7daf6b7a02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add user (ADMIN)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzI4NTIsImV4cCI6MTY5NzczNjg1Mn0.PnWeGW3Hi2wNfRYGlFuvwloBLPLj502Fsiq3MeeBr8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testAdmin\",\r\n    \"firstName\": \"admin\",\r\n    \"lastName\": \"testeo\",\r\n    \"mobile\": \"+4536258759\",\r\n    \"email\": \"admin@test.com\",\r\n    \"password\": \"123\",\r\n    \"role\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/admin/addUser",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"admin",
+								"addUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Retrieve user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NDZhNTU4YTViM2E3NmU0OGIyZiIsImlhdCI6MTY5NzMwNzQ4NSwiZXhwIjoxNjk4MTcxNDg1fQ.dvwxevHTw5D1s9SvQO3pUENAYdgiIvw30msMuF7m1Yk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/user/get-data/64be546a558a5b3a76e48b2f",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"get-data",
+								"64be546a558a5b3a76e48b2f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "whoiam",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY1MGQ4OGU5OTJmN2UzNDYzM2NiNTA3OSIsImlhdCI6MTY5Njg3MzI4OCwiZXhwIjoxNjk3NzM3Mjg4fQ.qZycS4g_NNKfNgo5mPwxdGss0zuhCSvyrcHX7kmu0GQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/user/whoiam",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"whoiam"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzM0NTUsImV4cCI6MTY5NzczNzQ1NX0.-Y7iiqXQ8eNDJj-8qRwDpsOyr_0LvsW_jsMUxmB-voU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/user/userData/6524399dd74a6b7daf6b7a02",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"userData",
+								"6524399dd74a6b7daf6b7a02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY1MTNmZmMxOWNiNDM1M2E3YjM0MjllZCIsImlhdCI6MTY5Njg3NDk2MSwiZXhwIjoxNjk3NzM4OTYxfQ.0VqjJcExqWI1Jw8N2aX9vzumHNZ8wKEsMINVPPEBIHE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/user/deleteUser/64be546a558a5b3a76e48b2f",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"deleteUser",
+								"64be546a558a5b3a76e48b2f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Fulanazo\",\r\n    \"lastName\": \"Martinez Perez\",\r\n    \"mobile\": \"+34657890345\",\r\n    \"email\": \"fulanazo@fatburn.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/user/updateUserData/64be536cc2bc1070aa0562e7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"updateUserData",
+								"64be536cc2bc1070aa0562e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/user/updatePassword/64be4e86305c6f7403973650",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"user",
+								"updatePassword",
+								"64be4e86305c6f7403973650"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List users (ADMIN)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTcwNTIyODMsImV4cCI6MTY5NzkxNjI4M30.OvJZFKVZU8DHiQilj-nwuI8aI3JWHBezX65soXqZHZw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": \"1\",\r\n    \"pageSize\": \"2\",\r\n    \"query\": \"\",\r\n    \"sort\" : \"az\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/admin/listUser",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"admin",
+								"listUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search users (ADMIN)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzI4NTIsImV4cCI6MTY5NzczNjg1Mn0.PnWeGW3Hi2wNfRYGlFuvwloBLPLj502Fsiq3MeeBr8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": \"0\",\r\n    \"pageSize\": \"20\",\r\n    \"query\": \"fu\",\r\n    \"sort\" : \"az\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/admin/searchUsers",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"admin",
+								"searchUsers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ingredients",
+			"item": [
+				{
+					"name": "listIngredients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NTkyYjQ3NTJkNDk5NDMzMmM1MCIsImlhdCI6MTY5Njk1NTEzOSwiZXhwIjoxNjk3ODE5MTM5fQ.bVYQNBwP2x877rLHt6mIuP75rHoE2akX4YOPDTbMwMI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": \"0\",\r\n    \"pageSize\": \"20\",\r\n    \"query\": \"\",\r\n    \"sort\" : \"az\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/ingredients/listIngredients",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"ingredients",
+								"listIngredients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchIngredients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NTkyYjQ3NTJkNDk5NDMzMmM1MCIsImlhdCI6MTY5Njk1NTEzOSwiZXhwIjoxNjk3ODE5MTM5fQ.bVYQNBwP2x877rLHt6mIuP75rHoE2akX4YOPDTbMwMI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": \"0\",\r\n    \"pageSize\": \"20\",\r\n    \"query\": \"butter\",\r\n    \"sort\" : \"az\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/ingredients/searchIngredients",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"ingredients",
+								"searchIngredients"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Nutrients",
+			"item": [
+				{
+					"name": "Basic nutrients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/nutrients/getBasicNutrients/64c37f1bc97d37f5d209f35a",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"nutrients",
+								"getBasicNutrients",
+								"64c37f1bc97d37f5d209f35a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All nutrients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/nutrients/getFullNutrients/64c37f1bc97d37f5d209f35a",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"nutrients",
+								"getFullNutrients",
+								"64c37f1bc97d37f5d209f35a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vitamins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/nutrients/getVitamins/64c37f1bc97d37f5d209f35a",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"nutrients",
+								"getVitamins",
+								"64c37f1bc97d37f5d209f35a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Minerals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/nutrients/get-minerals/64c37f1bc97d37f5d209f35a",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"nutrients",
+								"get-minerals",
+								"64c37f1bc97d37f5d209f35a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BMData",
+			"item": [
+				{
+					"name": "Calculate BMData",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8081/api/bm-data/calcBM",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"bm-data",
+								"calcBM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save BMCalc",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numDaysEx\":\"4\",\r\n    \"dietType\":\"Definition\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/bm-data/saveBMCalc",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"bm-data",
+								"saveBMCalc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save BMData",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"weigth\":\"71.2\",\r\n    \"age\":\"25\",\r\n    \"height\":\"174\",\r\n    \"gender\":\"Male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8081/api/bm-data/saveBMData",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"bm-data",
+								"saveBMData"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

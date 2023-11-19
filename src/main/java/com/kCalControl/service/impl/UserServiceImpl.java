@@ -1,18 +1,21 @@
 package com.kCalControl.service.impl;
 
 import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.credentials.NewCredentialsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.BMData;
+import com.kCalControl.model.Credentials;
 import com.kCalControl.model.Role;
 import com.kCalControl.model.User;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserDBRepository;
 import com.kCalControl.service.UserDBService;
-import com.kCalControl.service.WhoIAm;
+import com.kCalControl.service.WhoAmI;
+import jakarta.transaction.Transactional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +25,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 @Service
 public class UserDBServiceImpl implements UserDBService {
@@ -40,67 +45,48 @@ public class UserDBServiceImpl implements UserDBService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    WhoIAm whoIAm;
+    WhoAmI whoAmI;
 
     @Override
-    public User newAdminUser(ObjectId id, NewUserDTO dto) {
+    public User newUser(NewUserDTO dto) {
 
-        User creationPerson;
-
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setMobile(dto.getMobile());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-        LocalDateTime time = LocalDateTime.now();
-
-        user.setPasswordDate(time);
-        user.setCreationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
-        user.setCreationDate(time);
-        user.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("God user not found, did you log in?", HttpStatus.NOT_FOUND)));
-        user.setModificationDate(time);
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findById(dto.getRole()).orElseThrow(()-> new NetworkException("Role not found", HttpStatus.NOT_FOUND)));
-        user.setRoles(roles);
-
+        User user = new User(dto.getName(), dto.getMobile());
+        user.setCreationPerson(whoAmI.whoIAm());
+        user.setCreationDate(Date.from(Instant.now()));
+        user.setModificationPerson(whoAmI.whoIAm());
+        user.setModificationDate(Date.from(Instant.now()));
         BMData bmData = new BMData();
         bmData.setUserAssoc(user);
 
         user.setBmData(bmData);
 
+        Set<Role> roles = new HashSet<>();
+        String rolesString = dto.getRole();
+        if (rolesString != null && !rolesString.isEmpty()) {
+            String[] rolesArray = rolesString.split(",");
+            Stream.of(rolesArray)
+                    .map(String::trim)
+                    .forEach(role -> {
+                        Role roleEntity = roleRepository.findById(role)
+                                .orElseThrow(() -> new NetworkException("Role " + role + " not found", HttpStatus.NOT_FOUND));
+                        roles.add(roleEntity);
+                    });
+        }
+        user.setRoles(roles);
+
         return user;
     }
 
     @Override
-    public User newNormalUser(NewUserDTO dto) {
-
-        User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setMobile(dto.getMobile());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-        LocalDateTime time = LocalDateTime.now();
-
-        user.setPasswordDate(time);
-        user.setCreationPerson(user);
-        user.setCreationDate(time);
-        user.setModificationPerson(user);
-        user.setModificationDate(time);
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findById("USER").orElseThrow(() -> new NetworkException("Role not found", HttpStatus.NOT_FOUND)));
-        user.setRoles(roles);
-
-        BMData bmData = new BMData();
-        bmData.setUserAssoc(user);
-
-        user.setBmData(bmData);
-
-        return user;
+    public Credentials newCredentials(NewCredentialsDTO dto) {
+        Credentials credentials = new Credentials();
+        credentials.setUsername(dto.getUsername());
+        credentials.setEmail(dto.getEmail());
+        credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
+        credentials.setPasswordDate(Date.from(Instant.now()));
+        return credentials;
     }
+
 
     @Override
     public User returnUserById(Integer id) {
@@ -141,26 +127,24 @@ public class UserDBServiceImpl implements UserDBService {
 
         user.setName(dto.getName());
         user.setMobile(dto.getMobile());
-        user.setEmail(dto.getEmail());
-        user.setModificationPerson(whoIAm.currentUser().orElseThrow());
-        user.setModificationDate(LocalDateTime.now());
+        user.setModificationPerson(whoAmI.whoIAm());
+        user.setModificationDate(Date.from(Instant.now()));
 
         return user;
     }
 
+    @Transactional
     @Override
-    public User updatePassword(Integer id, UpdatePasswordDTO dto) {
+    public User updateCredentials(Integer id, UpdatePasswordDTO dto) {
         User user = userDBRepository.findById(id)
                 .orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        User modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
+        Integer modificationPerson = whoAmI.whoIAm();
+        Credentials credentials = user.getCredentials();
 
-        LocalDateTime time = LocalDateTime.now();
-
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setPasswordDate(time);
-        user.setModificationPerson(whoIAm.currentUser().orElseThrow(() -> new NetworkException("Missing modification person id, did you log in?", HttpStatus.NOT_FOUND)));
-        user.setModificationDate(time);
+        credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
+        credentials.setPasswordDate(Date.from(Instant.now()));
+        user.setModificationPerson(modificationPerson);
+        user.setModificationDate(Date.from(Instant.now()));
         return user;
     }
 

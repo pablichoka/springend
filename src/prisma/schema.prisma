@@ -7,166 +7,169 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Roles {
-  id         String      @id
-  user_roles User_Role[]
+model roles {
+  role_name  String      @id @db.VarChar(20)
+  user_roles user_role[]
 }
 
-model User_Role {
-  user_id Int
-  role_id String
-  Roles   Roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
-  Users   Users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+model user_role {
+  user_id   Int
+  role_name String @db.VarChar(20)
+  Roles     roles  @relation(fields: [role_name], references: [role_name], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
+  Users     users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
 
-  @@id([user_id, role_id])
+  @@id([user_id, role_name])
 }
 
-model Users {
-  id          Int          @id
-  asset       Assets       @relation(fields: [assets_id], references: [id])
-  bm_data     BM_Data      @relation(fields: [bm_data_id], references: [id], onDelete: Cascade)
-  bm_data_id  Int          @unique
-  name        String
-  mobile      String       @unique
-  assets_id   Int
-  user_role   User_Role[]
-  credentials Credentials?
+model users {
+  id                                     Int           @id @default(autoincrement())
+  mobile                                 String        @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
+  name                                   String        @db.VarChar(255)
+  assets_id                              Int?
+  bm_data_id                             Int?
+  credentials_id                         Int?
+  modification_person                    assets[]      @relation("modification_person")
+  creation_person                        assets[]      @relation("creation_person")
+  credentials_credentials_user_idTousers credentials[] @relation("credentials_user_idTousers")
+  user_role                              user_role[]
+  asset                                  assets?       @relation("assets_of_user", fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk406jisi7tgpwlu4k6uav4h0bx")
+  credentials                            credentials?  @relation(fields: [credentials_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk732k8fvdmf8q8msul077ck3a5")
+  bm_data                                bm_data?      @relation(fields: [bm_data_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktqen8lvkhn2x84wagd35tfxvs")
 }
 
-model Credentials {
-  id            Int      @id
-  user          Users    @relation(fields: [user_id], references: [id])
-  user_id       Int      @unique
-  username      String   @unique
-  email         String   @unique
-  password      String
-  password_date DateTime @db.Date
+model credentials {
+  id                               Int      @id @default(autoincrement())
+  email                            String   @unique(map: "uk_6pka8top3ggqmjvppakv4ygl8") @db.VarChar(255)
+  password                         String   @db.VarChar(255)
+  password_date                    DateTime @db.Date
+  username                         String   @unique(map: "uk_l7xhygibdj6cgkpj2ih1jgx14") @db.VarChar(255)
+  user_id                          Int?
+  users_credentials_user_idTousers users?   @relation("credentials_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkcbcgksvnqvqxrrc4dwv3qys65")
+  user                             users[]
 }
 
-model Assets {
-  id                  Int           @id @default(autoincrement())
-  creation_date       DateTime
-  creation_person     Int
-  modification_date   DateTime
-  modification_person Int
-  Users               Users[]
-  Ingredients         Ingredients[]
-  BMData              BM_Data[]
+model assets {
+  id                     Int           @id @default(autoincrement())
+  creation_date          DateTime?     @db.Timestamp(6)
+  modification_date      DateTime?     @db.Timestamp(6)
+  creation_person_id     Int?
+  modification_person_id Int?
+  modification_person    users?        @relation("modification_person", fields: [modification_person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fklhhvd9iiqu7ud34evcav9xibn")
+  creation_person        users?        @relation("creation_person", fields: [creation_person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkr3a8lnxg6h2cneapcqvg9yavh")
+  bmData                 bm_data[]
+  ingredient             ingredients[]
+  user                   users[]       @relation("assets_of_user")
 }
 
-model Ingredients {
-  id           Int       @id
-  nutrients    Nutrients @relation(fields: [nutrients_id], references: [id], onDelete: Cascade)
-  nutrients_id Int       @unique
-  minerals     Minerals  @relation(fields: [minerals_id], references: [id], onDelete: Cascade)
-  minerals_id  Int       @unique
-  vitamins     Vitamins  @relation(fields: [vitamins_id], references: [id], onDelete: Cascade)
-  vitamins_id  Int       @unique
-  assets       Assets    @relation(fields: [assets_id], references: [id])
-  assets_id    Int
-  name         String
-  category     String
-  description  String
+model ingredients {
+  id           Int        @id @default(autoincrement())
+  category     String?    @db.VarChar(255)
+  description  String?    @db.VarChar(255)
+  type         String?    @db.VarChar(255)
+  assets_id    Int?
+  minerals_id  Int?
+  nutrients_id Int?
+  vitamins_id  Int?
+  assets       assets?    @relation(fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk6fe3whlsxbpdqkrmkuvsms7gy")
+  vitamins     vitamins?  @relation(fields: [vitamins_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk8apk6yhxwg8xfu4bao1ka023t")
+  minerals     minerals?  @relation(fields: [minerals_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk8wk1awxbpt2kuyl80a0mpgunu")
+  nutrients    nutrients? @relation(fields: [nutrients_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkonxm9wwtn0qhjgbu6ms1sr5kg")
 }
 
-model BM_Data {
-  id          Int     @id
-  assets      Assets  @relation(fields: [assets_id], references: [id])
-  assets_id   Int
+model bm_data {
+  id          Int     @id @default(autoincrement())
   age         Int?
+  base_bm     Float?
+  diet_type   String? @db.VarChar(255)
+  gender      String? @db.VarChar(255)
   height      Int?
   num_days_ex Int?
-  diet_type   String?
-  gender      String?
-  weight      Float?
   total_bm    Float?
-  base_bm     Float?
-  user        Users?
+  weight      Float?
+  assets_id   Int?
+  assets      assets? @relation(fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktbluf89juhekonrye78yh6drs")
+  user        users[]
 }
 
-model Nutrients {
-  id                Int          @id
-  ingredients_id    Int
-  carbohydrate      Float
-  cholesterol       Float
-  monosaturated_fat Float
-  polysaturated_fat Float
-  saturated_fat     Float
-  total_lipid       Float
-  fiber             Float
-  protein           Float
-  sugar_total       Float
-  water             Float
-  Ingredients       Ingredients?
+model nutrients {
+  id                Int           @id @default(autoincrement())
+  carbohydrate      Float?
+  cholesterol       Float?
+  fiber             Float?
+  monosaturated_fat Float?
+  polysaturated_fat Float?
+  protein           Float?
+  saturated_fat     Float?
+  sugar_total       Float?
+  total_lipid       Float?
+  water             Float?
+  Ingredients       ingredients[]
 }
 
-model Minerals {
-  id             Int          @id
-  ingredients_id Int
-  calcium        Float
-  copper         Float
-  iron           Float
-  magnesium      Float
-  phosphorus     Float
-  potassium      Float
-  sodium         Float
-  zinc           Float
-  Ingredients    Ingredients?
+model minerals {
+  id          Int           @id @default(autoincrement())
+  calcium     Float?
+  copper      Float?
+  iron        Float?
+  magnesium   Float?
+  phosphorus  Float?
+  potassium   Float?
+  sodium      Float?
+  zinc        Float?
+  Ingredients ingredients[]
 }
 
-model Vitamins {
-  id             Int          @id
-  ingredients_id Int
-  vitamin_a      Float
-  vitamin_b12    Float
-  vitamin_b6     Float
-  vitamin_c      Float
-  vitamin_e      Float
-  vitamin_k      Float
-  niacin         Float
-  riboflavin     Float
-  thiamin        Float
-  Ingredients    Ingredients?
+model vitamins {
+  id          Int           @id @default(autoincrement())
+  niacin      Float?
+  riboflavin  Float?
+  thiamin     Float?
+  vitamin_a   Float?
+  vitamin_b12 Float?
+  vitamin_b6  Float?
+  vitamin_c   Float?
+  vitamin_e   Float?
+  vitamin_k   Float?
+  Ingredients ingredients[]
 }
 
-model IngredientsOld {
-  id                    Int    @id
-  name                  String
-  category              String
-  description           String
-  alpha_carotene        Float
-  beta_carotene         Float
-  beta_cryptoxanthin    Float
-  carbohydrate          Float
-  cholesterol           Float
-  choline               Float
-  monosaturated_fat     Float
-  polysaturated_fat     Float
-  saturated_fat         Float
-  total_lipid           Float
-  fiber                 Float
-  lutein_and_zeaxanthin Float
-  lycopene              Float
-  calcium               Float
-  copper                Float
-  iron                  Float
-  magnesium             Float
-  phosphorus            Float
-  potassium             Float
-  sodium                Float
-  zinc                  Float
-  niacin                Float
-  protein               Float
-  retinol               Float
-  riboflavin            Float
-  selenium              Float
-  sugar_total           Float
-  thiamin               Float
-  vitamin_a             Float
-  vitamin_b12           Float
-  vitamin_b6            Float
-  vitamin_c             Float
-  vitamin_e             Float
-  vitamin_k             Float
-  water                 Float
+model ingredients_old {
+  id                    Int     @id @default(autoincrement())
+  alpha_carotene        Float?
+  beta_carotene         Float?
+  beta_cryptoxanthin    Float?
+  calcium               Float?
+  carbohydrate          Float?
+  category              String? @db.VarChar(255)
+  cholesterol           Float?
+  choline               Float?
+  copper                Float?
+  description           String? @db.VarChar(255)
+  fiber                 Float?
+  iron                  Float?
+  lutein_and_zeaxanthin Float?
+  lycopene              Float?
+  magnesium             Float?
+  monosaturated_fat     Float?
+  niacin                Float?
+  phosphorus            Float?
+  polysaturated_fat     Float?
+  potassium             Float?
+  protein               Float?
+  retinol               Float?
+  riboflavin            Float?
+  saturated_fat         Float?
+  selenium              Float?
+  sodium                Float?
+  sugar_total           Float?
+  thiamin               Float?
+  total_lipid           Float?
+  vitamin_a             Float?
+  vitamin_b12           Float?
+  vitamin_b6            Float?
+  vitamin_c             Float?
+  vitamin_e             Float?
+  vitamin_k             Float?
+  water                 Float?
+  zinc                  Float?
 }
