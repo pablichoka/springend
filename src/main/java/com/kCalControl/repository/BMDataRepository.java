@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface BMDataRepository extends CrudRepository<BMData, Integer> {
     BMData findByUserAssoc(User userAssoc);
     BMData findByUserAssoc_Id(Integer id);
-
 }

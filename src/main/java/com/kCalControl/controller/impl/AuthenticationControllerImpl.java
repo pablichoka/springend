@@ -4,7 +4,8 @@ import com.kCalControl.config.TokenManager;
 import com.kCalControl.controller.AuthenticationController;
 import com.kCalControl.dto.auth.AuthenticateRequestDTO;
 import com.kCalControl.dto.auth.AuthenticateResponseDTO;
-import com.kCalControl.repository.UserDBRepository;
+import com.kCalControl.repository.CredentialsRepository;
+import com.kCalControl.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     private final static Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
-    UserDBRepository userDBRepository;
+    UserRepository userRepository;
+    @Autowired
+    CredentialsRepository credentialsRepository;
     @Autowired
     BCryptPasswordEncoder encoder;
     @Autowired
@@ -31,7 +34,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     public ResponseEntity<AuthenticateResponseDTO> authenticate(@RequestBody AuthenticateRequestDTO request) {
 
         var username = request.getUsername();
-        var findByUsername = userDBRepository.findByUsername(username);
+        var findByUsername = credentialsRepository.findByUsername(username);
         if (findByUsername.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
 

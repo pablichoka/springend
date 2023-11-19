@@ -1,11 +1,8 @@
 package com.kCalControl.config;
 
-import com.kCalControl.model.Assets;
-import com.kCalControl.model.Role;
 import com.kCalControl.repository.RoleRepository;
-import com.kCalControl.repository.UserDBRepository;
-import com.kCalControl.service.WhoIAm;
-import org.bson.types.ObjectId;
+import com.kCalControl.repository.UserRepository;
+import com.kCalControl.service.WhoAmI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +13,27 @@ public class Checker {
 
     private final static Logger logger = LoggerFactory.getLogger(Checker.class);
     @Autowired
-    UserDBRepository userDBRepository;
+    UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
     @Autowired
-    WhoIAm whoIAm;
+    WhoAmI whoAmI;
 
     public boolean checkRoleAdmin() {
-        return whoIAm.currentUser()
-                .map(user -> user.getRoles().contains(roleRepository.findById("ADMIN").get()))
+        return whoAmI.currentUser()
+                .map(user -> user.getRoles().contains(roleRepository.findByRoleName("ADMIN").get()))
                 .orElse(false);
     }
 
     public boolean checkUserExistsById(Integer id) {
-        return userDBRepository.findById(id).isPresent();
+        return userRepository.findById(id).isPresent();
     }
 
-    public boolean checkValidUser(Integer id) {
+    public boolean checkGrantedUser(Integer id) {
         if(checkRoleAdmin()){
             return true;
         }else{
-            whoIAm.currentUser()
+            whoAmI.currentUser()
                     .map(user -> user.getId().equals(id));
             return false;
         }

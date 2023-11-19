@@ -6,37 +6,61 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Assets")
+@Table(name = "assets")
 public class Assets {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer creationPerson;
+    @ManyToOne
+    @JoinColumn(name = "creation_person_id")
+    private User creationPerson;
 
-    private LocalDateTime creationDate;
+    private Date creationDate;
 
-    private Integer modificationPerson;
+    @ManyToOne
+    @JoinColumn(name = "modification_person_id")
+    private User modificationPerson;
 
-    private LocalDateTime modificationDate;
+    private Date modificationDate;
+
+    public Assets(User user, Date from, User user1, Date from1) {
+        this.creationPerson = user;
+        this.creationDate = from;
+        this.modificationPerson = user1;
+        this.modificationDate = from1;
+    }
+
 
     public ObjectNode toJson() {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode node = mapper.createObjectNode();
         node.put("id", this.getId());
-        node.put("creationPerson", this.getCreationPerson());
+        node.put("creationPerson", this.getCreationPerson().toJson());
         node.put("creationDate", this.getCreationDate().toString());
-        node.put("modificationPerson", this.getModificationPerson());
+        node.put("modificationPerson", this.getModificationPerson().toJson());
         node.put("modificationDate", this.getModificationDate().toString());
         return node;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Assets assets)) return false;
+        return Objects.equals(id, assets.id) && Objects.equals(creationPerson, assets.creationPerson) && Objects.equals(creationDate, assets.creationDate) && Objects.equals(modificationPerson, assets.modificationPerson) && Objects.equals(modificationDate, assets.modificationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(creationDate, modificationDate);
     }
 }

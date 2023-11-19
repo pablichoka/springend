@@ -1,22 +1,18 @@
 package com.kCalControl.service.impl;
 
+import com.kCalControl.config.Checker;
 import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.credentials.NewCredentialsDTO;
+import com.kCalControl.dto.credentials.UpdateCredentialsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
-import com.kCalControl.dto.user.UpdatePasswordDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.exceptions.NetworkException;
-import com.kCalControl.model.BMData;
-import com.kCalControl.model.Credentials;
-import com.kCalControl.model.Role;
-import com.kCalControl.model.User;
+import com.kCalControl.model.*;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.repository.RoleRepository;
-import com.kCalControl.repository.UserDBRepository;
-import com.kCalControl.service.UserDBService;
+import com.kCalControl.repository.UserRepository;
+import com.kCalControl.service.UserService;
 import com.kCalControl.service.WhoAmI;
-import jakarta.transaction.Transactional;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,19 +21,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 @Service
-public class UserDBServiceImpl implements UserDBService {
+public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = Logger.getLogger(UserDBServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
     @Autowired
-    UserDBRepository userDBRepository;
+    UserRepository userRepository;
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -45,35 +42,42 @@ public class UserDBServiceImpl implements UserDBService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
+    Checker checker;
+    @Autowired
     WhoAmI whoAmI;
 
     @Override
     public User newUser(NewUserDTO dto) {
 
         User user = new User(dto.getName(), dto.getMobile());
-        user.setCreationPerson(whoAmI.whoIAm());
-        user.setCreationDate(Date.from(Instant.now()));
-        user.setModificationPerson(whoAmI.whoIAm());
-        user.setModificationDate(Date.from(Instant.now()));
+        Assets assets = new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now()));
+        user.setAssets(assets);
         BMData bmData = new BMData();
         bmData.setUserAssoc(user);
-
+        Assets assets1 = new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now()));
+        bmData.setAssets(assets1);
         user.setBmData(bmData);
 
         Set<Role> roles = new HashSet<>();
         String rolesString = dto.getRole();
         if (rolesString != null && !rolesString.isEmpty()) {
             String[] rolesArray = rolesString.split(",");
-            Stream.of(rolesArray)
-                    .map(String::trim)
-                    .forEach(role -> {
-                        Role roleEntity = roleRepository.findById(role)
-                                .orElseThrow(() -> new NetworkException("Role " + role + " not found", HttpStatus.NOT_FOUND));
-                        roles.add(roleEntity);
-                    });
+            for (String role : rolesArray) {
+                role = role.trim();
+                if (role.equalsIgnoreCase("ADMIN")) {
+                    if (whoAmI.whoAmI() == null) {
+                        continue;
+                    } else if (!checker.checkRoleAdmin()) {
+                        continue;
+                    }
+                }
+                String finalRole = role;
+                Role roleEntity = roleRepository.findByRoleName(role)
+                        .orElseThrow(() -> new NetworkException("Role with name: " + finalRole + " not found", HttpStatus.NOT_FOUND));
+                roles.add(roleEntity);
+            }
+            user.setRoles(roles);
         }
-        user.setRoles(roles);
-
         return user;
     }
 
@@ -83,25 +87,23 @@ public class UserDBServiceImpl implements UserDBService {
         credentials.setUsername(dto.getUsername());
         credentials.setEmail(dto.getEmail());
         credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
-        credentials.setPasswordDate(Date.from(Instant.now()));
+        credentials.setPasswordDate((java.sql.Date) Time.from(Instant.now()));
         return credentials;
     }
 
 
     @Override
     public User returnUserById(Integer id) {
-        return userDBRepository.findById(id)
-                .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
+        return userRepository.findById(id).orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
     }
 
     @Override
     public Page<User> getUsers(int page, int pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "username");
         PageRequest pageRequest = PageRequest.of(page, pageSize, sort);
-        return userDBRepository.findAll(pageRequest);
+        return userRepository.findAll(pageRequest);
     }
 
-    //TODO find a solution to implement sorting by date
     @Override
     public Page<User> getUsersFromSearch(SearchParamsDTO dto) {
         Sort sorted = null;
@@ -115,45 +117,39 @@ public class UserDBServiceImpl implements UserDBService {
             default -> Sort.unsorted();
         };
         PageRequest pageRequest = PageRequest.of(dto.getPage(), dto.getPageSize(), sorted);
-        return userDBRepository.findByUsernameLikeIgnoreCaseOrEmailIgnoreCaseOrNameLikeIgnoreCase(dto.getQuery(), dto.getQuery(), dto.getQuery(), pageRequest);
+        return userRepository.findByNameLikeIgnoreCaseOrMobileLike(dto.getQuery(), dto.getQuery(), dto.getQuery(), pageRequest);
     }
 
     @Override
     public User updateUserData(Integer id, UpdateUserDataDTO dto) {
-        User user = userDBRepository.findById(id)
-                .orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        User modificationPerson = userDBRepository.findById(dto.getUpdaterId())
-                .orElseThrow(() -> new NetworkException("Updater user with id: " + id + " not found", HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
         user.setName(dto.getName());
         user.setMobile(dto.getMobile());
-        user.setModificationPerson(whoAmI.whoIAm());
+        user.setModificationPerson(whoAmI.currentUser().orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)));
         user.setModificationDate(Date.from(Instant.now()));
 
         return user;
     }
 
-    @Transactional
     @Override
-    public User updateCredentials(Integer id, UpdatePasswordDTO dto) {
-        User user = userDBRepository.findById(id)
-                .orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        Integer modificationPerson = whoAmI.whoIAm();
+    public User updateCredentials(Integer id, UpdateCredentialsDTO dto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
+        Integer modificationPerson = whoAmI.whoAmI();
         Credentials credentials = user.getCredentials();
 
         credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
-        credentials.setPasswordDate(Date.from(Instant.now()));
-        user.setModificationPerson(modificationPerson);
+        credentials.setPasswordDate((java.sql.Date) Time.from(Instant.now()));
+        user.setModificationPerson(whoAmI.currentUser().orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)));
         user.setModificationDate(Date.from(Instant.now()));
         return user;
     }
 
     @Override
     public void deleteUser(Integer id) {
-        User user = userDBRepository.findById(id)
-                .orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
         bmDataRepository.delete(user.getBmData());
-        userDBRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
 }

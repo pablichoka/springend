@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Nutrients")
+@Table(name = "nutrients")
 public class Nutrients {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Double carbohydrate;
@@ -36,7 +36,7 @@ public class Nutrients {
     @Column(name = "saturated_fat")
     private Double saturatedFat;
 
-    @OneToOne(mappedBy = "mineralsAssoc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "nutrients", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
     public ObjectNode toJson(){

@@ -11,11 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class NewUserDTO {
-
-    private String username;
     private String name;
     private String mobile;
-    private String email;
-    private String password;
-    private String role;
+    private String role; //format should be (ROLENAME1, ROLENAME2, ROLENAME3)
 }

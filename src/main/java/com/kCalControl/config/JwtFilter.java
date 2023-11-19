@@ -1,11 +1,11 @@
 package com.kCalControl.config;
 
 import io.jsonwebtoken.Claims;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,9 +79,9 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        ObjectId personId;
+        int personId;
         try {
-            personId = new ObjectId(subject);
+            personId = Integer.parseInt(subject);
         } catch (NumberFormatException e) {
             logger.debug("Token {} not valid", token, e);
             filterChain.doFilter(request, response);

@@ -1,12 +1,13 @@
 package com.kCalControl.controller.impl;
 
 import com.kCalControl.config.Checker;
-import com.kCalControl.controller.UserDBController;
+import com.kCalControl.controller.UserController;
 import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.credentials.UpdateCredentialsDTO;
 import com.kCalControl.dto.user.*;
 import com.kCalControl.model.User;
 import com.kCalControl.repository.BMDataRepository;
-import com.kCalControl.repository.UserDBRepository;
+import com.kCalControl.repository.UserRepository;
 import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
-public class UserDBControllerImpl implements UserDBController {
+public class UserControllerImpl implements UserController {
 
-    private static final Logger logger = Logger.getLogger(UserDBControllerImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(UserControllerImpl.class.getName());
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    UserDBRepository userDBRepository;
+    UserRepository userRepository;
     @Autowired
     Checker checker;
     @Autowired
@@ -33,29 +34,29 @@ public class UserDBControllerImpl implements UserDBController {
     @Autowired
     UserService userService;
 
+    //TODO test if it saves the bmData
     @Override
-    public ResponseEntity<String> createNormalUser(NewUserDTO dto) {
+    public ResponseEntity<String> createUser(NewUserDTO dto) {
         User newUser = userService.newUser(dto);
-        bmDataRepository.save(newUser.getBmData());
-        userDBRepository.save(newUser);
-
-        return ResponseEntity.ok("User created successfully");
+        userRepository.save(newUser);
+//        bmDataRepository.save(newUser.getBmData());
+        return ResponseEntity.ok("User created successfully %d".formatted(newUser.getId()));
     }
 
     @Override
-    public ResponseEntity<String> getUserData(Integer id) {
-        if (checker.checkValidUser(id)) {
+    public ResponseEntity<RetrieveUserDTO> getUserData(Integer id) {
+        if (checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User user = userService.returnUserById(id);
-        RetrieveUserDTO retrieveUserDTO = new RetrieveUserDTO(user.getUsername(),
+        RetrieveUserDTO response = new RetrieveUserDTO(user.getUsername(),
                 user.getName(), user.getMobile(), user.getEmail());
-        return ResponseEntity.ok(retrieveUserDTO.toJSON());
+        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {
-        if (checker.checkValidUser(id)) {
+        if (checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         userService.deleteUser(id);
@@ -64,22 +65,22 @@ public class UserDBControllerImpl implements UserDBController {
 
     @Override
     public ResponseEntity<String> updateUserData(Integer id, UpdateUserDataDTO dto) {
-        if (checker.checkValidUser(id)) {
+        if (checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateUserData(id, dto);
-        userDBRepository.save(updatedUser);
+        userRepository.save(updatedUser);
 
         return ResponseEntity.ok("User data updated successfully");
     }
 
     @Override
-    public ResponseEntity<String> updatePassword(Integer id, UpdatePasswordDTO dto) {
-        if (checker.checkValidUser(id)) {
+    public ResponseEntity<String> updatePassword(Integer id, UpdateCredentialsDTO dto) {
+        if (checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateCredentials(id, dto);
-        userDBRepository.save(updatedUser);
+        userRepository.save(updatedUser);
         return ResponseEntity.ok("Password updated successfully");
     }
 

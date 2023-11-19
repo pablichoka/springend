@@ -1,5 +1,6 @@
 package com.kCalControl.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.persistence.*;
@@ -8,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -30,20 +30,22 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "credentials_id", referencedColumnName = "id")
     private Credentials credentials;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "User_Role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "role_name"))
+    private Set<Role> roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "bm_data_id", referencedColumnName = "id")
     private BMData bmData;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "assets_id", referencedColumnName = "id")
     private Assets assets;
 
     public User(String name, String mobile) {
@@ -67,35 +69,35 @@ public class User {
         return getCredentials().getPasswordDate();
     }
 
-    public Integer getCreationPerson() {
+    public User getCreationPerson() {
         return getAssets().getCreationPerson();
     }
 
-    public LocalDateTime getCreationDate() {
+    public Date getCreationDate() {
         return getAssets().getCreationDate();
     }
 
-    public Integer getModificationPerson() {
+    public User getModificationPerson() {
         return getAssets().getModificationPerson();
     }
 
-    public LocalDateTime getModificationDate() {
+    public Date getModificationDate() {
         return getAssets().getModificationDate();
     }
 
-    public void setModificationDate(LocalDateTime modificationDate) {
+    public void setModificationDate(Date modificationDate) {
         getAssets().setModificationDate(modificationDate);
     }
 
-    public void setModificationPerson(Integer modificationPerson) {
+    public void setModificationPerson(User modificationPerson) {
         getAssets().setModificationPerson(modificationPerson);
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         getAssets().setCreationDate(creationDate);
     }
 
-    public void setCreationPerson(Integer creationPerson) {
+    public void setCreationPerson(User creationPerson) {
         getAssets().setCreationPerson(creationPerson);
     }
 
@@ -105,12 +107,13 @@ public class User {
         userJson.put("id", getId());
         userJson.put("name", getName());
         userJson.put("mobile", getMobile());
-        userJson.put("creationPerson", getCreationPerson());
+        userJson.put("creationPerson", getCreationPerson().toJson());
         userJson.put("creationDate", getCreationDate().toString());
-        userJson.put("modificationPerson", getModificationPerson());
+        userJson.put("modificationPerson", getModificationPerson().toJson());
         userJson.put("modificationDate", getModificationDate().toString());
         return userJson;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,6 +123,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, mobile, name, credentials, roles, bmData, assets);
+        return Objects.hash(mobile, name);
     }
 }

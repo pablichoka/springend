@@ -9,7 +9,6 @@ import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.BMData;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.service.BMDataService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class BMDataControllerImpl implements BMDataController {
 
     @Override
     public ResponseEntity<RetrieveBMDataDTO> bmCalculator(Integer id){
-        if(checker.checkValidUser(id)){
+        if(checker.checkGrantedUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         BMData bmData = BMDataService.returnBMDataByUserDBId(id);
@@ -37,7 +36,7 @@ public class BMDataControllerImpl implements BMDataController {
 
     @Override
     public ResponseEntity<String> updateBMCalc(Integer id, UpdateBMDataDTO dto) {
-        if(checker.checkValidUser(id)){
+        if(checker.checkGrantedUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         BMData bmData = BMDataService.saveCalc(id, dto);
@@ -49,7 +48,7 @@ public class BMDataControllerImpl implements BMDataController {
 
     @Override
     public ResponseEntity<String> updateBMData(Integer id, UpdatePersonalDataDTO dto) {
-        if(checker.checkValidUser(id)){
+        if(checker.checkGrantedUser(id)){
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         BMData bmData = BMDataService.saveData(id, dto);

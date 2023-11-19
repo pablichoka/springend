@@ -13,20 +13,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Ingredients")
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "type")
     private String type;
 
+    @Column(name = "category")
     private String category;
 
+    @Column(name = "description")
     private String description;
 
-    @OneToOne(mappedBy = "ingredient")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "assets_id", referencedColumnName = "id")
     private Assets assets;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
