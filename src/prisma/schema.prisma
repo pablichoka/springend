@@ -16,46 +16,46 @@ model user_role {
   user_id   Int
   role_name String @db.VarChar(20)
   Roles     roles  @relation(fields: [role_name], references: [role_name], onDelete: NoAction, onUpdate: NoAction, map: "fk_role")
-  Users     users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user")
+  Users     users  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user")
 
   @@id([user_id, role_name])
 }
 
 model users {
-  id                                     Int           @id @default(autoincrement())
-  mobile                                 String        @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
-  name                                   String        @db.VarChar(255)
-  assets_id                              Int?
-  bm_data_id                             Int?
-  credentials_id                         Int?
-  modification_person                    assets[]      @relation("modification_person")
-  creation_person                        assets[]      @relation("creation_person")
-  credentials_credentials_user_idTousers credentials[] @relation("credentials_user_idTousers")
-  user_role                              user_role[]
-  asset                                  assets?       @relation("assets_of_user", fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk406jisi7tgpwlu4k6uav4h0bx")
-  credentials                            credentials?  @relation(fields: [credentials_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk732k8fvdmf8q8msul077ck3a5")
-  bm_data                                bm_data?      @relation(fields: [bm_data_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktqen8lvkhn2x84wagd35tfxvs")
+  id                  Int          @id @default(autoincrement())
+  mobile              String       @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
+  name                String       @db.VarChar(255)
+  assets_id           Int?
+  bm_data_id          Int?
+  credentials_id      Int?
+  modification_person assets[]     @relation("modification_person")
+  creation_person     assets[]     @relation("creation_person")
+  user_role           user_role[]
+  asset               assets?      @relation("assets_of_user", fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk406jisi7tgpwlu4k6uav4h0bx")
+  credentials         credentials? @relation(fields: [credentials_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk732k8fvdmf8q8msul077ck3a5")
+  bm_data             bm_data?     @relation(fields: [bm_data_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fktqen8lvkhn2x84wagd35tfxvs")
 }
 
 model credentials {
-  id                               Int      @id @default(autoincrement())
-  email                            String   @unique(map: "uk_6pka8top3ggqmjvppakv4ygl8") @db.VarChar(255)
-  password                         String   @db.VarChar(255)
-  password_date                    DateTime @db.Date
-  username                         String   @unique(map: "uk_l7xhygibdj6cgkpj2ih1jgx14") @db.VarChar(255)
-  user_id                          Int?
-  users_credentials_user_idTousers users?   @relation("credentials_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkcbcgksvnqvqxrrc4dwv3qys65")
-  user                             users[]
+  id            Int      @id @default(autoincrement())
+  email         String   @unique(map: "uk_6pka8top3ggqmjvppakv4ygl8") @db.VarChar(255)
+  password      String   @db.VarChar(255)
+  password_date DateTime @db.Timestamp(6)
+  username      String   @unique(map: "uk_l7xhygibdj6cgkpj2ih1jgx14") @db.VarChar(255)
+  assets_id     Int?
+  assets        assets?  @relation(fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user          users[]
 }
 
 model assets {
   id                     Int           @id @default(autoincrement())
-  creation_date          DateTime?     @db.Timestamp(6)
-  modification_date      DateTime?     @db.Timestamp(6)
+  creation_date          DateTime      @db.Timestamp(6)
+  modification_date      DateTime      @db.Timestamp(6)
   creation_person_id     Int?
   modification_person_id Int?
-  modification_person    users?        @relation("modification_person", fields: [modification_person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fklhhvd9iiqu7ud34evcav9xibn")
-  creation_person        users?        @relation("creation_person", fields: [creation_person_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkr3a8lnxg6h2cneapcqvg9yavh")
+  modification_person    users?        @relation("modification_person", fields: [modification_person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fklhhvd9iiqu7ud34evcav9xibn")
+  creation_person        users?        @relation("creation_person", fields: [creation_person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkr3a8lnxg6h2cneapcqvg9yavh")
+  credentials            credentials[]
   bmData                 bm_data[]
   ingredient             ingredients[]
   user                   users[]       @relation("assets_of_user")
@@ -70,10 +70,10 @@ model ingredients {
   minerals_id  Int?
   nutrients_id Int?
   vitamins_id  Int?
-  assets       assets?    @relation(fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk6fe3whlsxbpdqkrmkuvsms7gy")
-  vitamins     vitamins?  @relation(fields: [vitamins_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk8apk6yhxwg8xfu4bao1ka023t")
-  minerals     minerals?  @relation(fields: [minerals_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk8wk1awxbpt2kuyl80a0mpgunu")
-  nutrients    nutrients? @relation(fields: [nutrients_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkonxm9wwtn0qhjgbu6ms1sr5kg")
+  assets       assets?    @relation(fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk6fe3whlsxbpdqkrmkuvsms7gy")
+  vitamins     vitamins?  @relation(fields: [vitamins_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk8apk6yhxwg8xfu4bao1ka023t")
+  minerals     minerals?  @relation(fields: [minerals_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk8wk1awxbpt2kuyl80a0mpgunu")
+  nutrients    nutrients? @relation(fields: [nutrients_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkonxm9wwtn0qhjgbu6ms1sr5kg")
 }
 
 model bm_data {
@@ -87,7 +87,7 @@ model bm_data {
   total_bm    Float?
   weight      Float?
   assets_id   Int?
-  assets      assets? @relation(fields: [assets_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktbluf89juhekonrye78yh6drs")
+  assets      assets? @relation(fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fktbluf89juhekonrye78yh6drs")
   user        users[]
 }
 
