@@ -28,14 +28,18 @@ import java.util.stream.Collectors;
 @Service
 public class IngredientControllerImpl implements IngredientController {
     private final static Logger logger = LoggerFactory.getLogger(IngredientControllerImpl.class);
+    private final IngredientsOldRepository ingredientsOldRepository;
+    private final IngredientRepository ingredientRepository;
+    private final NutrientsRepository nutrientsRepository;
+    private final IngredientService ingredientService;
     @Autowired
-    IngredientsOldRepository ingredientsOldRepository;
-    @Autowired
-    IngredientRepository ingredientRepository;
-    @Autowired
-    NutrientsRepository nutrientsRepository;
-    @Autowired
-    IngredientService ingredientService;
+    public IngredientControllerImpl(IngredientsOldRepository ingredientsOldRepository, IngredientRepository ingredientRepository,
+                                    NutrientsRepository nutrientsRepository, IngredientService ingredientService) {
+        this.ingredientsOldRepository = ingredientsOldRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.nutrientsRepository = nutrientsRepository;
+        this.ingredientService = ingredientService;
+    }
 
     //TODO finish with this as soon as possible so that it would be possible to delete the method
     @Override
@@ -46,7 +50,7 @@ public class IngredientControllerImpl implements IngredientController {
         } else {
             List<IngredientsOld> ingredientsOldList = ingredientsOldRepository.findByCategoryLike(dto.getCategory());
             List<Ingredient> ingredientList = ingredientsOldList.stream()
-                    .map(i -> ingredientService.convertIngredientOld2Ingredient(i))
+                    .map(ingredientService::convertIngredientOld2Ingredient)
                     .collect(Collectors.toList());
             ingredientList.forEach(i -> i.setType(dto.getType()));
             ingredientList.forEach(i -> nutrientsRepository.save(i.getNutrients()));
@@ -87,6 +91,7 @@ public class IngredientControllerImpl implements IngredientController {
     @Override
     public ResponseEntity<RetrieveMineralsDTO> getMinerals(Integer id) {
         Minerals minerals = ingredientService.getMineralsFromIngredient(id);
-        return ResponseEntity.ok(new RetrieveMineralsDTO(minerals));    }
+        return ResponseEntity.ok(new RetrieveMineralsDTO(minerals));
+    }
 
 }

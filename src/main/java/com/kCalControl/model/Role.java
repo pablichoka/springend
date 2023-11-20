@@ -22,7 +22,7 @@ public class Role {
     @Column(name = "role_name", length = 20, nullable = false, unique = true)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
     public Role(String role) {
@@ -38,7 +38,7 @@ public class Role {
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleName, users);
+        return Objects.hash(roleName);
     }
 
     @Override

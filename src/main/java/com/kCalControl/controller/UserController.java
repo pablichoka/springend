@@ -26,7 +26,7 @@ public interface UserController {
     ResponseEntity<String> updateUserData(@PathVariable("id") Integer id, @RequestBody UpdateUserDataDTO dto);
 
     @PutMapping("update-password/{id}")
-    ResponseEntity<String> updatePassword(@PathVariable("id") Integer id, @RequestBody UpdateCredentialsDTO dto);
+    ResponseEntity<String> updateCredentials(@PathVariable("id") Integer id, @RequestBody UpdateCredentialsDTO dto);
 
     @PostMapping("list-user")
     @ResponseBody

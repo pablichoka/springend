@@ -16,12 +16,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BMDataControllerImpl implements BMDataController {
-    @Autowired
     BMDataService BMDataService;
-    @Autowired
     BMDataRepository BMDataRepository;
-    @Autowired
     Checker checker;
+    @Autowired
+    public BMDataControllerImpl(BMDataService BMDataService, BMDataRepository BMDataRepository, Checker checker) {
+        this.BMDataService = BMDataService;
+        this.BMDataRepository = BMDataRepository;
+        this.checker = checker;
+    }
 
     @Override
     public ResponseEntity<RetrieveBMDataDTO> bmCalculator(Integer id){

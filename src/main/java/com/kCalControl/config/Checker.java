@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 public class Checker {
 
     private final static Logger logger = LoggerFactory.getLogger(Checker.class);
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final WhoAmI whoAmI;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    WhoAmI whoAmI;
+    public Checker(UserRepository userRepository, RoleRepository roleRepository, WhoAmI whoAmI) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.whoAmI = whoAmI;
+    }
 
     public boolean checkRoleAdmin() {
         return whoAmI.currentUser()
@@ -33,9 +36,9 @@ public class Checker {
         if(checkRoleAdmin()){
             return true;
         }else{
-            whoAmI.currentUser()
-                    .map(user -> user.getId().equals(id));
-            return false;
+            return whoAmI.currentUser()
+                    .map(user -> user.getId().equals(id)).get();
+
         }
     }
 }

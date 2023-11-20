@@ -29,13 +29,16 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    TokenManager tokenManager;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final TokenManager tokenManager;
+    private final TokenRevocationService tokenRevocationService;
 
     @Autowired
-    TokenRevocationService tokenRevocationService;
+    public JwtFilter(UserDetailsServiceImpl userDetailsService, TokenManager tokenManager, TokenRevocationService tokenRevocationService) {
+        this.userDetailsService = userDetailsService;
+        this.tokenManager = tokenManager;
+        this.tokenRevocationService = tokenRevocationService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)

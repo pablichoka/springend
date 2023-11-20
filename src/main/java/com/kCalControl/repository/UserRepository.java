@@ -1,5 +1,6 @@
 package com.kCalControl.repository;
 
+import com.kCalControl.model.Credentials;
 import com.kCalControl.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer> {
     Page<User> findByNameLikeIgnoreCaseOrMobileLike(String username, String email, String firstName, Pageable pageable);
     Page<User> findAll(Pageable pageable);
+    Optional<User> findByCredentialsId(Integer id);
 
     @Query(value = "SELECT MAX(id) FROM users", nativeQuery = true)
     Integer getLastId();

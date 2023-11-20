@@ -39,10 +39,6 @@ public class Credentials {
     @JoinColumn(name = "id")
     private User users;
 
-    public Set<Role> getRoles() {
-        return getUsers().getRoles();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

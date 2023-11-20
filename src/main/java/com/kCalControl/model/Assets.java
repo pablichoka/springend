@@ -23,13 +23,13 @@ public class Assets {
 
     @ManyToOne
     @JoinColumn(name = "creation_person_id")
-    private User creationPerson;
+    private User creationPerson;                //TODO consider to change from User to integer -> More steps but simpler
 
     private Date creationDate;
 
     @ManyToOne
     @JoinColumn(name = "modification_person_id")
-    private User modificationPerson;
+    private User modificationPerson;            //TODO consider to change from User to integer -> More steps but simpler
 
     private Date modificationDate;
 
@@ -68,9 +68,9 @@ public class Assets {
     public String toString() {
         return "Assets{" +
                 "id=" + id +
-                ", creationPerson=" + creationPerson.getId() +
+                ", creationPerson=" + creationPerson.getId() + //TODO check why this.creationPerson is null || BLOCKS ANY ACTION
                 ", creationDate=" + creationDate +
-                ", modificationPerson=" + modificationPerson.getId() +
+                ", modificationPerson=" + modificationPerson.getId() + //TODO check why this.modificationPerson is null || BLOCKS ANY ACTION
                 ", modificationDate=" + modificationDate +
                 '}';
     }

@@ -1,5 +1,6 @@
 package com.kCalControl.service.impl;
 
+import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.User;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.WhoAmI;
@@ -12,15 +13,19 @@ import java.util.Optional;
 @Service
 public class WhoAmIImpl implements WhoAmI {
 
+    private final UserRepository userRepository;
     @Autowired
-    UserRepository userRepository;
+    public WhoAmIImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Integer whoAmI() {
         try {
-            return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
-        } catch (Exception e) {
-            return null;
+            Integer credentials_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName()); //returns credentials ID
+            return userRepository.findByCredentialsId(credentials_id).get().getId();
+        } catch (NetworkException e) {
+            throw new NetworkException("User not logged", e.getHttpStatus());
         }
     }
 

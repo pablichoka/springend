@@ -24,23 +24,23 @@ import java.util.logging.Logger;
 public class UserControllerImpl implements UserController {
 
     private static final Logger logger = Logger.getLogger(UserControllerImpl.class.getName());
+    private final UserRepository userRepository;
+    private final Checker checker;
+    private final UserService userService;
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    Checker checker;
-    @Autowired
-    BMDataRepository bmDataRepository;
-    @Autowired
-    UserService userService;
-    @Autowired
-    WhoAmI whoAmI;
+    public UserControllerImpl(UserRepository userRepository, Checker checker,
+                              UserService userService) {
+        this.userRepository = userRepository;
+        this.checker = checker;
+        this.userService = userService;
+    }
 
-    //TODO test if it saves the bmData
     @Override
     public ResponseEntity<String> createUser(NewUserDTO dto) {
         User newUser = userService.newUser(dto);
+        userRepository.save(newUser);
+        newUser.setCreationPerson(newUser);
+        newUser.setModificationPerson(newUser);
         userRepository.save(newUser);
         return ResponseEntity.ok("User created successfully %d".formatted(newUser.getId()));
     }
@@ -49,6 +49,8 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<RetrieveUserDTO> getUserData(Integer id) {
         if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
+        } else if (!checker.checkUserExistsById(id)) {
+            throw new NetworkException("User %d does not exits".formatted(id), HttpStatus.FORBIDDEN);
         }
         User user = userService.returnUserById(id);
         RetrieveUserDTO response = new RetrieveUserDTO(user.getUsername(),
@@ -58,7 +60,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {
-        if (!checker.checkGrantedUser(id)) {
+        if (!checker.checkUserExistsById(id) || !checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         userService.deleteUser(id);
@@ -67,7 +69,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updateUserData(Integer id, UpdateUserDataDTO dto) {
-        if (!checker.checkGrantedUser(id)) {
+        if (!checker.checkUserExistsById(id) || !checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateUserData(id, dto);
@@ -77,8 +79,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<String> updatePassword(Integer id, UpdateCredentialsDTO dto) {
-        if (!checker.checkGrantedUser(id)) {
+    public ResponseEntity<String> updateCredentials(Integer id, UpdateCredentialsDTO dto) {
+        if (!checker.checkUserExistsById(id) || !checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateCredentials(id, dto);

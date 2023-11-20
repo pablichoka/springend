@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setBmData(bmData);
         Credentials credentials = newCredentials(dto);
         user.setCredentials(credentials);
-        
+
         user.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
         bmData.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
         credentials.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
@@ -146,9 +146,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User to delete with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        bmDataRepository.delete(user.getBmData());
-        userRepository.deleteById(id);
+        if(checker.checkUserExistsById(id)){
+            userRepository.deleteById(id);
+        }else{
+            throw new NetworkException("User with id: " + id + " not found; cannot delete.", HttpStatus.NOT_FOUND);
+        }
     }
 
 }
