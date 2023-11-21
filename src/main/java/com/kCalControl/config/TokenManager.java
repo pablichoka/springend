@@ -24,7 +24,7 @@ public class TokenManager implements Serializable {
     @Serial
     private static final long serialVersionUID = 1391257847883286658L;
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-    public static final long TOKEN_VALIDITY = 60000L * 60000L * 24 * 7; //one week
+    public static final long TOKEN_VALIDITY = 60000 * 60 * 6; //6h
 
     byte[] signingKey;
     SecretKey secretKey;
@@ -47,7 +47,7 @@ public class TokenManager implements Serializable {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
-                .signWith(this.secretKey)
+                .signWith(this.secretKey, ALGORITHM)
                 .compact();
     }
 
