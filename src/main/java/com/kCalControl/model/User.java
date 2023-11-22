@@ -69,7 +69,7 @@ public class User {
         return getCredentials().getPasswordDate();
     }
 
-    public User getCreationPerson() {
+    public Integer getCreationPerson() {
         return getAssets().getCreationPerson();
     }
 
@@ -77,7 +77,7 @@ public class User {
         return getAssets().getCreationDate();
     }
 
-    public User getModificationPerson() {
+    public Integer getModificationPerson() {
         return getAssets().getModificationPerson();
     }
 
@@ -89,16 +89,8 @@ public class User {
         getAssets().setModificationDate(modificationDate);
     }
 
-    public void setModificationPerson(User modificationPerson) {
+    public void setModificationPerson(Integer modificationPerson) {
         getAssets().setModificationPerson(modificationPerson);
-    }
-
-    public void setCreationDate(Date creationDate) {
-        getAssets().setCreationDate(creationDate);
-    }
-
-    public void setCreationPerson(User creationPerson) {
-        getAssets().setCreationPerson(creationPerson);
     }
 
     public ObjectNode toJson() {
@@ -107,9 +99,9 @@ public class User {
         userJson.put("id", getId());
         userJson.put("name", getName());
         userJson.put("mobile", getMobile());
-        userJson.put("creationPerson", getCreationPerson().toJson());
+        userJson.put("creationPerson", getCreationPerson());
         userJson.put("creationDate", getCreationDate().toString());
-        userJson.put("modificationPerson", getModificationPerson().toJson());
+        userJson.put("modificationPerson", getModificationPerson());
         userJson.put("modificationDate", getModificationDate().toString());
         return userJson;
     }

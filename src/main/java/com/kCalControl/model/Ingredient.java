@@ -64,9 +64,9 @@ public class Ingredient {
         node.put("type", this.getType());
         node.put("category", this.getCategory());
         node.put("description", this.getDescription());
-        node.put("assets", this.getAssets().toJson());
-        node.put("nutrients", this.getNutrients().toJson());
-        node.put("vitamins", this.getVitamins().toJson());
+        node.put("assets", this.getAssets().toString());
+        node.put("nutrients", this.getNutrients().toString());
+        node.put("vitamins", this.getVitamins().toString());
         return node;
     }
 

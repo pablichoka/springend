@@ -20,34 +20,29 @@ public class Assets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "creation_person_id")
-    private User creationPerson;                //TODO consider to change from User to integer -> More steps but simpler
-
+    @Column(name = "creation_person_id", nullable = false)
+    private Integer creationPerson;                //TODO consider to change from User to integer -> More steps but simpler
+    @Column(name = "creation_date", nullable = false)
     private Date creationDate;
-
-    @ManyToOne
-    @JoinColumn(name = "modification_person_id")
-    private User modificationPerson;            //TODO consider to change from User to integer -> More steps but simpler
-
+    @Column(name = "modification_person_id", nullable = false)
+    private Integer modificationPerson;            //TODO consider to change from User to integer -> More steps but simpler
+    @Column(name = "modification_date", nullable = false)
     private Date modificationDate;
 
-    public Assets(User user, Date from, User user1, Date from1) {
-        this.creationPerson = user;
+    public Assets(Integer userID, Date from, Integer userID1, Date from1) {
+        this.creationPerson = userID;
         this.creationDate = from;
-        this.modificationPerson = user1;
+        this.modificationPerson = userID1;
         this.modificationDate = from1;
     }
 
 
-    public ObjectNode toJson() {
+    public ObjectNode toJson(String creationPerson, String modificationPerson) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode node = mapper.createObjectNode();
-        node.put("id", this.getId());
-        node.put("creationPerson", this.getCreationPerson().toJson());
+        node.put("creationPerson", creationPerson);
         node.put("creationDate", this.getCreationDate().toString());
-        node.put("modificationPerson", this.getModificationPerson().toJson());
+        node.put("modificationPerson", modificationPerson);
         node.put("modificationDate", this.getModificationDate().toString());
         return node;
     }
@@ -61,16 +56,16 @@ public class Assets {
 
     @Override
     public int hashCode() {
-        return Objects.hash(creationDate, modificationDate);
+        return Objects.hash(id, creationPerson, creationDate, modificationPerson, modificationDate);
     }
 
     @Override
     public String toString() {
         return "Assets{" +
                 "id=" + id +
-                ", creationPerson=" + creationPerson.getId() + //TODO check why this.creationPerson is null || BLOCKS ANY ACTION
+                ", creationPerson=" + creationPerson + //TODO check why this.creationPerson is null || BLOCKS ANY ACTION
                 ", creationDate=" + creationDate +
-                ", modificationPerson=" + modificationPerson.getId() + //TODO check why this.modificationPerson is null || BLOCKS ANY ACTION
+                ", modificationPerson=" + modificationPerson + //TODO check why this.modificationPerson is null || BLOCKS ANY ACTION
                 ", modificationDate=" + modificationDate +
                 '}';
     }

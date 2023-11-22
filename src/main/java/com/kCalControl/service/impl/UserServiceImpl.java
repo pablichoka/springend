@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,18 +30,23 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
-    @Autowired
     UserRepository userRepository;
-    @Autowired
     RoleRepository roleRepository;
-    @Autowired
     BMDataRepository bmDataRepository;
-    @Autowired
     BCryptPasswordEncoder passwordEncoder;
-    @Autowired
     Checker checker;
-    @Autowired
     WhoAmI whoAmI;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                           BMDataRepository bmDataRepository, BCryptPasswordEncoder passwordEncoder, Checker checker, WhoAmI whoAmI) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.bmDataRepository = bmDataRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.checker = checker;
+        this.whoAmI = whoAmI;
+    }
 
     @Override
     public User newUser(NewUserDTO dto) {
@@ -53,9 +57,9 @@ public class UserServiceImpl implements UserService {
         Credentials credentials = newCredentials(dto);
         user.setCredentials(credentials);
 
-        user.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
-        bmData.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
-        credentials.setAssets(new Assets(user, Date.from(Instant.now()), user, Date.from(Instant.now())));
+        user.setAssets(new Assets(user.getId(), Date.from(Instant.now()), user.getId(), Date.from(Instant.now())));
+        bmData.setAssets(new Assets(user.getId(), Date.from(Instant.now()), user.getId(), Date.from(Instant.now())));
+        credentials.setAssets(new Assets(user.getId(), Date.from(Instant.now()), user.getId(), Date.from(Instant.now())));
 
         Set<Role> roles = new HashSet<>();
         String rolesString = dto.getRole();
@@ -125,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
         user.setName(dto.getName());
         user.setMobile(dto.getMobile());
-        user.setModificationPerson(whoAmI.currentUser().orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)));
+        user.setModificationPerson(whoAmI.whoAmI());
         user.setModificationDate(Date.from(Instant.now()));
 
         return user;
@@ -135,11 +139,11 @@ public class UserServiceImpl implements UserService {
     public User updateCredentials(Integer id, UpdateCredentialsDTO dto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
         Integer modificationPerson = whoAmI.whoAmI();
-        Credentials credentials = user.getCredentials();
 
+        Credentials credentials = user.getCredentials();
         credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
-        credentials.setPasswordDate((java.sql.Date) Time.from(Instant.now()));
-        user.setModificationPerson(whoAmI.currentUser().orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND)));
+        credentials.setPasswordDate(Date.from(Instant.now()));
+        user.setModificationPerson(whoAmI.whoAmI());
         user.setModificationDate(Date.from(Instant.now()));
         return user;
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateCredentialsDTO {
 
+    private String username;
+    private String email;
     private String password;
-    private Integer updaterId;
-
 }

@@ -53,8 +53,8 @@ public class IngredientServiceImpl implements IngredientService {
         assets.setCreationDate(date);
         assets.setModificationDate(date);
         User godUser = whoAmI.currentUser().orElseThrow(() -> new NetworkException("User who performed the conversion not found", HttpStatus.NOT_FOUND));
-        assets.setCreationPerson(godUser);
-        assets.setModificationPerson(godUser);
+        assets.setCreationPerson(godUser.getId());
+        assets.setModificationPerson(godUser.getId());
 
         Nutrients nutrients = new Nutrients();
 

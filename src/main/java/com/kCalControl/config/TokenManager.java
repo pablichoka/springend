@@ -23,7 +23,7 @@ public class TokenManager implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1391257847883286658L;
-    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
+    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS256;
     public static final long TOKEN_VALIDITY = 60000 * 60 * 6; //6h
 
     byte[] signingKey;

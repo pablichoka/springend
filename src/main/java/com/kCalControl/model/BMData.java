@@ -58,7 +58,7 @@ public class BMData {
         this.totalBm = totalBM;
     }
 
-    public User getCreationPerson() {
+    public Integer getCreationPerson() {
         return getAssets().getCreationPerson();
     }
 
@@ -66,7 +66,7 @@ public class BMData {
         return getAssets().getCreationDate();
     }
 
-    public User getModificationPerson() {
+    public Integer getModificationPerson() {
         return getAssets().getModificationPerson();
     }
 
@@ -74,7 +74,7 @@ public class BMData {
         return getAssets().getModificationDate();
     }
 
-    public void setCreationPerson(User creationPerson) {
+    public void setCreationPerson(Integer creationPerson) {
         getAssets().setCreationPerson(creationPerson);
     }
 
@@ -82,7 +82,7 @@ public class BMData {
         getAssets().setCreationDate(creationDate);
     }
 
-    public void setModificationPerson(User modificationPerson) {
+    public void setModificationPerson(Integer modificationPerson) {
         getAssets().setModificationPerson(modificationPerson);
     }
 

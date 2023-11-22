@@ -22,18 +22,16 @@ model user_role {
 }
 
 model users {
-  id                  Int          @id @default(autoincrement())
-  mobile              String       @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
-  name                String       @db.VarChar(255)
-  assets_id           Int?
-  bm_data_id          Int?
-  credentials_id      Int?
-  modification_person assets[]     @relation("modification_person")
-  creation_person     assets[]     @relation("creation_person")
-  user_role           user_role[]
-  asset               assets?      @relation("assets_of_user", fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk406jisi7tgpwlu4k6uav4h0bx")
-  credentials         credentials? @relation(fields: [credentials_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk732k8fvdmf8q8msul077ck3a5")
-  bm_data             bm_data?     @relation(fields: [bm_data_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fktqen8lvkhn2x84wagd35tfxvs")
+  id             Int          @id @default(autoincrement())
+  mobile         String       @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
+  name           String       @db.VarChar(255)
+  assets_id      Int?
+  bm_data_id     Int?
+  credentials_id Int?
+  user_role      user_role[]
+  asset          assets?      @relation("assets_of_user", fields: [assets_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk406jisi7tgpwlu4k6uav4h0bx")
+  credentials    credentials? @relation(fields: [credentials_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk732k8fvdmf8q8msul077ck3a5")
+  bm_data        bm_data?     @relation(fields: [bm_data_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fktqen8lvkhn2x84wagd35tfxvs")
 }
 
 model credentials {
@@ -51,10 +49,8 @@ model assets {
   id                     Int           @id @default(autoincrement())
   creation_date          DateTime      @db.Timestamp(6)
   modification_date      DateTime      @db.Timestamp(6)
-  creation_person_id     Int?
-  modification_person_id Int?
-  modification_person    users?        @relation("modification_person", fields: [modification_person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fklhhvd9iiqu7ud34evcav9xibn")
-  creation_person        users?        @relation("creation_person", fields: [creation_person_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkr3a8lnxg6h2cneapcqvg9yavh")
+  creation_person_id     Int
+  modification_person_id Int
   credentials            credentials[]
   bmData                 bm_data[]
   ingredient             ingredients[]
