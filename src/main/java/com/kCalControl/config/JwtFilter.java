@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -49,6 +51,13 @@ public class JwtFilter extends OncePerRequestFilter {
             logger.debug("Bearer Authorization required: {}", authorizationHeader);
             filterChain.doFilter(request, response);
             return;
+        }
+
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (csrfToken != null) {
+            Cookie cookie = new Cookie("XSRF-TOKEN-X", csrfToken.getToken());
+            cookie.setPath("/");
+            response.addCookie(cookie);
         }
 
         var token = authorizationHeader.substring(7);

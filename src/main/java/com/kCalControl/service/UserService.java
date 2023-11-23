@@ -7,6 +7,7 @@ import com.kCalControl.dto.user.UpdateUserDataDTO;
 import com.kCalControl.model.Credentials;
 import com.kCalControl.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 public interface UserService {
     User newUser(NewUserDTO dto);
@@ -15,9 +16,9 @@ public interface UserService {
 
     User returnUserById(Integer id);
 
-    Page<User> getUsers(int page, int pageSize);
+    Page<User> getUsers(int page, int pageSize, String sort, String query, String sortBy);
 
-    Page<User> getUsersFromSearch(SearchParamsDTO dto);
+//    Page<User> getUsersFromSearch(SearchParamsDTO dto);
 
     User updateUserData(Integer id, UpdateUserDataDTO dto);
 

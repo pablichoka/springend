@@ -1,11 +1,11 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.SearchParamsDTO;
 import com.kCalControl.dto.user.NewUserDTO;
 import com.kCalControl.dto.user.RetrieveUserDTO;
 import com.kCalControl.dto.user.RetrieveUsersDTO;
 import com.kCalControl.dto.credentials.UpdateCredentialsDTO;
 import com.kCalControl.dto.user.UpdateUserDataDTO;
+import jakarta.annotation.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,11 @@ public interface UserController {
     ResponseEntity<RetrieveUserDTO> getUserData(@PathVariable Integer id);
     @PostMapping("signup")
     ResponseEntity<String> createUser(@RequestBody NewUserDTO dto);
-    @PostMapping("list-user")
+    @GetMapping("search-user")
     @ResponseBody
-    ResponseEntity<RetrieveUsersDTO> getUsersList(@RequestBody SearchParamsDTO dto);
-    //TODO fix pagination: page entity adds the search result to the existing pageable
-    @PostMapping("search-users")
-    @ResponseBody
-    ResponseEntity<RetrieveUsersDTO> getUsersFromSearch(@RequestBody SearchParamsDTO dto);
+    ResponseEntity<RetrieveUsersDTO> getUsers(@RequestParam Integer page, @RequestParam Integer size,
+                                              @RequestParam String sort, @RequestParam @Nullable String query,
+                                              @RequestParam @Nullable String searchBy);
     @PutMapping("update-user-data/{id}")
     ResponseEntity<String> updateUserData(@PathVariable("id") Integer id, @RequestBody UpdateUserDataDTO dto);
     @PutMapping("update-credentials/{id}")

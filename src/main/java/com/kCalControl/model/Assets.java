@@ -61,12 +61,8 @@ public class Assets {
 
     @Override
     public String toString() {
-        return "Assets{" +
-                "id=" + id +
-                ", creationPerson=" + creationPerson + //TODO check why this.creationPerson is null || BLOCKS ANY ACTION
-                ", creationDate=" + creationDate +
-                ", modificationPerson=" + modificationPerson + //TODO check why this.modificationPerson is null || BLOCKS ANY ACTION
-                ", modificationDate=" + modificationDate +
-                '}';
+        return "Assets{" + "id=" + id + ", creationPerson=" + creationPerson + //TODO check why this.creationPerson is null || BLOCKS ANY ACTION
+                ", creationDate=" + creationDate + ", modificationPerson=" + modificationPerson + //TODO check why this.modificationPerson is null || BLOCKS ANY ACTION
+                ", modificationDate=" + modificationDate + '}';
     }
 }

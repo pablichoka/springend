@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetsServiceImpl implements AssetsService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public AssetsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     @Override
     public ObjectNode returnAssets(Assets assets) {
         User creationPerson = userRepository.findById(assets.getCreationPerson()).orElseThrow(() -> new NetworkException("User not found", HttpStatus.NOT_FOUND));

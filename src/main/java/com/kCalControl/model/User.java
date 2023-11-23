@@ -35,9 +35,7 @@ public class User {
     private Credentials credentials;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "User_Role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_name"))
+    @JoinTable(name = "User_Role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_name"))
     private Set<Role> roles;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -120,10 +118,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", mobile='" + mobile + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "User{" + "id=" + id + ", mobile='" + mobile + '\'' + ", name='" + name + '\'' + '}';
     }
 }
