@@ -62,7 +62,7 @@ public class UserControllerImpl implements UserController {
         if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         } else if (!checker.checkUserExistsById(id)) {
-            throw new NetworkException("User %d does not exits".formatted(id), HttpStatus.FORBIDDEN);
+            throw new NetworkException("User %d does not exits".formatted(id), HttpStatus.NOT_FOUND);
         }
         User user = userService.returnUserById(id);
         RetrieveUserDTO response = new RetrieveUserDTO(user.getUsername(), user.getName(), user.getMobile(), user.getEmail(), assetsService.returnAssets(user.getAssets()));

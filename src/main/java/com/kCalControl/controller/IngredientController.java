@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/ingredients")
+@RequestMapping({"/", "/mobile"})
 public interface IngredientController {  //TODO missing add ingredient, update ingredient, delete ingredient
 
     @PostMapping("categorize-ingredients")

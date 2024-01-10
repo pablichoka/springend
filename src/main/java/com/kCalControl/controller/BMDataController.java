@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/bm-data")
+@RequestMapping({"/", "/mobile"})
 public interface BMDataController {
     @GetMapping("calc-bm-data/{id}")
     @ResponseBody
