@@ -19,11 +19,14 @@ import java.util.*;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final static Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    private final UserRepository userRepository;
     @Autowired
-    private UserRepository userRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        logger.debug("He pasado por aqui");
         Optional<User> userDBOptional = userRepository.findById(Integer.parseInt(id));
         User user;
         if(userDBOptional.isPresent()){
@@ -35,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         List<Role> roles = user.getRoles().stream().toList();
         for (Role role : roles){
-            logger.debug("Este es el role que se añade: " + role.getRoleName());
+            logger.debug("Role added to authorities: " + role.getRoleName());
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);

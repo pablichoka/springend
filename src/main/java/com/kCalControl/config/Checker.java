@@ -37,7 +37,7 @@ public class Checker {
             return true;
         }else{
             return whoAmI.currentUser()
-                    .map(user -> user.getId().equals(id)).get();
+                    .map(user -> user.getId().equals(id)).orElse(false);
 
         }
     }
