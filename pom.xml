@@ -16,6 +16,7 @@
     <description>A tool to provide you the best menu based on your preferences</description>
     <properties>
         <java.version>21</java.version>
+        <spring-security.version>6.2.0</spring-security.version>
     </properties>
     <dependencies>
         <dependency>
