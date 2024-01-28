@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping({"/", "/mobile"})
+@RequestMapping({"/web", "/mobile"})
 public interface UserController {
     @GetMapping("get-data/{id}")
     @ResponseBody

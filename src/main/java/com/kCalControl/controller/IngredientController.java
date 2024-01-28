@@ -1,18 +1,15 @@
 package com.kCalControl.controller;
 
-import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
 import com.kCalControl.dto.SearchParamsDTO;
+import com.kCalControl.dto.ingredient.CategorizeIngredientsDTO;
 import com.kCalControl.dto.ingredient.RetrieveIngredientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveBasicNutrientsDTO;
 import com.kCalControl.dto.nutrients.RetrieveMineralsDTO;
 import com.kCalControl.dto.nutrients.RetrieveVitaminsDTO;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping({"/", "/mobile"})
 public interface IngredientController {  //TODO missing add ingredient, update ingredient, delete ingredient
 
     @PostMapping("categorize-ingredients")

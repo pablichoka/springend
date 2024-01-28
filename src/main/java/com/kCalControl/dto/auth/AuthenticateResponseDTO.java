@@ -12,8 +12,10 @@ import java.util.Date;
 public class AuthenticateResponseDTO {
 
     private String id;
-    private String token;
+    private String accessToken;
     private Date tokenExpiry;
+    private String refreshToken;
+    private Date refreshTokenExpiry;
     private String roleName;
 
 }

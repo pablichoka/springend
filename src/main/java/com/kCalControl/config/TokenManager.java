@@ -24,7 +24,8 @@ public class TokenManager implements Serializable {
     @Serial
     private static final long serialVersionUID = 1391257847883286658L;
     public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS256;
-    public static final long TOKEN_VALIDITY = 60000 * 60 * 6; //6h
+    public static final long TOKEN_VALIDITY = 60000 * 30; //30 min
+    public static final long REFRESH_TOKEN_VALIDITY = 60000 * 60 * 24 * 7; //7 days
 
     byte[] signingKey;
     SecretKey secretKey;
@@ -47,6 +48,20 @@ public class TokenManager implements Serializable {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
+                .signWith(this.secretKey, ALGORITHM)
+                .compact();
+    }
+
+    public String generateRefreshToken(String subject, String roleName, Date expiryDate) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("ROLE", roleName);
+        claims.put("EXPIRATION_DATE", expiryDate);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY))
                 .signWith(this.secretKey, ALGORITHM)
                 .compact();
     }

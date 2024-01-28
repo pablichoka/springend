@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.kCalControl.config.TokenManager.REFRESH_TOKEN_VALIDITY;
 import static com.kCalControl.config.TokenManager.TOKEN_VALIDITY;
 
 @Service
@@ -62,16 +63,19 @@ public class AuthenticationControllerImpl implements AuthenticationController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
-        Date expiryDate = new Date(System.currentTimeMillis() + TOKEN_VALIDITY);
+        Date tokenExpiryDate = new Date(System.currentTimeMillis() + TOKEN_VALIDITY);
+        Date refreshTokenExpiryDate = new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY);
+
 
         var user = userRepository.findByCredentialsId(credentials.getId()).orElseThrow(() -> new NetworkException("User not found", HttpStatus.NOT_FOUND));
         var user_id = user.getId().toString();
         List<Role> roles = user.getRoles().stream().toList();
         List<String> roleNames = roles.stream().map(Role::getRoleName).toList();
-        var token = this.tokenManager.generateJwtToken(user_id, roleNames.toString(), expiryDate);
+        var token = this.tokenManager.generateJwtToken(user_id, roleNames.toString(), tokenExpiryDate);
+        var refreshToken = this.tokenManager.generateRefreshToken(user_id, roleNames.toString(), refreshTokenExpiryDate);
         logger.debug("Generating token {} for {}", token, username);
 
-        var response = new AuthenticateResponseDTO(user_id, token, expiryDate, roleNames.toString());
+        var response = new AuthenticateResponseDTO(user_id, token, tokenExpiryDate, refreshToken, refreshTokenExpiryDate, roleNames.toString());
         return ResponseEntity.ok(response);
     }
 }
