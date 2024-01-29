@@ -8,12 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.Objects;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "BM_Data")
+@Table(name = "bm_data")
 public class BMData {
 
     @Id
@@ -33,6 +36,10 @@ public class BMData {
     @Column(name = "total_bm")
     private Double totalBm;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "assets_id", referencedColumnName = "id")
+    private Assets assets;
+
     @OneToOne(mappedBy = "bmData", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User userAssoc;
 
@@ -51,6 +58,38 @@ public class BMData {
         this.totalBm = totalBM;
     }
 
+    public Integer getCreationPerson() {
+        return getAssets().getCreationPerson();
+    }
+
+    public Date getCreationDate() {
+        return getAssets().getCreationDate();
+    }
+
+    public Integer getModificationPerson() {
+        return getAssets().getModificationPerson();
+    }
+
+    public Date getModificationDate() {
+        return getAssets().getModificationDate();
+    }
+
+    public void setCreationPerson(Integer creationPerson) {
+        getAssets().setCreationPerson(creationPerson);
+    }
+
+    public void setCreationDate(Date creationDate) {
+        getAssets().setCreationDate(creationDate);
+    }
+
+    public void setModificationPerson(Integer modificationPerson) {
+        getAssets().setModificationPerson(modificationPerson);
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        getAssets().setModificationDate(modificationDate);
+    }
+
     public String toJSON() {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode object2JSON = objectMapper.createObjectNode();
@@ -65,4 +104,15 @@ public class BMData {
         return object2JSON.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BMData bmData)) return false;
+        return Objects.equals(id, bmData.id) && Objects.equals(age, bmData.age) && Objects.equals(weight, bmData.weight) && Objects.equals(height, bmData.height) && Objects.equals(gender, bmData.gender) && Objects.equals(baseBm, bmData.baseBm) && Objects.equals(numDaysEx, bmData.numDaysEx) && Objects.equals(dietType, bmData.dietType) && Objects.equals(totalBm, bmData.totalBm) && Objects.equals(assets, bmData.assets) && Objects.equals(userAssoc, bmData.userAssoc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(age, weight, height, gender, baseBm, numDaysEx, dietType, totalBm);
+    }
 }

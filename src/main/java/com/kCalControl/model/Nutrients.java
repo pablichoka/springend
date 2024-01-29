@@ -8,16 +8,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Nutrients")
+@Table(name = "nutrients")
 public class Nutrients {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Double carbohydrate;
@@ -36,7 +38,7 @@ public class Nutrients {
     @Column(name = "saturated_fat")
     private Double saturatedFat;
 
-    @OneToOne(mappedBy = "mineralsAssoc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "nutrients", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
     public ObjectNode toJson(){
@@ -55,4 +57,33 @@ public class Nutrients {
         return node;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Nutrients nutrients)) return false;
+        return Objects.equals(id, nutrients.id) && Objects.equals(carbohydrate, nutrients.carbohydrate) && Objects.equals(cholesterol, nutrients.cholesterol) && Objects.equals(fiber, nutrients.fiber) && Objects.equals(protein, nutrients.protein) && Objects.equals(sugarTotal, nutrients.sugarTotal) && Objects.equals(water, nutrients.water) && Objects.equals(totalLipid, nutrients.totalLipid) && Objects.equals(monoFat, nutrients.monoFat) && Objects.equals(polyFat, nutrients.polyFat) && Objects.equals(saturatedFat, nutrients.saturatedFat) && Objects.equals(ingredientAssoc, nutrients.ingredientAssoc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, carbohydrate, cholesterol, fiber, protein, sugarTotal, water, totalLipid, monoFat, polyFat, saturatedFat);
+    }
+
+    @Override
+    public String toString() {
+        return "Nutrients{" +
+                "id=" + id +
+                ", carbohydrate=" + carbohydrate +
+                ", cholesterol=" + cholesterol +
+                ", fiber=" + fiber +
+                ", protein=" + protein +
+                ", sugarTotal=" + sugarTotal +
+                ", water=" + water +
+                ", totalLipid=" + totalLipid +
+                ", monoFat=" + monoFat +
+                ", polyFat=" + polyFat +
+                ", saturatedFat=" + saturatedFat +
+                ", ingredientAssoc=" + ingredientAssoc.getId() +
+                '}';
+    }
 }

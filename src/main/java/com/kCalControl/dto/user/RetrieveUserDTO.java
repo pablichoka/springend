@@ -2,6 +2,7 @@ package com.kCalControl.dto.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.kCalControl.model.Assets;
 import com.kCalControl.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,12 +17,14 @@ public class RetrieveUserDTO {
     private String name;
     private String mobile;
     private String email;
+    private ObjectNode assets;
 
-    public RetrieveUserDTO(User user){
+    public RetrieveUserDTO(User user, ObjectNode assets){
         username = user.getUsername();
         name = user.getName();
         mobile = user.getMobile();
         email = user.getEmail();
+        this.assets = assets;
     }
 
     public String toJSON(){
@@ -31,6 +34,7 @@ public class RetrieveUserDTO {
         object2JSON.put("name", this.name);
         object2JSON.put("mobile", this.mobile);
         object2JSON.put("email", this.email);
+        object2JSON.put("assets", this.assets.toString());
         return object2JSON.toString();
     }
 }

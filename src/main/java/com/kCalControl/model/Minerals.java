@@ -11,23 +11,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Minerals")
+@Table(name = "minerals")
 public class Minerals {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "calcium")
     private Double calcium;
+    @Column(name = "copper")
     private Double copper;
+    @Column(name = "iron")
     private Double iron;
+    @Column(name = "magnesium")
     private Double magnesium;
+    @Column(name = "phosphorus")
     private Double phosphorus;
+    @Column(name = "potassium")
     private Double potassium;
+    @Column(name = "sodium")
     private Double sodium;
+    @Column(name = "zinc")
     private Double zinc;
 
-    @OneToOne(mappedBy = "MineralsAssoc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "minerals", fetch = FetchType.EAGER)
     private Ingredient ingredientAssoc;
 
 }

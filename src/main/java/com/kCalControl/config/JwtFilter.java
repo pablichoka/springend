@@ -1,11 +1,12 @@
 package com.kCalControl.config;
 
 import io.jsonwebtoken.Claims;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,13 +31,16 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final static Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    TokenManager tokenManager;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final TokenManager tokenManager;
+    private final TokenRevocationService tokenRevocationService;
 
     @Autowired
-    TokenRevocationService tokenRevocationService;
+    public JwtFilter(UserDetailsServiceImpl userDetailsService, TokenManager tokenManager, TokenRevocationService tokenRevocationService) {
+        this.userDetailsService = userDetailsService;
+        this.tokenManager = tokenManager;
+        this.tokenRevocationService = tokenRevocationService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
@@ -46,6 +51,13 @@ public class JwtFilter extends OncePerRequestFilter {
             logger.debug("Bearer Authorization required: {}", authorizationHeader);
             filterChain.doFilter(request, response);
             return;
+        }
+
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (csrfToken != null) {
+            Cookie cookie = new Cookie("XSRF-TOKEN-X", csrfToken.getToken());
+            cookie.setPath("/");
+            response.addCookie(cookie);
         }
 
         var token = authorizationHeader.substring(7);
@@ -79,9 +91,9 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        ObjectId personId;
+        int personId;
         try {
-            personId = new ObjectId(subject);
+            personId = Integer.parseInt(subject);
         } catch (NumberFormatException e) {
             logger.debug("Token {} not valid", token, e);
             filterChain.doFilter(request, response);

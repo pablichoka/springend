@@ -1,0 +1,212 @@
+# views
+
+###
+# group: authentication
+# @name login
+POST https://localhost:8081/api/authenticate
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NTBkODhlOTkyZjdlMzQ2MzNjYjUwNzkiLCJpYXQiOjE2OTU3MjA1NjUsImV4cCI6MTY5NTc1NjU2NX0.bRnNJZVPCMOtnYYPcyzr1MA14VgqqRarBG3mwxYMG0k
+#Content-Type: boundary=<calculated when request is sent>;application/json; charset=UTF-8
+
+{
+    "username": "fulano",
+    "password": "123"
+}
+
+###
+# group: authentication
+# @name logout
+GET https://localhost:8081/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NDZhNTU4YTViM2E3NmU0OGIyZiIsImlhdCI6MTY5NzMwNjQ1MiwiZXhwIjoxNjk4MTcwNDUyfQ.ThSkTlUdbzWccUW3TgNZcLSyyvH6jco5glE1pfC4EbU
+
+###
+# group: Admin
+# @name Retrieve any user (ADMIN)
+//< {%
+    // TODO: you can add here Pre-request handler
+//%}
+GET https://localhost:8081/admin/userData/6524399dd74a6b7daf6b7a02
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzM0NTUsImV4cCI6MTY5NzczNzQ1NX0.-Y7iiqXQ8eNDJj-8qRwDpsOyr_0LvsW_jsMUxmB-voU
+
+###
+# group: Admin
+# @name Add user (ADMIN)
+POST https://localhost:8081/admin/addUser
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzI4NTIsImV4cCI6MTY5NzczNjg1Mn0.PnWeGW3Hi2wNfRYGlFuvwloBLPLj502Fsiq3MeeBr8o
+Content-Type: application/json
+
+{
+  "username": "testAdmin",
+  "firstName": "admin",
+  "lastName": "testeo",
+  "mobile": "+4536258759",
+  "email": "admin@test.com",
+  "password": "123",
+  "role": "USER"
+}
+
+###
+# group: user
+# @name Retrieve user
+GET https://localhost:8081/api/user/get-data/64be546a558a5b3a76e48b2f
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NDZhNTU4YTViM2E3NmU0OGIyZiIsImlhdCI6MTY5NzMwNzQ4NSwiZXhwIjoxNjk4MTcxNDg1fQ.dvwxevHTw5D1s9SvQO3pUENAYdgiIvw30msMuF7m1Yk
+
+###
+# group: user
+# @name whoiam
+GET https://localhost:8081/api/user/whoiam
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY1MGQ4OGU5OTJmN2UzNDYzM2NiNTA3OSIsImlhdCI6MTY5Njg3MzI4OCwiZXhwIjoxNjk3NzM3Mjg4fQ.qZycS4g_NNKfNgo5mPwxdGss0zuhCSvyrcHX7kmu0GQ
+
+###
+# group: user
+# @name Current user
+GET https://localhost:8081/api/user/userData/6524399dd74a6b7daf6b7a02
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzM0NTUsImV4cCI6MTY5NzczNzQ1NX0.-Y7iiqXQ8eNDJj-8qRwDpsOyr_0LvsW_jsMUxmB-voU
+
+###
+# group: user
+# @name Delete user
+DELETE https://localhost:8081/api/user/deleteUser/64be546a558a5b3a76e48b2f
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY1MTNmZmMxOWNiNDM1M2E3YjM0MjllZCIsImlhdCI6MTY5Njg3NDk2MSwiZXhwIjoxNjk3NzM4OTYxfQ.0VqjJcExqWI1Jw8N2aX9vzumHNZ8wKEsMINVPPEBIHE
+
+###
+# group: user
+# @name Update user data
+PUT https://localhost:8081/api/user/updateUserData/64be536cc2bc1070aa0562e7
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+Content-Type: application/json
+
+{
+  "firstName": "Fulanazo",
+  "lastName": "Martinez Perez",
+  "mobile": "+34657890345",
+  "email": "fulanazo@fatburn.com"
+}
+
+###
+# group: user
+# @name Update user password
+PUT https://localhost:8081/api/user/updatePassword/64be4e86305c6f7403973650
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+Content-Type: application/json
+
+{
+  "password": "123"
+}
+
+###
+# group: user
+# @name List users (ADMIN)
+//< {%
+    // TODO: you can add here Pre-request handler
+//%}
+POST https://localhost:8081/admin/listUser
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTcwNTIyODMsImV4cCI6MTY5NzkxNjI4M30.OvJZFKVZU8DHiQilj-nwuI8aI3JWHBezX65soXqZHZw
+Content-Type: application/json
+
+{
+  "page": "1",
+  "pageSize": "2",
+  "query": "",
+  "sort": "az"
+}
+
+###
+# group: user
+# @name Search users (ADMIN)
+//< {%
+    // TODO: you can add here Pre-request handler
+//%}
+POST https://localhost:8081/admin/searchUsers
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4NzI4NTIsImV4cCI6MTY5NzczNjg1Mn0.PnWeGW3Hi2wNfRYGlFuvwloBLPLj502Fsiq3MeeBr8o
+Content-Type: application/json
+
+{
+  "page": "0",
+  "pageSize": "20",
+  "query": "fu",
+  "sort": "az"
+}
+
+###
+# group: ingredients
+# @name listIngredients
+POST https://localhost:8081/api/ingredients/listIngredients
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NTkyYjQ3NTJkNDk5NDMzMmM1MCIsImlhdCI6MTY5Njk1NTEzOSwiZXhwIjoxNjk3ODE5MTM5fQ.bVYQNBwP2x877rLHt6mIuP75rHoE2akX4YOPDTbMwMI
+Content-Type: application/json
+
+{
+  "page": "0",
+  "pageSize": "20",
+  "query": "",
+  "sort": "az"
+}
+
+###
+# group: ingredients
+# @name searchIngredients
+POST https://localhost:8081/api/ingredients/searchIngredients
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiVVNFUiIsInN1YiI6IjY0YmU1NTkyYjQ3NTJkNDk5NDMzMmM1MCIsImlhdCI6MTY5Njk1NTEzOSwiZXhwIjoxNjk3ODE5MTM5fQ.bVYQNBwP2x877rLHt6mIuP75rHoE2akX4YOPDTbMwMI
+Content-Type: application/json
+
+{
+  "page": "0",
+  "pageSize": "20",
+  "query": "butter",
+  "sort": "az"
+}
+
+###
+# group: Nutrients
+# @name Basic nutrients
+GET https://localhost:8081/api/nutrients/getBasicNutrients/64c37f1bc97d37f5d209f35a
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+
+###
+# group: Nutrients
+# @name All nutrients
+GET https://localhost:8081/api/nutrients/getFullNutrients/64c37f1bc97d37f5d209f35a
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+
+###
+# group: Nutrients
+# @name Vitamins
+GET https://localhost:8081/api/nutrients/getVitamins/64c37f1bc97d37f5d209f35a
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+
+###
+# group: Nutrients
+# @name Minerals
+GET https://localhost:8081/api/nutrients/get-minerals/64c37f1bc97d37f5d209f35a
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+
+###
+# group: BMData
+# @name Calculate BMData
+GET https://localhost:8081/api/bm-data/calcBM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+
+###
+# group: BMData
+# @name Save BMCalc
+POST https://localhost:8081/api/bm-data/saveBMCalc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+Content-Type: application/json
+
+{
+  "numDaysEx": "4",
+  "dietType": "Definition"
+}
+
+###
+# group: BMData
+# @name Save BMData
+POST https://localhost:8081/api/bm-data/saveBMData
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJST0xFIjoiQURNSU4iLCJzdWIiOiI2NGJlNGU4NjMwNWM2Zjc0MDM5NzM2NTAiLCJpYXQiOjE2OTY4OTQwODEsImV4cCI6MTY5Nzc1ODA4MX0.680J5QyZ3N2vWbf8yWPWIVmMW4vO0ebnAbPdMp11iVk
+Content-Type: application/json
+
+{
+  "weigth": "71.2",
+  "age": "25",
+  "height": "174",
+  "gender": "Male"
+}

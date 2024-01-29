@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,33 +23,46 @@ public class TokenManager implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1391257847883286658L;
-
-    // Define the JWT algorithm and token validity duration
-    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS512;
-    public static final long TOKEN_VALIDITY = 60000L * 60000L * 24 * 7; //one week
+    public static final SignatureAlgorithm ALGORITHM = SignatureAlgorithm.HS256;
+    public static final long TOKEN_VALIDITY = 60000 * 30; //30 min
+    public static final long REFRESH_TOKEN_VALIDITY = 60000 * 60 * 24 * 7; //7 days
 
     byte[] signingKey;
     SecretKey secretKey;
 
-    // Autowire the JWT secret key from configuration
     @Autowired
     public void setJWTBase64Secret(@Value("${jwt.base64secret}") String jwtSecret) {
-        // Decode and set the JWT signing key
         this.signingKey = Decoders.BASE64.decode(jwtSecret);
         this.secretKey = Keys.hmacShaKeyFor(this.signingKey);
     }
 
+
     // Generate a JWT token with the provided subject
-    public String generateJwtToken(String subject, String roleName) {
+    public String generateJwtToken(String subject, String roleName, Date expiryDate) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("ROLE", roleName);
+        claims.put("EXPIRATION_DATE", expiryDate);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
-                .signWith(this.secretKey)
+                .signWith(this.secretKey, ALGORITHM)
+                .compact();
+    }
+
+    public String generateRefreshToken(String subject, String roleName, Date expiryDate) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("ROLE", roleName);
+        claims.put("EXPIRATION_DATE", expiryDate);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY))
+                .signWith(this.secretKey, ALGORITHM)
                 .compact();
     }
 

@@ -4,8 +4,8 @@ import com.kCalControl.model.User;
 
 import java.util.Optional;
 
-public interface WhoIAm {
-    Integer whoIAm();
+public interface WhoAmI {
+    Optional<Integer> whoAmI();
 
     Optional<User> currentUser();
 }

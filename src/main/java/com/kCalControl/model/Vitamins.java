@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Vitamins")
+@Table(name = "vitamins")
 public class Vitamins {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "vitamin_a")
@@ -39,7 +39,7 @@ public class Vitamins {
     @Column(name = "riboflavin")
     private Double riboflavin;
 
-    @OneToOne(mappedBy = "vitaminsAssoc", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "vitamins", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Ingredient ingredientAssoc;
 
     public ObjectNode toJson(){

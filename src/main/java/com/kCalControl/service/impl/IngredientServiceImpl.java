@@ -8,7 +8,7 @@ import com.kCalControl.repository.MineralsRepository;
 import com.kCalControl.repository.NutrientsRepository;
 import com.kCalControl.repository.VitaminsRepository;
 import com.kCalControl.service.IngredientService;
-import com.kCalControl.service.WhoIAm;
+import com.kCalControl.service.WhoAmI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -32,7 +33,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Autowired
     MineralsRepository mineralsRepository;
     @Autowired
-    WhoIAm whoIAm;
+    WhoAmI whoAmI;
 
     @Override
     public void addTypeToIngredient(String type, Ingredient ingredient) {
@@ -41,7 +42,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient convertIngredientOld2Ingredient(IngredientsOld ingredientsOld) {
-        LocalDateTime date = LocalDateTime.now();
+        Date date = Date.from(Instant.now());
 
         Ingredient ingredient = new Ingredient();
         ingredient.setId(ingredientsOld.getId());
@@ -51,7 +52,7 @@ public class IngredientServiceImpl implements IngredientService {
         Assets assets = new Assets();
         assets.setCreationDate(date);
         assets.setModificationDate(date);
-        User godUser = whoIAm.currentUser().orElseThrow(() -> new NetworkException("User who performed the conversion not found", HttpStatus.NOT_FOUND));
+        User godUser = whoAmI.currentUser().orElseThrow(() -> new NetworkException("User who performed the conversion not found", HttpStatus.NOT_FOUND));
         assets.setCreationPerson(godUser.getId());
         assets.setModificationPerson(godUser.getId());
 

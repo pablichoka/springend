@@ -1,18 +1,15 @@
-package com.kCalControl.dto.user;
+package com.kCalControl.dto.home;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdatePasswordDTO {
-
-    private String password;
-    private Integer updaterId;
-
+public class Index {
+    private String message;
 }

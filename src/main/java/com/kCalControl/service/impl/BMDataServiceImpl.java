@@ -5,8 +5,7 @@ import com.kCalControl.dto.bmdata.UpdatePersonalDataDTO;
 import com.kCalControl.model.BMData;
 import com.kCalControl.repository.BMDataRepository;
 import com.kCalControl.service.BMDataService;
-import com.kCalControl.service.UserDBService;
-import org.bson.types.ObjectId;
+import com.kCalControl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class BMDataServiceImpl implements BMDataService {
     @Autowired
     BMDataRepository BMDataRepository;
     @Autowired
-    UserDBService userDBService;
+    UserService userService;
 
     @Override
     public BMData returnBMDataByUserDBId(Integer id) {
@@ -28,7 +27,7 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public BMData saveData(Integer id, UpdatePersonalDataDTO personalDataDTO) {
-        BMData bmData = userDBService.returnUserById(id).getBmData();
+        BMData bmData = userService.returnUserById(id).getBmData();
         bmData.setAge(personalDataDTO.getAge());
         bmData.setHeight(personalDataDTO.getHeight());
         bmData.setWeight(personalDataDTO.getWeight());
@@ -38,7 +37,7 @@ public class BMDataServiceImpl implements BMDataService {
 
     @Override
     public BMData saveCalc(Integer id, UpdateBMDataDTO dto) {
-        BMData bmData = userDBService.returnUserById(id).getBmData();
+        BMData bmData = userService.returnUserById(id).getBmData();
         bmData.setDietType(dto.getDietType());
         bmData.setNumDaysEx(dto.getNumDaysEx());
         return bmData;

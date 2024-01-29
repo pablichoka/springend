@@ -13,31 +13,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Ingredients")
+@Table(name = "ingredients")
 public class Ingredient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "type")
     private String type;
 
+    @Column(name = "category")
     private String category;
 
+    @Column(name = "description")
     private String description;
 
-    @OneToOne(mappedBy = "ingredient")
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "assets_id", referencedColumnName = "id")
     private Assets assets;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
     private Nutrients nutrients;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "vitamins_id", referencedColumnName = "id")
     private Vitamins vitamins;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}  )
     @JoinColumn(name = "minerals_id", referencedColumnName = "id")
     private Minerals minerals;
 
@@ -60,9 +64,9 @@ public class Ingredient {
         node.put("type", this.getType());
         node.put("category", this.getCategory());
         node.put("description", this.getDescription());
-        node.put("assets", this.getAssets().toJson());
-        node.put("nutrients", this.getNutrients().toJson());
-        node.put("vitamins", this.getVitamins().toJson());
+        node.put("assets", this.getAssets().toString());
+        node.put("nutrients", this.getNutrients().toString());
+        node.put("vitamins", this.getVitamins().toString());
         return node;
     }
 
