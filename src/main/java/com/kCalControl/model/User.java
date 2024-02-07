@@ -28,7 +28,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String mobile;
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "credentials_id", referencedColumnName = "id")
@@ -46,8 +48,9 @@ public class User {
     @JoinColumn(name = "assets_id", referencedColumnName = "id")
     private Assets assets;
 
-    public User(String name, String mobile) {
-        this.name = name;
+    public User(String firstName, String lastName, String mobile) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.mobile = mobile;
     }
 
@@ -95,7 +98,8 @@ public class User {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode userJson = mapper.createObjectNode();
         userJson.put("id", getId());
-        userJson.put("name", getName());
+        userJson.put("firstName", getFirstName());
+        userJson.put("lastName", getLastName());
         userJson.put("mobile", getMobile());
         userJson.put("creationPerson", getCreationPerson());
         userJson.put("creationDate", getCreationDate().toString());
@@ -107,17 +111,23 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return Objects.equals(id, user.id) && Objects.equals(mobile, user.mobile) && Objects.equals(name, user.name) && Objects.equals(credentials, user.credentials) && Objects.equals(roles, user.roles) && Objects.equals(bmData, user.bmData) && Objects.equals(assets, user.assets);
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(mobile, user.mobile) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mobile, name);
+        return Objects.hash(id, mobile, firstName, lastName);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", mobile='" + mobile + '\'' + ", name='" + name + '\'' + '}';
+        return "User{" +
+                "id=" + id +
+                ", mobile='" + mobile + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

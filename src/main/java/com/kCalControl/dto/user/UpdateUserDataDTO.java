@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateUserDataDTO {
 
-    private String name;
+    private String firstName;
+    private String lastName;
     private String mobile;
     private String email;
     private Integer updaterId;

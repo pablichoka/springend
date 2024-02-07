@@ -53,13 +53,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrfToken != null) {
-            Cookie cookie = new Cookie("XSRF-TOKEN-X", csrfToken.getToken());
-            cookie.setPath("/");
-            response.addCookie(cookie);
-        }
-
         var token = authorizationHeader.substring(7);
 
         if(tokenRevocationService.isTokenRevoked(token)){

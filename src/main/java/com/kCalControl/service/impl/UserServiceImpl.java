@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User newUser(NewUserDTO dto) {
 
-        User user = new User(dto.getName(), dto.getMobile());
+        User user = new User(dto.getFirstName(), dto.getLastName(), dto.getMobile());
         BMData bmData = new BMData();
         user.setBmData(bmData);
         Credentials credentials = newCredentials(dto);
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
                     return userRepository.findByCredentials_UsernameLikeIgnoreCase(query, pageRequest);
                 }
                 case null, default -> {
-                    return userRepository.findByNameLikeIgnoreCase(query, pageRequest);
+                    return userRepository.findByFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(query, query, pageRequest);
                 }
             }
         }
@@ -138,9 +138,10 @@ public class UserServiceImpl implements UserService {
     public User updateUserData(Integer id, UpdateUserDataDTO dto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User with id: " + id + " not found", HttpStatus.NOT_FOUND));
 
-        user.setName(dto.getName());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
         user.setMobile(dto.getMobile());
-        user.setModificationPerson(whoAmI.whoAmI().orElseThrow(() -> new NetworkException("User not logged", HttpStatus.FORBIDDEN)));
+        user.setModificationPerson(whoAmI.whoAmI());
         user.setModificationDate(Date.from(Instant.now()));
 
         return user;
@@ -149,12 +150,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateCredentials(Integer id, UpdateCredentialsDTO dto) {
         User user = userRepository.findById(id).orElseThrow(() -> new NetworkException("User to update with id: " + id + " not found", HttpStatus.NOT_FOUND));
-        Integer modificationPerson = whoAmI.whoAmI().orElseThrow(() -> new NetworkException("User not logged", HttpStatus.FORBIDDEN));
+        Integer modificationPerson = whoAmI.whoAmI();
 
         Credentials credentials = user.getCredentials();
         credentials.setPassword(passwordEncoder.encode(dto.getPassword()));
         credentials.setPasswordDate(Date.from(Instant.now()));
-        user.setModificationPerson(whoAmI.whoAmI().orElseThrow(() -> new NetworkException("User not logged", HttpStatus.FORBIDDEN)));
+        user.setModificationPerson(modificationPerson);
         user.setModificationDate(Date.from(Instant.now()));
         return user;
     }

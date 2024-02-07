@@ -59,13 +59,14 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<RetrieveUserDTO> getUserData(Integer id) {
+        logger.info("User data requested: " + checker.checkGrantedUser(1));
         if (!checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         } else if (!checker.checkUserExistsById(id)) {
             throw new NetworkException("User %d does not exits".formatted(id), HttpStatus.NOT_FOUND);
         }
         User user = userService.returnUserById(id);
-        RetrieveUserDTO response = new RetrieveUserDTO(user.getUsername(), user.getName(), user.getMobile(), user.getEmail(), assetsService.returnAssets(user.getAssets()));
+        RetrieveUserDTO response = new RetrieveUserDTO(user.getUsername(), user.getFirstName(), user.getLastName(), user.getMobile(), user.getEmail(), assetsService.returnAssets(user.getAssets()));
         return ResponseEntity.ok(response);
     }
 
@@ -106,7 +107,7 @@ public class UserControllerImpl implements UserController {
         }
         Page<User> usersList = userService.getUsers(page, size, sort, query, searchBy);
         logger.info("User search list: " + usersList.toString());
-        RetrieveUsersDTO response = new RetrieveUsersDTO(usersList.getNumberOfElements(), usersList.getContent().stream().map(user -> new RetrieveUserDTO(user.getUsername(), user.getName(), user.getMobile(), user.getEmail(), assetsService.returnAssets(user.getAssets()))).toList());
+        RetrieveUsersDTO response = new RetrieveUsersDTO(usersList.getNumberOfElements(), usersList.getContent().stream().map(user -> new RetrieveUserDTO(user.getUsername(), user.getFirstName(), user.getLastName(), user.getMobile(), user.getEmail(), assetsService.returnAssets(user.getAssets()))).toList());
         return ResponseEntity.ok(response);
     }
 

@@ -36,7 +36,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     CredentialsRepository credentialsRepository;
     BCryptPasswordEncoder encoder;
     TokenManager tokenManager;
-    CsrfFilter csrfFilter;
 
     @Autowired
     public AuthenticationControllerImpl(UserRepository userRepository, CredentialsRepository credentialsRepository,

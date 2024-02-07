@@ -13,7 +13,8 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer> {
     Page<User> findByCredentials_UsernameLikeIgnoreCase(String username, Pageable pageable);
     Page<User> findByCredentials_EmailLikeIgnoreCase(String email, Pageable pageable);
-    Page<User> findByNameLikeIgnoreCase(String name, Pageable pageable);
+    Page<User> findByFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(String firstName, String lastName, Pageable pageable);
+
     Page<User> findByMobileLike(String mobile, Pageable pageable);
     Page<User> findAll(Pageable pageable);
 

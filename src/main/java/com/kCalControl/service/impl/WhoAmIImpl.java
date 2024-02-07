@@ -4,6 +4,8 @@ import com.kCalControl.exceptions.NetworkException;
 import com.kCalControl.model.User;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.WhoAmI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 public class WhoAmIImpl implements WhoAmI {
 
+    private final static Logger logger = LoggerFactory.getLogger(WhoAmIImpl.class);
     private final UserRepository userRepository;
 
     @Autowired
@@ -22,24 +25,32 @@ public class WhoAmIImpl implements WhoAmI {
     }
 
     @Override
-    public Optional<Integer> whoAmI() {
+    public Integer whoAmI() {
         try {
             if (SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-                return Optional.empty();
-            }else{
-                Integer credentials_id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName()); //returns credentials ID
-                return userRepository.findByCredentialsId(credentials_id).map(User::getId);
+                return null;
+            } else {
+                try {
+                    return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName()); //returns credentials ID
+
+                } catch (NetworkException e) {
+                    throw new NetworkException("User not logged", HttpStatus.UNAUTHORIZED);
+                }
+//                logger.debug("Logged user credentials: " + SecurityContextHolder.getContext().getAuthentication().getName());
+//                logger.debug("Credentials ID: " + userRepository.findByCredentialsId(credentials_id).map(User::getId).
+//                        orElseThrow(() -> new NetworkException("User not exists", HttpStatus.NOT_FOUND)));
+//                return userRepository.findByCredentialsId(credentials_id).map(User::getId);
             }
         } catch (NetworkException e) {
-            throw new NetworkException("User not logged", e.getHttpStatus());
+            throw new NetworkException("User not logged", HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Override
     public Optional<User> currentUser() {
-        if(whoAmI().isPresent()){
-            return userRepository.findById(whoAmI().get());
-        }else{
+        if (whoAmI() != null) {
+            return userRepository.findById(whoAmI());
+        } else {
             return Optional.empty();
         }
     }
