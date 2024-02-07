@@ -1,8 +1,10 @@
 package com.kCalControl.config;
 
+import com.kCalControl.model.User;
 import com.kCalControl.repository.RoleRepository;
 import com.kCalControl.repository.UserRepository;
 import com.kCalControl.service.WhoAmI;
+import org.postgresql.largeobject.BlobOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class Checker {
         if(checkRoleAdmin()){
             return true;
         }else{
+            logger.debug("Lo que quiero saber: " + whoAmI.currentUser().map(User::getId));
             return whoAmI.currentUser()
                     .map(user -> user.getId().equals(id)).orElse(false);
 

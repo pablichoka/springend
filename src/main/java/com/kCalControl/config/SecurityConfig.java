@@ -45,9 +45,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                 corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
                 corsConfiguration.setAllowedHeaders(List.of("*"));
                 return corsConfiguration;
-        })).authorizeHttpRequests(c -> c.requestMatchers("/index", "/index", "/login",
+        })).authorizeHttpRequests(c -> c.requestMatchers("/index", "/login",
                         "/signup", "/error").permitAll()
-                        .requestMatchers("/").authenticated())
+                        .requestMatchers("/**").authenticated())
                         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(this.filter, UsernamePasswordAuthenticationFilter.class);

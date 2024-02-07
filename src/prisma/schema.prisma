@@ -24,7 +24,8 @@ model user_role {
 model users {
   id             Int          @id @default(autoincrement())
   mobile         String       @unique(map: "uk_63cf888pmqtt5tipcne79xsbm") @db.VarChar(255)
-  name           String       @db.VarChar(255)
+  first_name     String       @db.VarChar(255)
+  last_name      String       @db.VarChar(255)
   assets_id      Int?
   bm_data_id     Int?
   credentials_id Int?
