@@ -1,2 +1,2 @@
 # kCalControl
-kCal Control backend based on Java Springboot 3.0.5. Works with MongoDB and it is oriented to API rest conmsuming frameworks
+kCal Control backend based on Java Springboot 3.1.0. Works with Postgres, Docker and prisma, and it is oriented to API rest consuming frameworks
