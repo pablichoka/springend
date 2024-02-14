@@ -81,7 +81,7 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<String> updateUserData(Integer id, UpdateUserDataDTO dto) {
-        if (!checker.checkUserExistsById(id) || !checker.checkGrantedUser(id)) {
+        if (!checker.checkUserExistsById(id) && !checker.checkGrantedUser(id)) {
             throw new NetworkException("Valid user check failed", HttpStatus.FORBIDDEN);
         }
         User updatedUser = userService.updateUserData(id, dto);
