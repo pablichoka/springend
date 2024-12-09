@@ -1,13 +1,13 @@
 package com.kCalControl.repository;
 
-import com.kCalControl.model.Role;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<Role, Integer> {
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.repository.CrudRepository;
+
+import com.kCalControl.model.Role;
+
+public interface RoleRepository extends CrudRepository<Role, String> {
     Optional<Role> findByRoleName(@NotNull String roleName);
 
 }
